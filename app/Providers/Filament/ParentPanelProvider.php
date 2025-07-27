@@ -2,7 +2,7 @@
 
 namespace App\Providers\Filament;
 
-use App\Http\Middleware\OnlyAdmin;
+use App\Http\Middleware\OnlyParent;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -19,25 +19,24 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class AdminPanelProvider extends PanelProvider
+class ParentPanelProvider extends PanelProvider
 {
   public function panel(Panel $panel): Panel
   {
     return $panel
       ->brandName('Darutafsir')
-      ->default()
-      ->id('admin')
-      ->path('admin')
+      ->id('parent')
+      ->path('parent')
       ->login()
       ->colors([
-        'primary' => Color::Amber,
+        'primary' => Color::Green,
       ])
-      ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-      ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+      ->discoverResources(in: app_path('Filament/Parent/Resources'), for: 'App\\Filament\\Parent\\Resources')
+      ->discoverPages(in: app_path('Filament/Parent/Pages'), for: 'App\\Filament\\Parent\\Pages')
       ->pages([
         Pages\Dashboard::class,
       ])
-      ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+      ->discoverWidgets(in: app_path('Filament/Parent/Widgets'), for: 'App\\Filament\\Parent\\Widgets')
       ->widgets([
         Widgets\AccountWidget::class,
         Widgets\FilamentInfoWidget::class,
@@ -52,7 +51,7 @@ class AdminPanelProvider extends PanelProvider
         SubstituteBindings::class,
         DisableBladeIconComponents::class,
         DispatchServingFilamentEvent::class,
-        OnlyAdmin::class,
+        OnlyParent::class,
       ])
       ->authMiddleware([
         Authenticate::class,
