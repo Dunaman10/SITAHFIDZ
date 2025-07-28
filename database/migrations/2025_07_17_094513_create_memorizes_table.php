@@ -13,6 +13,13 @@ return new class extends Migration
   {
     Schema::create('memorizes', function (Blueprint $table) {
       $table->id();
+      $table->foreignId('id_surah');
+      $table->foreignId('id_student');
+      $table->foreignId('id_teacher');
+      $table->integer('from');
+      $table->integer('to');
+      $table->string('audio');
+      $table->tinyInteger('complete');
       $table->timestamps();
     });
   }

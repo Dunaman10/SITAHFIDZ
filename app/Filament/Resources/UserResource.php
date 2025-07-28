@@ -25,6 +25,12 @@ class UserResource extends Resource
   protected static ?string $pluralModelLabel = 'Data Pengguna';
   protected static ?int $navigationSort = 4;
 
+  public static function getEloquentQuery(): Builder
+  {
+    return parent::getEloquentQuery()
+      ->with(['role']);
+  }
+
   public static function form(Form $form): Form
   {
     return $form
@@ -32,21 +38,20 @@ class UserResource extends Resource
         TextInput::make('name')->required(),
         TextInput::make('email')->required(),
         TextInput::make('password')->required()->password()->revealable(),
-        Select::make('role')->required()
-          ->options([
-            'guru' => 'Guru',
-            'orang_tua' => 'Orang Tua',
-          ])
+        Select::make('role_id')->required()
+          ->relationship('role', 'role_name')
+          ->required()
       ]);
   }
 
   public static function table(Table $table): Table
   {
     return $table
+      ->query(User::with('role'))
       ->columns([
         TextColumn::make('name')->searchable()->sortable(),
         TextColumn::make('email')->searchable(),
-        TextColumn::make('role')->searchable(),
+        TextColumn::make('role.role_name')->label('Role'),
       ])
       ->filters([
         //
