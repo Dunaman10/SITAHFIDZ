@@ -40,15 +40,17 @@ class StudentResource extends Resource
   {
     return $table
       ->columns([
-        TextColumn::make('student_name'),
-        TextColumn::make('user.name')->label('Orang Tua'),
-        TextColumn::make('class.class_name')->label('Kelas'),
+        TextColumn::make('student_name')->searchable(),
+        TextColumn::make('user.name')->label('Orang Tua')->searchable(),
+        TextColumn::make('class.class_name')->label('Kelas')->searchable(),
       ])
       ->filters([
         //
       ])
       ->actions([
         Tables\Actions\EditAction::make(),
+        Tables\Actions\ViewAction::make(),
+        Tables\Actions\DeleteAction::make(),
       ])
       ->bulkActions([
         Tables\Actions\BulkActionGroup::make([

@@ -42,7 +42,7 @@ class MakeUserWithRole extends Command
       'name' => $name,
       'email' => $email,
       'password' => Hash::make($password),
-      'role' => $role,
+      'role_id' => $role,
     ]);
 
     $this->info("User berhasil dibuat dengan role '$role'.");

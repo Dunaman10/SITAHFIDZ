@@ -6,6 +6,7 @@ use App\Filament\Resources\TeacherResource\Pages;
 use App\Filament\Resources\TeacherResource\RelationManagers;
 use App\Models\Teacher;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -33,7 +34,7 @@ class TeacherResource extends Resource
   {
     return $form
       ->schema([
-        //
+        TextInput::make('name')->required()
       ]);
   }
 
@@ -41,13 +42,15 @@ class TeacherResource extends Resource
   {
     return $table
       ->columns([
-        TextColumn::make('user.name')->label('Nama Guru'),
+        TextColumn::make('user.name')->label('Nama Guru')->searchable(),
       ])
       ->filters([
         //
       ])
       ->actions([
         Tables\Actions\EditAction::make(),
+        Tables\Actions\ViewAction::make(),
+        Tables\Actions\DeleteAction::make(),
       ])
       ->bulkActions([
         Tables\Actions\BulkActionGroup::make([

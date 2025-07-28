@@ -36,7 +36,7 @@ class ClassesResource extends Resource
   {
     return $table
       ->columns([
-        TextColumn::make('class_name')
+        TextColumn::make('class_name')->searchable()
       ])
       ->filters([
         //

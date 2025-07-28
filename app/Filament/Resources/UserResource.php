@@ -51,13 +51,14 @@ class UserResource extends Resource
       ->columns([
         TextColumn::make('name')->searchable()->sortable(),
         TextColumn::make('email')->searchable(),
-        TextColumn::make('role.role_name')->label('Role'),
+        TextColumn::make('role.role_name')->label('Role')->searchable(),
       ])
       ->filters([
         //
       ])
       ->actions([
         Tables\Actions\EditAction::make(),
+        Tables\Actions\ViewAction::make(),
         Tables\Actions\DeleteAction::make(),
       ])
       ->bulkActions([
