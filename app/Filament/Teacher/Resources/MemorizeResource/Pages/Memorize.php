@@ -6,7 +6,6 @@ use App\Filament\Teacher\Resources\MemorizeResource;
 use Filament\Resources\Pages\Page;
 use Illuminate\Support\Facades\DB;
 
-
 class Memorize extends Page
 {
   protected static string $resource = MemorizeResource::class;

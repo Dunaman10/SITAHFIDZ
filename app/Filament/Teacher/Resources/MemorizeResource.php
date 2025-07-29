@@ -12,15 +12,30 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\View;
+use Filament\Forms\Components\ViewField;
 use Filament\Forms\Form;
+use Illuminate\Support\Facades\Log;
 
 class MemorizeResource extends Resource
 {
   protected static ?string $model = Memorize::class;
 
   protected static ?string $navigationIcon = 'heroicon-o-book-open';
+
+  public $kelas;
+  public $surah;
+
+  public function mount($record = null): void
+  {
+    parent::mount($record);
+
+    // Initialize any properties or perform actions needed on mount
+    $this->kelas = request()->route('kelas') ?? '';
+    $this->surah = request()->route('surah') ?? '';
+  }
 
   public static function table(Table $table): Table
   {
@@ -44,10 +59,12 @@ class MemorizeResource extends Resource
   public static function form(Form $form): Form
   {
     return $form->schema([
-      View::make("components.surah-card")
-        ->viewData([
-          'surah' => '', // Placeholder, adjust as needed
-          'ayat' => 0, // Placeholder, adjust as needed
+      View::make('surah_name')
+        ->label('Surah')
+        ->view('components.surah-card')
+        ->viewData(fn($get) => [
+          'surah' => $get('surah') ?? '',
+          'ayat' => "0",
         ])
         ->columnSpanFull(),
       Select::make('id_student')
@@ -84,9 +101,16 @@ class MemorizeResource extends Resource
         ->directory('hafalan-audio')
         ->preserveFilenames()
         ->placeholder('Rekam Suara Santri / Santriwati')
-        ->enableOpen()
-        ->enableDownload()
         ->columnSpan('full'),
+      Radio::make('complete')
+        ->label('')
+        ->options([
+          '1' => 'Selesai',
+          '0' => 'Belum Selesai',
+        ])
+        ->default('0')
+        ->inline()
+        ->columnSpanFull(),
     ]);
   }
 

@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 class CreateMemorize extends CreateRecord
 {
   protected static string $resource = MemorizeResource::class;
+  // protected static string $view = 'filament.teacher.resources.memorize-resource.pages.custom-create';
+
 
   public ?string $kelas = null;
   public ?string $surah = null;
@@ -23,49 +25,7 @@ class CreateMemorize extends CreateRecord
     $this->kelas = request()->route('kelas');
     $this->surah = request()->route('surah');
     $this->fillForm();
-  }
-
-  protected function getFormSchema(): array
-  {
-    dd($this->getDataSurah());
-    return [
-      Forms\Components\View::make("components.surah-card")
-        ->viewData($this->getDataSurah())
-        ->columnSpanFull(),
-      Forms\Components\Select::make('id_student')
-        ->label('Nama Santri / Santriwati')
-        ->required()
-        ->searchable()
-        ->placeholder('Masukkan nama santri / santriwati')
-        ->options(fn() => Student::where('class', $this->kelas)->pluck('student_name', 'id')->toArray())
-        ->columnSpanFull(),
-
-      Forms\Components\Grid::make()
-        ->schema([
-          Forms\Components\TextInput::make('from')
-            ->label('Halaman Surah (Dari)')
-            ->numeric()
-            ->required()
-            ->placeholder('5'),
-
-          Forms\Components\TextInput::make('to')
-            ->label('Halaman Surah (Sampai)')
-            ->numeric()
-            ->required()
-            ->placeholder('10'),
-        ])
-        ->columns(2)
-        ->columnSpanFull(),
-
-      Forms\Components\FileUpload::make('audio')
-        ->label('Rekam Suara')
-        ->acceptedFileTypes(['audio/*'])
-        ->maxSize(10240)
-        ->disk('public')
-        ->directory('hafalan-audio')
-        ->preserveFilenames()
-        ->columnSpanFull(),
-    ];
+    dd($this->kelas, $this->surah);
   }
 
   public function getDataSurah(): array
@@ -76,4 +36,6 @@ class CreateMemorize extends CreateRecord
       ->where('surah_name', $this->surah)
       ->toArray();
   }
+
+  public function submit(): void {}
 }
