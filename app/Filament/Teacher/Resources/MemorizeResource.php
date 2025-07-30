@@ -127,7 +127,7 @@ class MemorizeResource extends Resource
       'index' => Pages\ListMemorizes::route('/'),
       'data' => Pages\Memorize::route('/data/{kelas}'),
       'create' => Pages\CreateMemorize::route('/data/{kelas}/create/{surah}'),
-      'edit' => Pages\EditMemorize::route('/{record}/edit'),
+      'edit' => Pages\EditMemorize::route('/{record}/edit/{kelas}/{surah}'),
     ];
   }
 }

@@ -27,6 +27,7 @@ class Memorize extends Page
 
   public function getViewData(): array
   {
+    // dd($this->getAccordionData())
     return [
       'accordionData' => $this->getAccordionData(),
       'openSection' => '1', // atau dari state Livewire
@@ -46,6 +47,7 @@ class Memorize extends Page
         'memorizes.id',
         'students.student_name as student_name',
         'memorizes.from',
+        'users.name',
         'memorizes.to',
         'memorizes.audio',
         'memorizes.complete'
@@ -55,6 +57,7 @@ class Memorize extends Page
       ->join('teachers', 'memorizes.id_teacher', '=', 'teachers.id')
       ->join('class_teacher', 'teachers.id', '=', 'class_teacher.id_teacher')
       ->join('classes', 'class_teacher.id_class', '=', 'classes.id')
+      ->join('users', 'teachers.id_users', '=', 'users.id')
       ->where('classes.id', $this->kelas)
       ->orderBy('memorizes.id_surah')
       ->get();
@@ -70,6 +73,7 @@ class Memorize extends Page
           return [
             'id' => $item->id,
             'student_name' => $item->student_name,
+            "teacher_name" => $item->name,
             'from' => $item->from,
             'to' => $item->to,
             'audio' => $item->audio,
@@ -84,6 +88,7 @@ class Memorize extends Page
   {
     return [
       ['header' => 'Siswa', 'key' => 'student_name'],
+      ['header' => 'Guru', 'key' => 'teacher_name'],
       ['header' => 'Mulai', 'key' => 'from'],
       ['header' => 'Selesai', 'key' => 'to'],
       ['header' => 'Audio', 'key' => 'audio'],

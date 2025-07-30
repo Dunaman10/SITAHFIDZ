@@ -9,6 +9,8 @@
         open: false,
         currentPage: 1,
         perPage: 2,
+        kelas: '{{ $kelas }}',
+        surah: '{{ $section['surah'] }}',
         searchQuery: '',
         originalData: {{ json_encode($section['data']) }},
         get totalPages() {
@@ -17,7 +19,6 @@
         filteredData() {
           return this.originalData.filter(item => {
             const query = this.searchQuery.toLowerCase();
-            console.log(item, query);
             return (
               String(item.student_name)?.toLowerCase().includes(query) ||
               String(item.from)?.toLowerCase().includes(query) ||
@@ -103,12 +104,15 @@
                       <td class="px-6 py-4">
                         <div class="flex items-center space-x-2 gap-2">
                           @if ($onEdit)
-                          <button @click="$wire.call('edit', row.id)" class="p-2" title="Edit">
+                          <a
+                            class="p-2"
+                            title="Edit"
+                            :href="`/teacher/memorizes/${row.id}/edit/${kelas}/${surah}`">
                             <x-heroicon-o-pencil class="w-4 h-4 text-amber-200" />
-                          </button>
+                          </a>
                           @endif
                           @if ($onDelete)
-                          <button @click="$wire.call('delete', row.id)" class="p-2" title="Delete">
+                          <button @click="$wire.call('delete', row.id)" wire:click="delete({{ $item->id }})" class="p-2" title="Delete">
                             <x-heroicon-o-trash class="w-4 h-4 text-red-400 " />
                           </button>
                           @endif
