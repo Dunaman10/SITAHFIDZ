@@ -9,6 +9,8 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
+use Filament\Panel\Concerns\HasBrandLogo;
+use Filament\Panel\Concerns\HasDarkMode;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
@@ -18,14 +20,21 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Facades\Filament;
+use function PHPUnit\Framework\assertSame;
+
 
 class AdminPanelProvider extends PanelProvider
 {
   public function panel(Panel $panel): Panel
   {
     return $panel
-      ->brandName('Darutafsir')
+      // ->darkMode()
       ->default()
+      ->brandName('Darutafsir')
+      // ->brandLogo(asset('img/logo-darutafsir.png'))
+      // ->brandLogoHeight('40px')
+      ->favicon(asset('img/logo-darutafsir.png'))
       ->id('admin')
       ->path('admin')
       ->login()
@@ -42,6 +51,7 @@ class AdminPanelProvider extends PanelProvider
         Widgets\AccountWidget::class,
         Widgets\FilamentInfoWidget::class,
       ])
+
       ->middleware([
         EncryptCookies::class,
         AddQueuedCookiesToResponse::class,

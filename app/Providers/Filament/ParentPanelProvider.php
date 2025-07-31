@@ -25,6 +25,7 @@ class ParentPanelProvider extends PanelProvider
   {
     return $panel
       ->brandName('Darutafsir')
+      ->favicon(asset('img/logo-darutafsir.png'))
       ->id('parent')
       ->path('parent')
       ->login()

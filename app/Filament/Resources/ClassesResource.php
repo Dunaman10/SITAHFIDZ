@@ -29,7 +29,7 @@ class ClassesResource extends Resource
   {
     return $form
       ->schema([
-        TextInput::make('class_name')->required()
+        TextInput::make('class_name')->required()->label('Kelas')
       ]);
   }
 
@@ -37,7 +37,7 @@ class ClassesResource extends Resource
   {
     return $table
       ->columns([
-        TextColumn::make('class_name')->searchable()
+        TextColumn::make('class_name')->searchable()->label('Kelas')
       ])
       ->filters([
         //

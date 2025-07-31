@@ -8,5 +8,10 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateUser extends CreateRecord
 {
-    protected static string $resource = UserResource::class;
+  protected static string $resource = UserResource::class;
+
+  public function getTitle(): string
+  {
+    return 'Buat User Baru'; // Gunakan metode ini untuk mengatur heading
+  }
 }

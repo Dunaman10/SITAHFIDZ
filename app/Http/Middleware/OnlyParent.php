@@ -15,9 +15,9 @@ class OnlyParent
    */
   public function handle(Request $request, Closure $next): Response
   {
-    // if (auth()->user() && auth()->user()->id !== 2) {
-    //   abort(403, 'Unauthorized');
-    // }
+    if (auth()->user() && auth()->user()->role_id !== 3) {
+      abort(403, 'Unauthorized');
+    }
     return $next($request);
   }
 }

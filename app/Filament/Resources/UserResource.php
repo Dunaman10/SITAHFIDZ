@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\UserResource\Widgets\UserOverview;
+use App\Filament\Resources\UserResource\Widgets\UsersOverview;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -13,13 +15,14 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use PhpParser\Node\Stmt\Static_;
 
 class UserResource extends Resource
 {
   protected static ?string $model = User::class;
-
   protected static ?string $navigationIcon = 'heroicon-o-users';
   protected static ?string $navigationLabel = 'Data Pengguna';
   protected static ?string $pluralModelLabel = 'Data Pengguna';
@@ -36,7 +39,7 @@ class UserResource extends Resource
     return $form
       ->schema([
         TextInput::make('name')->required(),
-        TextInput::make('email')->required(),
+        TextInput::make('email')->required()->email()->unique(ignoreRecord: true),
         TextInput::make('password')->required()->password()->revealable(),
         Select::make('role_id')->required()
           ->relationship('role', 'role_name')
@@ -81,6 +84,13 @@ class UserResource extends Resource
       'index' => Pages\ListUsers::route('/'),
       'create' => Pages\CreateUser::route('/create'),
       'edit' => Pages\EditUser::route('/{record}/edit'),
+    ];
+  }
+
+  public static function getWidgets(): array
+  {
+    return [
+      UserOverview::class
     ];
   }
 }

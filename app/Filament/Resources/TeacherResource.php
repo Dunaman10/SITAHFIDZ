@@ -4,8 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TeacherResource\Pages;
 use App\Filament\Resources\TeacherResource\RelationManagers;
+use App\Filament\Resources\TeacherResource\Widgets\TeacherOverview;
 use App\Models\Teacher;
+use App\Models\User;
+use Dom\Text;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -27,14 +33,23 @@ class TeacherResource extends Resource
   public static function getEloquentQuery(): Builder
   {
     return parent::getEloquentQuery()
-      ->with(['user']);
+      ->with(['user'])
+      ->whereHas('user', function ($query) {
+        $query->where('role_id', 2);
+      });
   }
 
   public static function form(Form $form): Form
   {
     return $form
       ->schema([
-        TextInput::make('name')->required()
+        Select::make('id_users')
+          ->label('Nama')
+          ->options(
+            User::where('role_id', 2)->whereNotIn('id', Teacher::pluck('id_users'))->pluck('name', 'id')
+          )
+          ->required()
+          ->searchable()
       ]);
   }
 
@@ -42,14 +57,13 @@ class TeacherResource extends Resource
   {
     return $table
       ->columns([
-        TextColumn::make('user.name')->label('Nama Guru')->searchable(),
+        TextColumn::make('user.name')->label('Nama Guru')->searchable()->sortable(),
       ])
       ->filters([
         //
       ])
       ->actions([
         Tables\Actions\EditAction::make(),
-        Tables\Actions\ViewAction::make(),
         Tables\Actions\DeleteAction::make(),
       ])
       ->bulkActions([
@@ -72,6 +86,13 @@ class TeacherResource extends Resource
       'index' => Pages\ListTeachers::route('/'),
       'create' => Pages\CreateTeacher::route('/create'),
       'edit' => Pages\EditTeacher::route('/{record}/edit'),
+    ];
+  }
+
+  public static function getWidgets(): array
+  {
+    return [
+      TeacherOverview::class
     ];
   }
 }

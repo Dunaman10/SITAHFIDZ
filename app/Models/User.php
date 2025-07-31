@@ -24,9 +24,15 @@ class User extends Authenticatable
     'role_id'
   ];
 
+
   public function role()
   {
     return $this->belongsTo(\App\Models\Role::class, 'role_id');
+  }
+
+  public function teacher()
+  {
+    return $this->hasOne(Teacher::class(), 'id_users');
   }
 
   /**

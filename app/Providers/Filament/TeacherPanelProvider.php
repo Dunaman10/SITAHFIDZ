@@ -25,6 +25,7 @@ class TeacherPanelProvider extends PanelProvider
   {
     return $panel
       ->brandName('Darutafsir')
+      ->favicon(asset('img/logo-darutafsir.png'))
       ->id('teacher')
       ->path('teacher')
       ->login()

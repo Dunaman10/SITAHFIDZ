@@ -9,6 +9,10 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateClasses extends CreateRecord
 {
   protected static string $resource = ClassesResource::class;
+  public function getTitle(): string
+  {
+    return 'Tambah Kelas Baru';
+  }
 
   protected function getRedirectUrl(): string
   {
