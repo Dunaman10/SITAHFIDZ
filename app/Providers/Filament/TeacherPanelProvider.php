@@ -29,6 +29,7 @@ class TeacherPanelProvider extends PanelProvider
   public function panel(Panel $panel): Panel
   {
     return $panel
+      ->darkMode(false)
       ->brandName('Darutafsir')
       ->id('teacher')
       ->path('teacher')
@@ -48,7 +49,7 @@ class TeacherPanelProvider extends PanelProvider
         // Widgets\FilamentInfoWidget::class,
       ])
 
-        ->plugins([])
+      ->plugins([])
 
       ->middleware([
         EncryptCookies::class,
@@ -66,20 +67,23 @@ class TeacherPanelProvider extends PanelProvider
         Authenticate::class,
       ])
 
-       ->renderHook (PanelsRenderHook::SIDEBAR_NAV_END, fn()=> view('sidebar-dropdown',['classes'=> Classes::all()
-      ])
-    )
       ->renderHook(
-    PanelsRenderHook::TOPBAR_END,
-    function () {
-        // Mendapatkan objek pengguna yang sedang login
-        $user = Auth::user();
-        // Memeriksa apakah ada pengguna yang login dan memiliki nama
-        $userName = $user ? $user->name : 'Guest'; // Ganti dengan nama default jika tidak login/tidak ada nama
-        return Blade::render('<div style=" padding: 5px;">Halo, {{ $userName }}</div>', [
+        PanelsRenderHook::SIDEBAR_NAV_END,
+        fn() => view('sidebar-dropdown', [
+          'classes' => Classes::all()
+        ])
+      )
+      ->renderHook(
+        PanelsRenderHook::TOPBAR_END,
+        function () {
+          // Mendapatkan objek pengguna yang sedang login
+          $user = Auth::user();
+          // Memeriksa apakah ada pengguna yang login dan memiliki nama
+          $userName = $user ? $user->name : 'Guest'; // Ganti dengan nama default jika tidak login/tidak ada nama
+          return Blade::render('<div style=" padding: 5px;">Halo, {{ $userName }}</div>', [
             'userName' => $userName, // Melewatkan nama pengguna ke template Blade
-        ]);
-    }
-);
+          ]);
+        }
+      );
   }
 }

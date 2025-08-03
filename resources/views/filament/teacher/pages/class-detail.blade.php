@@ -1,47 +1,170 @@
-{{-- resources/views/filament/teacher/pages/class-detail.blade.php --}}
-
-{{-- PASTIKAN BARIS @vite('resources/css/app.css') SUDAH DIHAPUS DARI SINI --}}
-
+@vite('resources/css/app.css')
 <x-filament-panels::page>
+  <div class="w-full">
+    @foreach ($accordionData as $section)
+    <div
+      x-data="{
+        open: false,
+        currentPage: 1,
+        perPage: 2,
+        kelas: '{{ $classId }}',
+        surah: '{{ $section['surah'] }}',
+        searchQuery: '',
+        originalData: {{ json_encode($section['data']) }},
+        get totalPages() {
+          return Math.ceil(this.filteredData().length / this.perPage);
+        },
+        filteredData() {
+          return this.originalData.filter(item => {
+            const query = this.searchQuery.toLowerCase();
+            return (
+              String(item.student_name)?.toLowerCase().includes(query) ||
+              String(item.from)?.toLowerCase().includes(query) ||
+              String(item.to)?.toLowerCase().includes(query)
+            );
+          });
+        },
+        paginatedData() {
+          const start = (this.currentPage - 1) * this.perPage;
+          return this.filteredData().slice(start, start + this.perPage);
+        },
+        changePerPage(val) {
+          this.perPage = val;
+          this.currentPage = 1;
+        }
+      }"
+      class="overflow-hidden mb-4">
+      <div class="bg-white">
+        <button
+          @click="open = !open"
+          type="button"
+          class="flex items-center justify-between text-gray-900 border border-gray-300 w-full py-5 px-6 rounded-xl text-left font-bold md:text-xl hover:bg-gray-100">
+          <span>{{ $section['surah'] }}</span>
+          <div class="flex items-center gap-8">
+            <x-heroicon-o-chevron-down class="w-5 aspect-square transition-transform duration-300 text-gray-600" x-bind:class="{ 'rotate-180': open }" />
+          </div>
+        </button>
+      </div>
 
-    {{-- Input Pencarian Surah --}}
-    <div class="mt-6">
-        <label for="search-surah" class="sr-only">Cari Surah...</label>
-        <div class="relative rounded-md shadow-sm">
-            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-">
-                {{-- <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 3a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM21 21l-4.35-4.35" />
-                </svg> --}}
-              
-            </div>
-            <input type="text" id="search-surah" name="search-surah"
-                   class="block w-full rounded-lg border-0 py-1.5
-                          pl-11 pr-3 {{-- Sesuaikan pl- ini agar ikon dan teks tidak tumpang tindih. pl-11 biasanya cukup. --}}
-                          text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6 dark:bg-gray-700 dark:text-white dark:ring-gray-600 dark:placeholder:text-gray-400 dark:focus:ring-primary-500"
-                   placeholder="Cari Surah..."
-                   wire:model.live="search" {{-- Ini yang penting untuk Livewire --}}
-            >
+      <div class="wrapper transition-all mt-5 duration-200 ease-in-out max-h-0 text-gray-800 rounded-xl bg-white"
+        x-bind:class="{ 'max-h-[1000px] border border-gray-300': open }">
+        {{-- Header --}}
+        <div class="mb-4 flex p-6 justify-between items-center">
+          <div class="relative w-max sm:w-64 bg-gray-100 flex">
+            <x-heroicon-o-magnifying-glass class="w-5 aspect-square absolute right-3 top-[70%] transform -translate-y-1/2 text-gray-500" />
+            <input
+              type="text"
+              placeholder="Search..."
+              maxlength="30"
+              class="w-full pl-10 pr-4 bg-gray-100 py-3 border border-gray-300 rounded-lg text-sm text-gray-900"
+              x-model="searchQuery"
+              x-on:input="currentPage = 1" />
+          </div>
+          <div class="h-full">
+            <a class="h-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg flex hover:bg-gray-100">
+              <x-heroicon-o-plus class="w-5 aspect-square m-auto text-gray-700" />
+            </a>
+          </div>
         </div>
-    </div>
 
-    {{-- Bagian Daftar Surah --}}
-    <div class="mt-8 space-y-4">
-        @forelse($surahs as $surah) {{-- Menggunakan variabel $surahs --}}
-            <div class="fi-list-item flex items-center justify-between rounded-lg bg-white p-4 shadow-sm ring-1 ring-gray-950/5 dark:bg-white/5 dark:ring-white/10">
-                <span class="text-gray-950 dark:text-white">{{ $surah->id }}. {{ $surah->surah_name }}</span>
+        {{-- Table --}}
+        <div class="space-y-2 font-medium rounded-lg">
+          <div class="block shadow-sm overflow-hidden mb-0">
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-100 text-gray-800">
+                  <tr>
+                    <th class="text-left px-6 py-4 text-sm font-semibold">#</th>
+                    @foreach ($columns as $col)
+                    <th class="text-left px-6 py-4 text-sm font-semibold {{ $col['className'] ?? '' }}">
+                      {{ $col['header'] }}
+                    </th>
+                    @endforeach
+                    @if ($onEdit || $onDelete)
+                    <th class="text-left px-6 py-4 text-sm font-semibold">Aksi</th>
+                    @endif
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="(row, index) in paginatedData()" :key="row.id">
+                    <tr class="transition-colors hover:bg-gray-50">
+                      <td class="px-6 py-4 w-max">
+                        <span class="text-sm text-gray-900" x-text="(currentPage - 1) * perPage + index + 1"></span>
+                      </td>
+                      @foreach ($columns as $col)
+                      @if ($col['key'] === 'complete')
+                      <td class="px-6 py-4" x-text="row['{{ $col['key'] }}'] === 1 ? 'Complete' : 'Incomplete'"></td>
+                      @else
+                      <td class="px-6 py-4" x-text="row['{{ $col['key'] }}'] ?? '-'"></td>
+                      @endif
+                      @endforeach
+                      @if ($onEdit || $onDelete)
+                      <td class="px-6 py-4">
+                        <div class="flex items-center space-x-2 gap-2">
+                          @if ($onEdit)
+                          <a
+                            class="p-2"
+                            title="Edit"
+                            :href="`/teacher/memorizes/${row.id}/edit/${kelas}/${surah}`">
+                            <x-heroicon-o-pencil class="w-4 h-4 text-yellow-500" />
+                          </a>
+                          @endif
+                          @if ($onDelete)
+                          <button class="p-2" title="Delete">
+                            <x-heroicon-o-trash class="w-4 h-4 text-red-500" />
+                          </button>
+                          @endif
+                        </div>
+                      </td>
+                      @endif
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
 
-
-                {{-- Tombol dropdown untuk detail surah atau aksi --}}
-                <button type="button" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
-                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                    </svg>
-                    
-                </button>
+              <div x-show="paginatedData().length === 0" class="text-center py-12">
+                <p class="text-gray-500">Tidak ada data ditemukan</p>
+              </div>
             </div>
-        @empty
-            <p class="text-gray-500 dark:text-gray-400">Tidak ada surah ditemukan.</p>
-        @endforelse
+          </div>
+        </div>
+
+        {{-- Pagination Footer --}}
+        <div class="flex p-6 justify-between items-center border-t border-gray-300">
+          {{-- Previous --}}
+          <button
+            class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg flex hover:bg-gray-100"
+            :disabled="currentPage === 1"
+            @click="currentPage--"
+            :class="{ 'opacity-50 cursor-not-allowed': currentPage === 1 }">
+            Previous
+          </button>
+
+          {{-- Per Page Dropdown --}}
+          <div>
+            <select
+              class="bg-white text-gray-800 border border-gray-300 rounded-lg px-4 py-2"
+              @change="changePerPage(parseInt($event.target.value))">
+              <option value="2" :selected="perPage === 2">2</option>
+              <option value="5" :selected="perPage === 5">5</option>
+              <option value="10" :selected="perPage === 10">10</option>
+              <option value="20" :selected="perPage === 20">20</option>
+              <option value="50" :selected="perPage === 50">50</option>
+            </select>
+          </div>
+
+          {{-- Next --}}
+          <button
+            class="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg flex hover:bg-gray-100"
+            :disabled="currentPage === totalPages"
+            @click="currentPage++"
+            :class="{ 'opacity-50 cursor-not-allowed': currentPage === totalPages }">
+            Next
+          </button>
+        </div>
+      </div>
     </div>
+    @endforeach
+  </div>
 
 </x-filament-panels::page>
