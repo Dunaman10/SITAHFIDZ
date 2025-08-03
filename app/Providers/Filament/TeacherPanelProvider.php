@@ -28,7 +28,7 @@ class TeacherPanelProvider extends PanelProvider
       ->favicon(asset('img/logo-darutafsir.png'))
       ->id('teacher')
       ->path('teacher')
-      ->login()
+      // ->login()
       ->colors([
         'primary' => Color::Cyan,
       ])

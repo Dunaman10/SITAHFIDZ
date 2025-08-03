@@ -23,7 +23,6 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Facades\Filament;
 use function PHPUnit\Framework\assertSame;
 
-
 class AdminPanelProvider extends PanelProvider
 {
   public function panel(Panel $panel): Panel
@@ -37,7 +36,7 @@ class AdminPanelProvider extends PanelProvider
       ->favicon(asset('img/logo-darutafsir.png'))
       ->id('admin')
       ->path('admin')
-      ->login()
+      // ->login()
       ->colors([
         'primary' => Color::Amber,
       ])
