@@ -30,6 +30,16 @@ class TeacherResource extends Resource
   protected static ?string $pluralModelLabel = 'Data Guru';
   protected static ?int $navigationSort = 1;
 
+  public static function shouldRegisterNavigation(): bool
+  {
+    return false;
+  }
+
+  public static function getNavigationItems(): array
+  {
+    return [];
+  }
+
   public static function getEloquentQuery(): Builder
   {
     return parent::getEloquentQuery()
