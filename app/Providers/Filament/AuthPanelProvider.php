@@ -27,6 +27,7 @@ class AuthPanelProvider extends PanelProvider
       ->id('auth')
       ->path('auth')
       ->brandName('Darutafsir')
+      ->favicon(asset('img/logo-darutafsir.png'))
       ->login()
       ->colors([
         'primary' => Color::Amber,
