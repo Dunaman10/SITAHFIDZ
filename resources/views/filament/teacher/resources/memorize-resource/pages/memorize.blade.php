@@ -111,11 +111,6 @@
                             <x-heroicon-o-pencil class="w-4 h-4 text-amber-200" />
                           </a>
                           @endif
-                          @if ($onDelete)
-                          <button @click="$wire.call('delete', row.id)" wire:click="delete({{ $item->id }})" class="p-2" title="Delete">
-                            <x-heroicon-o-trash class="w-4 h-4 text-red-400 " />
-                          </button>
-                          @endif
                         </div>
                       </td>
                       @endif

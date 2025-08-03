@@ -2,6 +2,7 @@
 
 namespace App\Filament\Teacher\Resources\MemorizeResource\Pages;
 
+use App\Filament\Teacher\Pages\ClassDetail;
 use App\Filament\Teacher\Resources\MemorizeResource;
 use App\Models\Student;
 use Filament\Actions;
@@ -23,6 +24,11 @@ class EditMemorize extends EditRecord
   public ?int $id = null;
   public ?string $kelas = null;
   public ?string $surah = null;
+
+  public function getBreadcrumbs(): array
+  {
+    return [];
+  }
 
   public function mount($record = null): void
   {
@@ -121,16 +127,14 @@ class EditMemorize extends EditRecord
 
   protected function getRedirectUrl(): string
   {
-    return route('filament.teacher.resources.memorizes.data', ['kelas' => $this->kelas]);
+    return ClassDetail::getUrl(['classId' => $this->kelas]);
   }
 
   protected function getHeaderActions(): array
   {
     return [
       Actions\DeleteAction::make()
-        ->after(function () {
-          return redirect(route('filament.teacher.resources.memorizes.data', ['kelas' => $this->kelas]));
-        }),
+        ->successRedirectUrl(fn() => ClassDetail::getUrl(['classId' => $this->kelas])),
     ];
   }
 }

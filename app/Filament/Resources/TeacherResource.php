@@ -23,6 +23,16 @@ class TeacherResource extends Resource
   protected static ?string $pluralModelLabel = 'Data Guru';
   protected static ?int $navigationSort = 1;
 
+  public static function shouldRegisterNavigation(): bool
+  {
+    return false;
+  }
+
+  public static function getNavigationItems(): array
+  {
+    return [];
+  }
+
   public static function getEloquentQuery(): Builder
   {
     return parent::getEloquentQuery()
@@ -32,18 +42,13 @@ class TeacherResource extends Resource
   public static function form(Form $form): Form
   {
     return $form
-      ->schema([
-        
-      ]);
+      ->schema([]);
   }
 
   public static function table(Table $table): Table
   {
-    return $table 
-      ->columns([
-        
-                    
-      ])
+    return $table
+      ->columns([])
       ->filters([
         //
       ])
@@ -55,8 +60,6 @@ class TeacherResource extends Resource
           Tables\Actions\DeleteBulkAction::make(),
         ]),
       ]);
-
-      
   }
 
   public static function getRelations(): array

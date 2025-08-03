@@ -133,7 +133,7 @@ class ClassDetail extends Page
   public function getTitle(): string
   {
     // Gunakan $this->currentClass yang sudah dimuat di mount()
-    return $this->currentClass ? 'Daftar Surah classId ' . $this->currentClass->class_name : 'Pilih classId';
+    return $this->currentClass ? 'Daftar Surah Kelas ' . $this->currentClass->class_name : 'Pilih classId';
   }
 
   public static function getRoute(string $page): string

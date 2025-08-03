@@ -24,6 +24,17 @@ class MemorizeResource extends Resource
   protected static ?string $model = Memorize::class;
 
   protected static ?string $navigationIcon = 'heroicon-o-book-open';
+  protected static ?string $navigationLabel = 'Hafalan';
+
+  public static function shouldRegisterNavigation(): bool
+  {
+    return false;
+  }
+
+  public static function getNavigationItems(): array
+  {
+    return [];
+  }
 
   public $kelas;
   public $surah;

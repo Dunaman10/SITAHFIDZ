@@ -2,6 +2,7 @@
 
 namespace App\Filament\Teacher\Resources\MemorizeResource\Pages;
 
+use App\Filament\Teacher\Pages\ClassDetail;
 use App\Filament\Teacher\Resources\MemorizeResource;
 use App\Models\Student;
 use Filament\Actions;
@@ -25,6 +26,11 @@ class CreateMemorize extends CreateRecord
 
   public ?string $kelas = null;
   public ?string $surah = null;
+
+  public function getBreadcrumbs(): array
+  {
+    return [];
+  }
 
   public function mount($record = null): void
   {
@@ -122,7 +128,7 @@ class CreateMemorize extends CreateRecord
   }
   protected function getRedirectUrl(): string
   {
-    return route('filament.teacher.resources.memorizes.data', ['kelas' => $this->kelas]);
+    return ClassDetail::getUrl(['classId' => $this->kelas]);
   }
   public function delete($id): void
   {
@@ -133,6 +139,6 @@ class CreateMemorize extends CreateRecord
     // Redirect atau emit event ke parent
     $this->dispatch('deleted');
     session()->flash('success', 'Berhasil dihapus!');
-    redirect()->route('filament.teacher.resources.memorizes.data', ['kelas' => $this->kelas]);
+    redirect()->back();
   }
 }

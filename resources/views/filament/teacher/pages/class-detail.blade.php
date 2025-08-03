@@ -61,7 +61,7 @@
               x-on:input="currentPage = 1" />
           </div>
           <div class="h-full">
-            <a class="h-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg flex hover:bg-gray-100">
+            <a href="{{ route('filament.teacher.resources.memorizes.create', ['kelas' => $classId, 'surah' => $section['surah']]) }}" class="h-full px-4 py-2 border border-gray-300 text-gray-700 rounded-lg flex hover:bg-gray-100">
               <x-heroicon-o-plus class="w-5 aspect-square m-auto text-gray-700" />
             </a>
           </div>
@@ -108,11 +108,6 @@
                             :href="`/teacher/memorizes/${row.id}/edit/${kelas}/${surah}`">
                             <x-heroicon-o-pencil class="w-4 h-4 text-yellow-500" />
                           </a>
-                          @endif
-                          @if ($onDelete)
-                          <button class="p-2" title="Delete">
-                            <x-heroicon-o-trash class="w-4 h-4 text-red-500" />
-                          </button>
                           @endif
                         </div>
                       </td>
