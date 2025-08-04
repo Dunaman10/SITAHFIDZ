@@ -30,26 +30,28 @@ class TeacherResource extends Resource
   protected static ?string $pluralModelLabel = 'Data Guru';
   protected static ?int $navigationSort = 1;
 
-  public static function getEloquentQuery(): Builder
-  {
-    return parent::getEloquentQuery()
-      ->with(['user'])
-      ->whereHas('user', function ($query) {
-        $query->where('role_id', 2);
-      });
-  }
+  // public static function getEloquentQuery(): Builder
+  // {
+  //   return parent::getEloquentQuery()
+  //     ->with(['teacher.user']);
+  // }
 
   public static function form(Form $form): Form
   {
     return $form
       ->schema([
-        Select::make('id_users')
-          ->label('Nama')
-          ->options(
-            User::where('role_id', 2)->whereNotIn('id', Teacher::pluck('id_users'))->pluck('name', 'id')
-          )
+        TextInput::make('name')
           ->required()
-          ->searchable()
+          ->placeholder('masukkan nama guru'),
+        TextInput::make('email')
+          ->required()
+          ->placeholder('masukkan email guru')
+          ->email(),
+        TextInput::make('password')
+          ->required()
+          ->placeholder('masukkan password guru')
+          ->password()
+          ->revealable(),
       ]);
   }
 
@@ -63,7 +65,8 @@ class TeacherResource extends Resource
         //
       ])
       ->actions([
-        Tables\Actions\EditAction::make(),
+        // Tables\Actions\EditAction::make(),
+        // Tables\Actions\ViewAction::make(),
         Tables\Actions\DeleteAction::make(),
       ])
       ->bulkActions([

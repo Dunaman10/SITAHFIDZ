@@ -41,9 +41,21 @@ class UserResource extends Resource
         TextInput::make('name')->required(),
         TextInput::make('email')->required()->email()->unique(ignoreRecord: true),
         TextInput::make('password')->required()->password()->revealable(),
-        Select::make('role_id')->required()
-          ->relationship('role', 'role_name')
+        Select::make('role_id')
+          ->label('Role')
+          ->options(
+            \App\Models\Role::whereIn('role_name', ['admin', 'orang_tua'])
+              ->get()
+              ->pluck(function ($role) {
+                return match ($role->role_name) {
+                  'admin' => 'Admin',
+                  'orang_tua' => 'Orang Tua',
+                  default => ucfirst($role->role_name),
+                };
+              }, 'id')
+          )
           ->required()
+
       ]);
   }
 

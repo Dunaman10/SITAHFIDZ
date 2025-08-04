@@ -14,7 +14,10 @@ class ListClasses extends ListRecords
   protected function getHeaderActions(): array
   {
     return [
-      Actions\CreateAction::make()->label('Tambah Kelas'),
+      Actions\CreateAction::make('create')
+        ->label('Tambah Kelas')
+        ->outlined()
+        ->color('gray'),
     ];
   }
 }

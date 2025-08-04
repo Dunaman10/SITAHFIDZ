@@ -51,7 +51,7 @@ class StudentResource extends Resource
           ->relationship('user', 'name')
           ->required()
           ->placeholder('Pilih orang tua')
-          ->options(User::where('role_id', '2')->pluck('name', 'id')),
+          ->options(User::where('role_id', '3')->pluck('name', 'id')),
 
 
         Select::make('class_id')

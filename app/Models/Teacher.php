@@ -26,4 +26,11 @@ class Teacher extends Model
   {
     return $this->hasMany(Memorize::class, 'id_teacher');
   }
+
+  protected static function booted()
+  {
+    static::deleted(function ($teacher) {
+      $teacher->user()->delete();
+    });
+  }
 }

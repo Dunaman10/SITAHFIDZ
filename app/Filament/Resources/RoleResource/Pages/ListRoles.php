@@ -13,7 +13,10 @@ class ListRoles extends ListRecords
   protected function getHeaderActions(): array
   {
     return [
-      Actions\CreateAction::make()->label('Tambah Role'),
+      Actions\CreateAction::make('create')
+        ->label('Tambah Role')
+        ->outlined()
+        ->color('gray'),
     ];
   }
 }

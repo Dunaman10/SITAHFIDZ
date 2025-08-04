@@ -1,31 +1,27 @@
 <?php
 
-namespace App\Filament\Resources\RoleResource\Pages;
+namespace App\Filament\Resources\ClassTeacherResource\Pages;
 
-use App\Filament\Resources\RoleResource;
+use App\Filament\Resources\ClassTeacherResource;
 use Filament\Actions;
-use Filament\Resources\Pages\CreateRecord;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\CreateRecord;
 
-class CreateRole extends CreateRecord
+class CreateClassTeacher extends CreateRecord
 {
-  protected static string $resource = RoleResource::class;
-  public function getTitle(): string
-  {
-    return 'Tambah Role Baru';
-  }
+  protected static string $resource = ClassTeacherResource::class;
 
   protected function getRedirectUrl(): string
   {
-    return $this->getResource()::getUrl('index');
+    return ClassTeacherResource::getUrl('index'); // Redirect ke halaman daftar student
   }
 
   protected function afterCreate(): void
   {
     Notification::make()
       ->title('Berhasil')
-      ->body('Berhasil menambahkan role baru')
+      ->body('Berhasil menambahkan guru dengan kelasnya')
       ->success()
       ->send();
   }

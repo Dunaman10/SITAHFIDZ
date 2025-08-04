@@ -14,8 +14,10 @@ class ListTeachers extends ListRecords
   protected function getHeaderActions(): array
   {
     return [
-      Actions\CreateAction::make()
-        ->label('Tambah Guru'),
+      Actions\CreateAction::make('create')
+        ->label('Tambah Guru')
+        ->outlined()
+        ->color('gray'),
     ];
   }
 

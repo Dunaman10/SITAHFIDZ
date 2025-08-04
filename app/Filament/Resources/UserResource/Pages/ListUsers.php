@@ -14,7 +14,10 @@ class ListUsers extends ListRecords
   protected function getHeaderActions(): array
   {
     return [
-      Actions\CreateAction::make()->label('Tambah Pengguna'),
+      Actions\CreateAction::make('create')
+        ->label('Tambah Pengguna')
+        ->outlined()
+        ->color('gray'),
     ];
   }
 

@@ -16,7 +16,7 @@ class Memorize extends Page
     $this->isOpen = $this->isOpen === $id ? "" : $id;
   }
 
-  protected static string $view = 'filament.teacher.resources.memorize-resource.pages.memorize';
+  protected static string $view = 'filament.teacher.resources.memorize-resource.pages.Memorize';
   protected static ?string $navigationIcon = 'heroicon-o-book-open';
   public string $kelas;
 
