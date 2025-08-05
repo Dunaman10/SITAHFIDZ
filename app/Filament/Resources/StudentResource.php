@@ -59,9 +59,6 @@ class StudentResource extends Resource
           ->placeholder('Pilih kelas')
           ->options(Classes::all()->pluck('class_name', 'id'))
           ->required()
-
-
-
       ]);
   }
 

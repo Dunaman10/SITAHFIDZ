@@ -11,7 +11,7 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::create('targets', function (Blueprint $table) {
+    Schema::create('target', function (Blueprint $table) {
       $table->id();
       $table->integer('count_target');
       $table->foreignId('id_class')->constrained('classes');
@@ -25,6 +25,6 @@ return new class extends Migration
    */
   public function down(): void
   {
-    Schema::dropIfExists('targets');
+    Schema::dropIfExists('target');
   }
 };

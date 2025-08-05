@@ -21,16 +21,4 @@ class target extends Model
   {
     return $this->belongsTo(Classes::class, 'id_class');
   }
-
-  public function students()
-  {
-    return $this->hasManyThrough(
-      Student::class,
-      Classes::class,
-      'id',
-      'class_id',
-      'id_class',
-      'id'
-    );
-  }
 }
