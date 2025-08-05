@@ -11,10 +11,11 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::create('surah', function (Blueprint $table) {
+    Schema::create('targets', function (Blueprint $table) {
       $table->id();
-      $table->text('surah_name');
-      $table->integer('ayat');
+      $table->integer('count_target');
+      $table->foreignId('id_class')->constrained('classes');
+      $table->integer('date_target');
       $table->timestamps();
     });
   }
@@ -24,6 +25,6 @@ return new class extends Migration
    */
   public function down(): void
   {
-    Schema::dropIfExists('surah');
+    Schema::dropIfExists('targets');
   }
 };
