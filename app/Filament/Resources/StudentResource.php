@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
+use Carbon\Carbon;
 
+use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
 use App\Models\Classes;
@@ -15,7 +16,11 @@ use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\ImageEntry;
 use App\Filament\Resources\StudentResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -58,8 +63,20 @@ class StudentResource extends Resource
           ->label('Kelas')
           ->placeholder('Pilih kelas')
           ->options(Classes::all()->pluck('class_name', 'id'))
-          ->required()
+          ->required(),
 
+      FileUpload::make('profile')
+        ->label('Profil')
+        ->image()
+        ->disk('public')
+        ->directory('profile')
+        ->visibility('public'),
+
+       DatePicker::make('tanggal_lahir')
+        ->label('Tanggal Lahir')
+        ->required()
+        ->placeholder('Pilih tanggal lahir')
+        ->default(now()),
 
 
       ]);
@@ -69,6 +86,13 @@ class StudentResource extends Resource
   {
     return $table
       ->columns([
+
+    ImageColumn::make('profile')
+  
+    ->label('Foto Profil')
+    ->disk('public') // Sesuaikan dengan disk tempat file disimpan
+    ->circular(), // opsional, buat foto jadi lingkaran  
+        
 
         Tables\Columns\TextColumn::make('student_name')
           ->label('Nama Santri')
@@ -87,6 +111,10 @@ class StudentResource extends Resource
           ->searchable()
           ->copyable()
           ->sortable('class.class_name'),
+
+          TextColumn::make('tanggal_lahir')
+          ->label('Tanggal Lahir')
+          ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
       ])
       ->filters([
         //

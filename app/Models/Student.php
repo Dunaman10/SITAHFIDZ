@@ -14,6 +14,8 @@ class Student extends Model
     'student_name',
     'parent',
     'class_id',
+    'profile',
+    'tanggal_lahir',
   ];
 
   public function user()
@@ -30,4 +32,10 @@ class Student extends Model
   {
     return $this->hasMany(Memorize::class, 'id_student');
   }
+
+  
+
+
+
+    
 }

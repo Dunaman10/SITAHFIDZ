@@ -16,6 +16,8 @@ return new class extends Migration
       $table->string('student_name');
       $table->foreignId('parent');
       $table->foreignId('class_id');
+      $table->string('profile');
+      $table->date('tanggal_lahir');
       $table->timestamps();
     });
   }
