@@ -28,9 +28,9 @@ class ParentPanelProvider extends PanelProvider
       ->favicon(asset('img/logo-darutafsir.png'))
       ->id('parent')
       ->path('parent')
-      // ->login()
+      ->login()
       ->colors([
-        'primary' => Color::Green,
+        'primary' => Color::hex('#E5077C'),
       ])
       ->discoverResources(in: app_path('Filament/Parent/Resources'), for: 'App\\Filament\\Parent\\Resources')
       ->discoverPages(in: app_path('Filament/Parent/Pages'), for: 'App\\Filament\\Parent\\Pages')

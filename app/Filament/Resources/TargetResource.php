@@ -23,7 +23,7 @@ class TargetResource extends Resource
 
   protected static ?string $navigationIcon = 'heroicon-o-arrow-trending-up';
   protected static ?string $label = "Manejemen Target";
-  protected static ?string $pluralModelLabel = 'Manejemen Taget';
+  protected static ?string $pluralModelLabel = 'Manejemen Target';
 
   public static function form(Form $form): Form
   {

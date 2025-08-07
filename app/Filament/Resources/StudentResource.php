@@ -65,18 +65,18 @@ class StudentResource extends Resource
           ->options(Classes::all()->pluck('class_name', 'id'))
           ->required(),
 
-      FileUpload::make('profile')
-        ->label('Profil')
-        ->image()
-        ->disk('public')
-        ->directory('profile')
-        ->visibility('public'),
+        FileUpload::make('profile')
+          ->label('Profil')
+          ->image()
+          ->disk('public')
+          ->directory('profile')
+          ->visibility('public'),
 
-       DatePicker::make('tanggal_lahir')
-        ->label('Tanggal Lahir')
-        ->required()
-        ->placeholder('Pilih tanggal lahir')
-        ->default(now()),
+        DatePicker::make('tanggal_lahir')
+          ->label('Tanggal Lahir')
+          ->required()
+          ->placeholder('Pilih tanggal lahir')
+          ->default(now()),
 
 
       ]);
@@ -87,12 +87,12 @@ class StudentResource extends Resource
     return $table
       ->columns([
 
-    ImageColumn::make('profile')
-  
-    ->label('Foto Profil')
-    ->disk('public') // Sesuaikan dengan disk tempat file disimpan
-    ->circular(), // opsional, buat foto jadi lingkaran  
-        
+        ImageColumn::make('profile')
+
+          ->label('Foto Profil')
+          ->disk('public') // Sesuaikan dengan disk tempat file disimpan
+          ->circular(), // opsional, buat foto jadi lingkaran
+
 
         Tables\Columns\TextColumn::make('student_name')
           ->label('Nama Santri')
@@ -112,9 +112,9 @@ class StudentResource extends Resource
           ->copyable()
           ->sortable('class.class_name'),
 
-          TextColumn::make('tanggal_lahir')
+        TextColumn::make('tanggal_lahir')
           ->label('Tanggal Lahir')
-          ->formatStateUsing(fn ($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+          ->formatStateUsing(fn($state) => Carbon::parse($state)->translatedFormat('d F Y')),
       ])
       ->filters([
         //
@@ -139,14 +139,6 @@ class StudentResource extends Resource
               ->success() // Tipe notifikasi sukses
               ->duration(5000) // Durasi tampil
           )
-
-
-
-
-
-
-
-
 
       ])
       ->bulkActions([
