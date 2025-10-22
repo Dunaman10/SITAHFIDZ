@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Parent\Widgets\ParentDashboard;
 use App\Http\Middleware\OnlyParent;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -39,8 +40,7 @@ class ParentPanelProvider extends PanelProvider
       ])
       ->discoverWidgets(in: app_path('Filament/Parent/Widgets'), for: 'App\\Filament\\Parent\\Widgets')
       ->widgets([
-        Widgets\AccountWidget::class,
-        Widgets\FilamentInfoWidget::class,
+        ParentDashboard::class,
       ])
       ->middleware([
         EncryptCookies::class,

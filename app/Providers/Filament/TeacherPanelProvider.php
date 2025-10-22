@@ -1,10 +1,10 @@
 <?php
 
+
 namespace App\Providers\Filament;
 
 use Filament\Pages;
 use Filament\Panel;
-use Filament\Widgets;
 use App\Models\Classes;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -31,6 +31,7 @@ class TeacherPanelProvider extends PanelProvider
     return $panel
       ->darkMode(false)
       ->brandName('Darutafsir')
+      ->favicon(asset('img/logo-darutafsir.png'))
       ->id('teacher')
       ->path('teacher')
       ->login()
@@ -69,9 +70,19 @@ class TeacherPanelProvider extends PanelProvider
 
       ->renderHook(
         PanelsRenderHook::SIDEBAR_NAV_END,
-        fn() => view('sidebar-dropdown', [
-          'classes' => Classes::all()
-        ])
+        function () {
+
+          $user = auth()->user();
+          $classes = collect();
+
+          if ($user && $user->teacher) {
+            $classes = $user->teacher->classes;
+          }
+
+          return view('sidebar-dropdown', [
+            'classes' => $classes,
+          ]);
+        }
       )
       ->renderHook(
         PanelsRenderHook::TOPBAR_END,

@@ -9,10 +9,10 @@
         open: false,
         currentPage: 1,
         perPage: 2,
-        kelas: '{{ $kelas }}',
-        surah: '{{ $section['surah'] }}',
+        kelas: @js($kelas),
+        surah: @js($section['surah']),
         searchQuery: '',
-        originalData: {{ json_encode($section['data']) }},
+        originalData: @js($section['data']),
         get totalPages() {
           return Math.ceil(this.filteredData().length / this.perPage);
         },

@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use Carbon\Carbon;
 
-use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
 use App\Models\Classes;
@@ -20,9 +19,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Infolists\Components\ImageEntry;
 use App\Filament\Resources\StudentResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class StudentResource extends Resource
 {
@@ -50,7 +47,6 @@ class StudentResource extends Resource
           ->columnSpanFull(),
 
         ///orangtua
-
         Select::make('parent')
           ->label('Orang Tua')
           ->relationship('user', 'name')
@@ -70,14 +66,14 @@ class StudentResource extends Resource
           ->image()
           ->disk('public')
           ->directory('profile')
-          ->visibility('public'),
+          ->visibility('public')
+          ->imageEditor(),
 
         DatePicker::make('tanggal_lahir')
           ->label('Tanggal Lahir')
           ->required()
           ->placeholder('Pilih tanggal lahir')
           ->default(now()),
-
 
       ]);
   }
@@ -88,25 +84,23 @@ class StudentResource extends Resource
       ->columns([
 
         ImageColumn::make('profile')
-
           ->label('Foto Profil')
           ->disk('public') // Sesuaikan dengan disk tempat file disimpan
-          ->circular(), // opsional, buat foto jadi lingkaran
+          ->circular(),
 
-
-        Tables\Columns\TextColumn::make('student_name')
+        TextColumn::make('student_name')
           ->label('Nama Santri')
           ->searchable()
           ->copyable()
           ->sortable('student_name'),
 
-        Tables\Columns\TextColumn::make('user.name')
+        TextColumn::make('user.name')
           ->label('Nama Orang Tua')
           ->searchable()
           ->copyable()
           ->sortable('user.name'),
 
-        Tables\Columns\TextColumn::make('class.class_name')
+        TextColumn::make('class.class_name')
           ->label('Kelas')
           ->searchable()
           ->copyable()
@@ -167,13 +161,13 @@ class StudentResource extends Resource
     ];
   }
 
-  protected function getDeletedNotification(): ?\Filament\Notifications\Notification
+  protected function getDeletedNotification(): ?Notification
   {
     return null;
   }
 
   // Pastikan ini ada dan mengembalikan NULL (untuk bulk delete)
-  protected function getBulkDeletedNotification(): ?\Filament\Notifications\Notification
+  protected function getBulkDeletedNotification(): ?Notification
   {
     return null;
   }

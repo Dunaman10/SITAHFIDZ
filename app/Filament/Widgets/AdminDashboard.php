@@ -11,26 +11,23 @@ use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 
 class adminDashboard extends BaseWidget
 {
-    protected function getStats(): array
-   
-    {
-         $CountGuru = Teacher::count();
-        $CountSiswa = Student::count();
-        $CountKelas = Classes::count();
-        $countSurah = Surah::count();
+  protected function getStats(): array
 
-        return [
+  {
+    $CountGuru = Teacher::count();
+    $CountSiswa = Student::count();
+    $CountKelas = Classes::count();
+    $countSurah = Surah::count();
 
-            Stat::make('Total Ustad', $CountGuru ),
-            Stat::make('Total Siswa', $CountSiswa),
-            Stat::make('Total Kelas', $CountKelas),
-            Stat::make('Total Surat', $countSurah),
-            Stat::make('Setoran Hafalan', 'Baik')// belum ada data
-                ->chart([0,1,2,7,9]) // data dummy
-                ->color('success'), 
-               
-               
-            
-        ];
-    }
+    return [
+
+      Stat::make('Total Ustad', $CountGuru),
+      Stat::make('Total Siswa', $CountSiswa),
+      Stat::make('Total Kelas', $CountKelas),
+      Stat::make('Total Surat', $countSurah),
+      Stat::make('Setoran Hafalan', 'Baik') // belum ada data
+        ->chart([0, 1, 2, 7, 9]) // data dummy
+        ->color('success'),
+    ];
+  }
 }

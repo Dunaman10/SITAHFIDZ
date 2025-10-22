@@ -18,8 +18,8 @@ class Classes extends Model
     return $this->hasMany(Student::class, 'class_id');
   }
 
-  public function classTeachers()
+  public function teachers()
   {
-    return $this->hasMany(ClassTeacher::class, 'id_class');
+    return $this->belongsToMany(Teacher::class, 'class_teacher', 'id_class', 'id_teacher');
   }
 }

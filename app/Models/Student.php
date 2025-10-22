@@ -32,10 +32,4 @@ class Student extends Model
   {
     return $this->hasMany(Memorize::class, 'id_student');
   }
-
-  
-
-
-
-    
 }

@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Log;
 class MemorizeResource extends Resource
 {
   protected static ?string $model = Memorize::class;
-
+  protected static string $view = 'teacher.memorizes.index';
   protected static ?string $navigationIcon = 'heroicon-o-book-open';
   protected static ?string $navigationLabel = 'Hafalan';
 
@@ -34,18 +34,6 @@ class MemorizeResource extends Resource
   public static function getNavigationItems(): array
   {
     return [];
-  }
-
-  public $kelas;
-  public $surah;
-
-  public function mount($record = null): void
-  {
-    parent::mount($record);
-
-    // Initialize any properties or perform actions needed on mount
-    $this->kelas = request()->route('kelas') ?? '';
-    $this->surah = request()->route('surah') ?? '';
   }
 
   public static function table(Table $table): Table

@@ -19,7 +19,7 @@ class Teacher extends Model
 
   public function classes()
   {
-    return $this->hasMany(ClassTeacher::class, 'id_teacher');
+    return $this->belongsToMany(Classes::class, 'class_teacher', 'id_teacher', 'id_class');
   }
 
   public function memorizes()

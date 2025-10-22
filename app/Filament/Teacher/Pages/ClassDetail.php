@@ -7,6 +7,7 @@ use App\Models\Classes;
 use App\Models\Student;
 use App\Models\Surah; // Pastikan ini diimport untuk loadSurahs()
 use Illuminate\Support\Facades\DB;
+use Livewire\WithPagination;
 
 class ClassDetail extends Page
 {
@@ -14,6 +15,14 @@ class ClassDetail extends Page
   protected static ?string $title = 'Daftar Siswa Per Kelas'; // Akan diubah oleh getTitle()
   protected static ?string $slug = 'class-detail/{classId}';
   protected static bool $shouldRegisterNavigation = false;
+
+  use WithPagination;
+
+  protected $queryString = [
+    'search'  => ['except' => ''],
+    'page'    => ['except' => 1],
+    'perPage' => ['except' => 10],
+  ];
 
   public $classId;
   public $currentClass;
@@ -74,19 +83,22 @@ class ClassDetail extends Page
 
   protected function getAccordionData(): array
   {
-    $rawData = DB::table('memorizes')
+    // Ambil semua surah (master)
+    $allSurahs = Surah::orderBy('id')
+      ->get(['id', 'surah_name']);
+
+    // Ambil seluruh hafalan untuk kelas ini, lalu group by surah
+    $rawMem = DB::table('memorizes')
       ->select(
         'memorizes.id_surah',
-        'surah.surah_name as surah_name',
         'memorizes.id',
-        'students.student_name as student_name',
+        'students.student_name',
+        'users.name as teacher_name',
         'memorizes.from',
-        'users.name',
         'memorizes.to',
         'memorizes.audio',
         'memorizes.complete'
       )
-      ->join('surah', 'memorizes.id_surah', '=', 'surah.id')
       ->join('students', 'memorizes.id_student', '=', 'students.id')
       ->join('teachers', 'memorizes.id_teacher', '=', 'teachers.id')
       ->join('class_teacher', 'teachers.id', '=', 'class_teacher.id_teacher')
@@ -94,29 +106,31 @@ class ClassDetail extends Page
       ->join('users', 'teachers.id_users', '=', 'users.id')
       ->where('classes.id', $this->classId)
       ->orderBy('memorizes.id_surah')
-      ->get();
+      ->get()
+      ->groupBy('id_surah');
 
-    // Group by surah
-    $grouped = $rawData->groupBy('id_surah');
+    // Bentuk struktur accordion: SEMUA surah ada; data bisa kosong []
+    return $allSurahs->map(function ($s) use ($rawMem) {
+      $items = $rawMem->get($s->id, collect());
 
-    return $grouped->map(function ($items, $idSurah) {
       return [
-        'id' => $idSurah,
-        'surah' => $items[0]->surah_name,
-        'data' => $items->map(function ($item) {
+        'id'    => $s->id,
+        'surah' => $s->surah_name,
+        'data'  => $items->map(function ($item) {
           return [
-            'id' => $item->id,
+            'id'           => $item->id,
             'student_name' => $item->student_name,
-            "teacher_name" => $item->name,
-            'from' => $item->from,
-            'to' => $item->to,
-            'audio' => $item->audio,
-            'complete' => $item->complete,
+            'teacher_name' => $item->teacher_name,
+            'from'         => $item->from,
+            'to'           => $item->to,
+            'audio'        => $item->audio,
+            'complete'     => (int) $item->complete,
           ];
-        })->toArray()
+        })->values()->toArray(),
       ];
     })->values()->toArray();
   }
+
 
   protected function getColumns(): array
   {
