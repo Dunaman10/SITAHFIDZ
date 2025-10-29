@@ -18,6 +18,7 @@ use Filament\Forms\Components\View;
 use Filament\Forms\Components\ViewField;
 use Filament\Forms\Form;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class MemorizeResource extends Resource
 {
@@ -92,8 +93,13 @@ class MemorizeResource extends Resource
         ->columns(2)
         ->columnSpan('full'),
 
-      FileUpload::make('audio')
+      ViewField::make('audio')
         ->label('Rekam Suara')
+        ->view('components.audio-recorder')
+        ->columnSpan('full'),
+
+      FileUpload::make('audio')
+        ->label('Atau masukkan file rekaman suara')
         ->acceptedFileTypes(['audio/*'])
         ->maxSize(10240) // 10MB
         ->disk('public')
@@ -101,6 +107,7 @@ class MemorizeResource extends Resource
         ->preserveFilenames()
         ->placeholder('Rekam Suara Santri / Santriwati')
         ->columnSpan('full'),
+
       Radio::make('complete')
         ->label('')
         ->options([
@@ -110,8 +117,28 @@ class MemorizeResource extends Resource
         ->default('0')
         ->inline()
         ->columnSpanFull(),
+
     ]);
   }
+
+  protected function mutateFormDataBeforeCreate(array $data): array
+  {
+    if (!empty($data['audio_base64'])) {
+      $audio = str_replace('data:audio/wav;base64,', '', $data['audio_base64']);
+      $audio = str_replace(' ', '+', $audio);
+      $audioData = base64_decode($audio);
+      $fileName = 'record_' . time() . '.wav';
+
+      Storage::disk('public')->put('hafalan-audio/' . $fileName, $audioData);
+
+      // ganti field audio dengan path
+      $data['audio'] = 'hafalan-audio/' . $fileName;
+      unset($data['audio_base64']);
+    }
+
+    return $data;
+  }
+
 
   public static function getRelations(): array
   {

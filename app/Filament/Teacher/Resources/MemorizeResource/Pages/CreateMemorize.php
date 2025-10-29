@@ -6,6 +6,7 @@ use App\Filament\Teacher\Pages\ClassDetail;
 use App\Filament\Teacher\Resources\MemorizeResource;
 use App\Models\Student;
 use Filament\Actions;
+use Filament\Forms\Components\ViewField;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
@@ -18,6 +19,7 @@ use Filament\Forms\Components\View;
 use Filament\Forms\Form;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 
 class CreateMemorize extends CreateRecord
 {
@@ -67,6 +69,9 @@ class CreateMemorize extends CreateRecord
         ->default($this->getDataSurah()->id ?? null),
       Hidden::make('id_teacher')
         ->default($this->getIdTeacher()),
+      Hidden::make('audio_base64')
+        ->label('Audio Rekaman (Base64)')
+        ->default(null),
       View::make('surah_name')
         ->label('Surah')
         ->view('components.surah-card')
@@ -106,8 +111,13 @@ class CreateMemorize extends CreateRecord
         ->columns(2)
         ->columnSpan('full'),
 
-      FileUpload::make('audio')
+      ViewField::make('audio')
         ->label('Rekam Suara')
+        ->view('components.audio-recorder')
+        ->columnSpan('full'),
+
+      FileUpload::make('audio')
+        ->label('Atau masukkan file rekaman suara')
         ->acceptedFileTypes(['audio/*'])
         ->maxSize(10240) // 10MB
         ->disk('public')
@@ -115,6 +125,7 @@ class CreateMemorize extends CreateRecord
         ->preserveFilenames()
         ->placeholder('Rekam Suara Santri / Santriwati')
         ->columnSpan('full'),
+
       Radio::make('complete')
         ->label('')
         ->options([
@@ -126,6 +137,26 @@ class CreateMemorize extends CreateRecord
         ->columnSpanFull(),
     ]);
   }
+
+  protected function mutateFormDataBeforeCreate(array $data): array
+  {
+    if (!empty($data['audio_base64']) && str_starts_with($data['audio_base64'], 'data:audio')) {
+      [$meta, $content] = explode(',', $data['audio_base64']);
+      $audioBinary = base64_decode($content);
+
+      $fileName = 'memorize_' . time() . '.wav';
+      $path = 'memorize-audio/' . $fileName;
+
+      Storage::disk('public')->put($path, $audioBinary);
+
+      $data['audio'] = $path;
+    }
+
+    unset($data['audio_base64']);
+
+    return $data;
+  }
+
   protected function getRedirectUrl(): string
   {
     return ClassDetail::getUrl(['classId' => $this->kelas]);

@@ -18,7 +18,7 @@ return new class extends Migration
       $table->foreignId('id_teacher');
       $table->integer('from');
       $table->integer('to');
-      $table->string('audio');
+      $table->string('audio')->nullable();
       $table->tinyInteger('complete');
       $table->timestamps();
     });

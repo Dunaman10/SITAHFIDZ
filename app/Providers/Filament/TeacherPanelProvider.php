@@ -29,7 +29,7 @@ class TeacherPanelProvider extends PanelProvider
   public function panel(Panel $panel): Panel
   {
     return $panel
-      ->darkMode(false)
+      // ->darkMode(false)
       ->brandName('Darutafsir')
       ->favicon(asset('img/logo-darutafsir.png'))
       ->id('teacher')

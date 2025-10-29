@@ -8,7 +8,7 @@
       x-data="{
         open: false,
         currentPage: 1,
-        perPage: 2,
+        perPage: 5,
         kelas: @js($kelas),
         surah: @js($section['surah']),
         searchQuery: '',
@@ -140,9 +140,8 @@
           {{-- Per Page Dropdown --}}
           <div>
             <select
-              class="!bg-[#18181B] text-white border border-white rounded-lg px-4 py-2"
+              class="bg-[#18181B] text-white border border-white rounded-lg px-4 py-2"
               @change="changePerPage(parseInt($event.target.value))">
-              <option value="2" :selected="perPage === 2">2</option>
               <option value="5" :selected="perPage === 5">5</option>
               <option value="10" :selected="perPage === 10">10</option>
               <option value="20" :selected="perPage === 20">20</option>
