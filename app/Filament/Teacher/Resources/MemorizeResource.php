@@ -105,7 +105,7 @@ class MemorizeResource extends Resource
         ->disk('public')
         ->directory('hafalan-audio')
         ->preserveFilenames()
-        ->placeholder('Rekam Suara Santri / Santriwati')
+        ->placeholder('Masukkan file suara santri / santriwati')
         ->columnSpan('full'),
 
       Radio::make('complete')
@@ -120,25 +120,6 @@ class MemorizeResource extends Resource
 
     ]);
   }
-
-  protected function mutateFormDataBeforeCreate(array $data): array
-  {
-    if (!empty($data['audio_base64'])) {
-      $audio = str_replace('data:audio/wav;base64,', '', $data['audio_base64']);
-      $audio = str_replace(' ', '+', $audio);
-      $audioData = base64_decode($audio);
-      $fileName = 'record_' . time() . '.wav';
-
-      Storage::disk('public')->put('hafalan-audio/' . $fileName, $audioData);
-
-      // ganti field audio dengan path
-      $data['audio'] = 'hafalan-audio/' . $fileName;
-      unset($data['audio_base64']);
-    }
-
-    return $data;
-  }
-
 
   public static function getRelations(): array
   {
