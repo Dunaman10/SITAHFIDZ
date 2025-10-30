@@ -7,6 +7,7 @@ use App\Filament\Teacher\Resources\MemorizeResource;
 use App\Models\Student;
 use Filament\Resources\Pages\CreateRecord;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\ViewField;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
@@ -52,22 +53,6 @@ class CreateMemorize extends CreateRecord
     return DB::table('teachers')
       ->where('id_users', auth()->id())
       ->value('id');
-  }
-
-  protected function registerListeners(): void
-  {
-    parent::registerListeners();
-
-    // Event listener global Livewire
-    $this->listeners['audio-base64-updated'] = 'updateAudioBase64';
-  }
-
-  public function updateAudioBase64($data): void
-  {
-    if (isset($data['base64'])) {
-      $this->audio = $data['base64'];
-      Log::info('🎧 Audio base64 diterima', ['length' => strlen($this->audio_base64)]);
-    }
   }
 
   public function form(Form $form): Form
@@ -121,6 +106,16 @@ class CreateMemorize extends CreateRecord
         ->view('components.audio-recorder')
         ->columnSpanFull(),
 
+      FileUpload::make('audio')
+        ->label('Atau masukkan file rekaman suara')
+        ->acceptedFileTypes(['audio/*'])
+        ->maxSize(10240) // 10MB
+        ->disk('public')
+        ->directory('hafalan-audio')
+        ->preserveFilenames()
+        ->placeholder('Masukkan file suara santri / santriwati')
+        ->columnSpan('full'),
+
       Radio::make('complete')
         ->label('')
         ->options([
@@ -135,13 +130,24 @@ class CreateMemorize extends CreateRecord
 
   protected function mutateFormDataBeforeCreate(array $data): array
   {
-    // pastikan dari wire.set() ke public $audio udah dapet datanya
-    if (!empty($this->audio)) {
-      // simpan base64 ke field audio
-      $data['audio'] = $this->audio;
-      logger('✅ Audio berhasil dimasukkan ke data sebelum create');
+    if ($this->audio) {
+      // Decode base64
+      $audioData = base64_decode(preg_replace('#^data:audio/\w+;base64,#i', '', $this->audio));
+
+      // Simpan file ke storage
+      $fileName = 'tahfidz_' . time() . '.mp3';
+      $filePath = storage_path('app/public/hafalan-audio/' . $fileName);
+      if (!file_exists(dirname($filePath))) {
+        mkdir(dirname($filePath), 0755, true);
+      }
+      file_put_contents($filePath, $audioData);
+
+      // Simpan path relatif ke database
+      $data['audio'] = 'hafalan-audio/' . $fileName;
+
+      logger('✅ Audio berhasil disimpan', ['file' => $data['audio']]);
     } else {
-      logger('❌ Audio masih kosong sebelum create');
+      logger('⚠️ Tidak ada data audio untuk disimpan');
     }
 
     return $data;

@@ -1,8 +1,21 @@
 @vite('resources/css/app.css')
 <x-filament-panels::page>
+  <div class="w-full sm:w-1/2 mb-2">
+    <div class="flex items-center gap-3 bg-white dark:bg-gray-900 rounded-full p-2 px-4">
+      <x-heroicon-o-magnifying-glass class="w-5 h-5 text-gray-500" />
+      <input
+        type="text"
+        wire:model.debounce.500ms="search"
+        placeholder="Cari surat..."
+        class="w-full bg-transparent text-gray-900 dark:text-gray-200 rounded-full border-none border-0 focus:ring-0 focus:outline-none"
+      />
+    </div>
+  </div>
+
   <div class="w-full">
     @foreach ($accordionData as $section)
     <div
+      wire:key="accordion-{{ $section['id'] }}"
       x-data="{
         open: false,
         currentPage: 1,
@@ -159,6 +172,7 @@
       </div>
     </div>
     @endforeach
+
   </div>
 
 </x-filament-panels::page>

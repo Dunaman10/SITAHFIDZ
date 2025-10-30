@@ -16,14 +16,18 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\View;
 use Filament\Forms\Form;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class EditMemorize extends EditRecord
 {
   protected static string $resource = MemorizeResource::class;
 
+
   public ?int $id = null;
   public ?string $kelas = null;
   public ?string $surah = null;
+  public ?string $audio = null;
+
 
   public function getBreadcrumbs(): array
   {
@@ -61,10 +65,13 @@ class EditMemorize extends EditRecord
     return $form->schema([
       Hidden::make('id_kelas')
         ->default($this->kelas),
+
       Hidden::make('id_surah')
         ->default($this->getDataSurah()->id ?? null),
+
       Hidden::make('id_teacher')
         ->default($this->getIdTeacher()),
+
       View::make('surah_name')
         ->label('Surah')
         ->view('components.surah-card')
@@ -73,6 +80,7 @@ class EditMemorize extends EditRecord
           'ayat' => $this->getDataSurah()->ayat ?? 0,
         ])
         ->columnSpanFull(),
+
       Select::make('id_student')
         ->label('Nama Santri / Santriwati')
         ->required()
@@ -86,7 +94,6 @@ class EditMemorize extends EditRecord
         )
         ->columnSpan('full'),
 
-      // Jika ingin "from" dan "to" tetap satu baris, gunakan Grid
       Grid::make()
         ->schema([
           TextInput::make('from')
@@ -104,15 +111,26 @@ class EditMemorize extends EditRecord
         ->columns(2)
         ->columnSpan('full'),
 
+      View::make('audio_recorder')
+        ->label('Rekam Ulang Suara')
+        ->view('components.audio-edit')
+        ->viewData([
+          'existingAudio' => $this->record->audio
+            ? asset('storage/' . ltrim($this->record->audio, 'storage/'))
+            : null,
+        ])
+        ->columnSpan('full'),
+
       FileUpload::make('audio')
-        ->label('Rekam Suara')
+        ->label('Atau masukkan file rekaman suara')
         ->acceptedFileTypes(['audio/*'])
         ->maxSize(10240) // 10MB
         ->disk('public')
         ->directory('hafalan-audio')
         ->preserveFilenames()
-        ->placeholder('Rekam Suara Santri / Santriwati')
+        ->placeholder('Masukkan file suara santri / santriwati')
         ->columnSpan('full'),
+
       Radio::make('complete')
         ->label('')
         ->options([
@@ -123,6 +141,31 @@ class EditMemorize extends EditRecord
         ->inline()
         ->columnSpanFull(),
     ]);
+  }
+
+  protected function mutateFormDataBeforeSave(array $data): array
+  {
+    if ($this->audio) {
+      // Decode base64
+      $audioData = base64_decode(preg_replace('#^data:audio/\w+;base64,#i', '', $this->audio));
+
+      // Simpan file ke storage
+      $fileName = 'tahfidz_' . time() . '.mp3';
+      $filePath = storage_path('app/public/hafalan-audio/' . $fileName);
+      if (!file_exists(dirname($filePath))) {
+        mkdir(dirname($filePath), 0755, true);
+      }
+      file_put_contents($filePath, $audioData);
+
+      // Simpan path relatif ke database
+      $data['audio'] = 'hafalan-audio/' . $fileName;
+
+      logger('✅ Audio berhasil disimpan', ['file' => $data['audio']]);
+    } else {
+      logger('⚠️ Tidak ada data audio untuk disimpan');
+    }
+
+    return $data;
   }
 
   protected function getRedirectUrl(): string

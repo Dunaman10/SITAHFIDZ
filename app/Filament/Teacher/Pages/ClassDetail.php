@@ -31,16 +31,15 @@ class ClassDetail extends Page
   public $search = ''; // Untuk pencarian surah
 
   public $accordionData = []; // Data untuk accordion
-  public $openSection = 1;
   public $columns = [];
   public $onEdit = true;
   public $onDelete = true;
 
   protected static string $view = 'filament.teacher.pages.class-detail';
 
-  // --- PERBAIKAN DI SINI: mount() menerima ?int $classId = null ---
   public function mount(?int $classId = null): void
-  {
+  {456
+
     $this->classId = $classId;
 
     if ($this->classId) {
@@ -79,15 +78,18 @@ class ClassDetail extends Page
   public function updatedSearch(): void
   {
     $this->loadSurahs();
+    $this->accordionData = $this->getAccordionData();
   }
 
   protected function getAccordionData(): array
   {
-    // Ambil semua surah (master)
-    $allSurahs = Surah::orderBy('id')
-      ->get(['id', 'surah_name']);
+    $teacherId = DB::table('teachers')
+      ->where('id_users', auth()->id())
+      ->value('id');
 
-    // Ambil seluruh hafalan untuk kelas ini, lalu group by surah
+    // Gunakan surahs yang udah di-filter dari loadSurahs()
+    $allSurahs = $this->surahs ?? Surah::orderBy('id')->get(['id', 'surah_name']);
+
     $rawMem = DB::table('memorizes')
       ->select(
         'memorizes.id_surah',
@@ -101,15 +103,22 @@ class ClassDetail extends Page
       )
       ->join('students', 'memorizes.id_student', '=', 'students.id')
       ->join('teachers', 'memorizes.id_teacher', '=', 'teachers.id')
-      ->join('class_teacher', 'teachers.id', '=', 'class_teacher.id_teacher')
-      ->join('classes', 'class_teacher.id_class', '=', 'classes.id')
       ->join('users', 'teachers.id_users', '=', 'users.id')
+      ->join('classes', 'students.class_id', '=', 'classes.id')
       ->where('classes.id', $this->classId)
+      ->where('teachers.id', $teacherId)
       ->orderBy('memorizes.id_surah')
       ->get()
       ->groupBy('id_surah');
 
-    // Bentuk struktur accordion: SEMUA surah ada; data bisa kosong []
+    // 🧩 DEBUG MODE
+    if ($rawMem->isEmpty()) {
+      dd('❌ Tidak ada data di tabel memorizes untuk kelas ini', [
+        'classId' => $this->classId,
+        'teacherId' => $teacherId,
+      ]);
+    }
+
     return $allSurahs->map(function ($s) use ($rawMem) {
       $items = $rawMem->get($s->id, collect());
 
@@ -130,6 +139,7 @@ class ClassDetail extends Page
       ];
     })->values()->toArray();
   }
+
 
 
   protected function getColumns(): array

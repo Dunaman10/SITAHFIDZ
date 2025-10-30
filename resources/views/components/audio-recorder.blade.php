@@ -18,7 +18,7 @@
                     reader.onloadend = () => {
                         const base64 = reader.result;
                         // kirim ke Livewire
-                        $wire.set('audio', base64);
+                        $wire.$set('audio', base64);
                         console.log('✅ base64 dikirim ke Livewire');
                     };
                     reader.readAsDataURL(blob);
@@ -42,14 +42,15 @@
             }
         }
     }"
-    class="flex flex-col items-start space-y-3 p-4 rounded-xl shadow-md bg-gray-900/40"
+    class="flex flex-col items-start space-y-3 p-4 rounded-xl shadow-md"
 >
-    <div class="flex items-center space-x-3">
-        <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded-lg" x-show="!recording" @click="startRecording">🎙️ Mulai Rekam</button>
-        <button type="button" class="px-4 py-2 bg-red-600 text-white rounded-lg" x-show="recording" @click="stopRecording">⏹️ Stop</button>
-        <template x-if="recording">
-            <span class="text-sm text-gray-300">⏱️ <span x-text="recordTime"></span> detik</span>
-        </template>
+    <div class="flex items-center space-x-3 bg-[#ce0670] hover:bg-[#e1328f] text-white rounded-full">
+        <button type="button" class="px-4 py-2" x-show="!recording" @click="startRecording">🎙️ Mulai Rekam</button>
+        <button type="button" class="px-4 py-2" x-show="recording" @click="stopRecording">⏹️ Stop
+          <template x-if="recording">
+              <span class="text-sm text-gray-300">⏱️ <span x-text="recordTime"></span> detik</span>
+          </template>
+        </button>
     </div>
     <audio x-ref="audioPlayer" controls class="mt-2 w-full"></audio>
 </div>
