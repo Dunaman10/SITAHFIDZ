@@ -38,7 +38,7 @@ class ClassDetail extends Page
   protected static string $view = 'filament.teacher.pages.class-detail';
 
   public function mount(?int $classId = null): void
-  {456
+  {
 
     $this->classId = $classId;
 
