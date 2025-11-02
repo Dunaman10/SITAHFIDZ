@@ -40,6 +40,7 @@ class ClassDetail extends Page
   public function mount(?int $classId = null): void
   {
 
+
     $this->classId = $classId;
 
     if ($this->classId) {
@@ -53,6 +54,7 @@ class ClassDetail extends Page
       $this->loadSurahs(); // Panggil metode untuk memuat surah
       $this->accordionData = $this->getAccordionData(); // Ambil data untuk accordion
       $this->columns = $this->getColumns(); // Ambil kolom untuk tabel
+      // dd($this->accordionData[0]);
     } else {
       // Jika tidak ada classId di URL, arahkan ke dashboard
       redirect()->route('filament.teacher.pages.dashboard');
