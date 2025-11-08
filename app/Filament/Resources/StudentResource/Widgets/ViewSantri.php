@@ -13,9 +13,6 @@ class viewSantri extends BaseWidget
     $countSantri = Student::count();
     return [
       Stat::make('Total santri', $countSantri)
-
-
-
     ];
   }
 }

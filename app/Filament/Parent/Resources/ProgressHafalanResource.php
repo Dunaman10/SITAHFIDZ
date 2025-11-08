@@ -3,18 +3,16 @@
 namespace App\Filament\Parent\Resources;
 
 use App\Filament\Parent\Resources\ProgressHafalanResource\Pages;
-use App\Filament\Parent\Resources\ProgressHafalanResource\RelationManagers;
 use App\Models\Memorize;
-use Dom\Text;
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProgressHafalanResource extends Resource
 {
@@ -43,10 +41,23 @@ class ProgressHafalanResource extends Resource
         TextColumn::make('student.student_name')
           ->label('Nama Santri')
           ->sortable()
-          ->searchable(),
+          ->searchable(query: function (Builder $query, string $search): Builder {
+            return $query->whereHas(
+              'student',
+              fn($q) =>
+              $q->where('student_name', 'like', "%{$search}%")
+            );
+          }),
 
         TextColumn::make('surah.surah_name')
-          ->label('Surah'),
+          ->label('Surah')
+          ->searchable(query: function (Builder $query, string $search): Builder {
+            return $query->whereHas(
+              'surah',
+              fn($q) =>
+              $q->where('surah_name', 'like', "%{$search}%")
+            );
+          }),
 
         TextColumn::make('from')
           ->label('Dari Ayat')
@@ -55,19 +66,51 @@ class ProgressHafalanResource extends Resource
         TextColumn::make('to')
           ->label('Sampai Ayat')
           ->alignCenter(),
-
-        TextColumn::make('created_at')
-          ->label('Tanggal')
-          ->dateTime('d M Y'),
-
       ])
 
       ->filters([
         //
       ])
+      ->actions([
+        ViewAction::make()
+          ->label('Lihat Detail')
+          ->modalHeading('Detail Hafalan Santri')
+          ->modalWidth('lg')
+          ->modalSubmitAction(false)
+          ->form([
+            TextInput::make('student_name')
+              ->label('Nama Santri')
+              ->disabled()
+              ->formatStateUsing(fn($record) => $record?->student?->student_name),
+
+            TextInput::make('surah_name')
+              ->label('Surah')
+              ->disabled()
+              ->formatStateUsing(fn($record) => $record?->surah?->surah_name),
+
+            TextInput::make('from')
+              ->label('Dari Ayat')
+              ->disabled(),
+
+            TextInput::make('to')
+              ->label('Sampai Ayat')
+              ->disabled(),
+
+            DatePicker::make('created_at')
+              ->label('Tanggal')
+              ->disabled(),
+
+            FileUpload::make('audio')
+              ->label('Rekaman Audio Hafalan')
+              ->disabled()
+              ->previewable(true)
+              ->downloadable(),
+          ]),
+      ])
+
       ->bulkActions([
-        Tables\Actions\BulkActionGroup::make([
-          // Tables\Actions\ViewAction::make(),
+        BulkActionGroup::make([
+          // Tables\Actions\DeleteBulkAction::make(),
         ]),
       ]);
   }
