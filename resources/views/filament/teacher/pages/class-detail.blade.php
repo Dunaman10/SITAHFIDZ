@@ -1,6 +1,7 @@
 @vite('resources/css/app.css')
 <x-filament-panels::page>
-  <div class="w-full sm:w-1/2 mb-2">
+  {{-- Fitur Search --}}
+  {{-- <div class="w-full sm:w-1/2 mb-2">
     <div class="flex items-center gap-3 bg-white dark:bg-gray-900 rounded-full p-2 px-4">
       <x-heroicon-o-magnifying-glass class="w-5 h-5 text-gray-500" />
       <input
@@ -10,7 +11,7 @@
         class="w-full bg-transparent text-gray-900 dark:text-gray-200 rounded-full border-none border-0 focus:ring-0 focus:outline-none"
       />
     </div>
-  </div>
+  </div> --}}
 
   <div class="w-full">
     @foreach ($accordionData as $section)
@@ -52,7 +53,7 @@
           @click="open = !open"
           type="button"
           class="flex items-center justify-between text-gray-900 dark:text-gray-200 border border-gray-300 w-full py-5 px-6 rounded-xl text-left font-bold md:text-xl hover:bg-gray-800">
-            <span>{{ $section['surah'] }}</span>
+            <span>{{ $loop->iteration }}. {{ $section['surah'] }}</span>
           <div class="flex items-center gap-8">
             <x-heroicon-o-chevron-down class="w-5 aspect-square transition-transform duration-300 text-gray-600" x-bind:class="{ 'rotate-180': open }" />
           </div>

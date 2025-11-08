@@ -142,8 +142,6 @@ class ClassDetail extends Page
     })->values()->toArray();
   }
 
-
-
   protected function getColumns(): array
   {
     return [
