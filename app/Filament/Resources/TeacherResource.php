@@ -30,10 +30,15 @@ class TeacherResource extends Resource
   protected static ?string $pluralModelLabel = 'Data Guru';
   protected static ?int $navigationSort = 1;
 
+  public static function getEloquentQuery(): Builder
+  {
+    return parent::getEloquentQuery()
+      ->with(['user']);
+  }
   // public static function getEloquentQuery(): Builder
   // {
   //   return parent::getEloquentQuery()
-  //     ->with(['teacher.user']);
+  //     ->with(['user', 'classes']);
   // }
 
   public static function form(Form $form): Form
@@ -43,10 +48,12 @@ class TeacherResource extends Resource
         TextInput::make('name')
           ->required()
           ->placeholder('masukkan nama guru'),
+
         TextInput::make('email')
           ->required()
           ->placeholder('masukkan email guru')
           ->email(),
+
         TextInput::make('password')
           ->required()
           ->placeholder('masukkan password guru')

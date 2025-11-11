@@ -54,7 +54,6 @@ class DataKelasResource extends Resource
           ->size(50)
           ->disk('public'),
 
-
         TextColumn::make('student_name')
           ->label('Nama Santri')
           ->searchable()
@@ -63,6 +62,11 @@ class DataKelasResource extends Resource
         TextColumn::make('tanggal_lahir')
           ->label('Tanggal Lahir')
           ->formatStateUsing(fn($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+
+        TextColumn::make('memorizes.surah.surah_name')
+          ->label('Progress Terakhir')
+          ->searchable(),
+
         TextColumn::make('class.class_name')
           ->label('Kelas')
           ->searchable()
@@ -144,6 +148,10 @@ class DataKelasResource extends Resource
                   ->label('Tanggal Lahir')
                   ->weight(FontWeight::Bold)
                   ->formatStateUsing(fn($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+
+                TextEntry::make('memorizes.surah.surah_name')
+                  ->label('Progress Terakhir')
+                  ->weight(FontWeight::Bold),
 
                 TextEntry::make('class.class_name')
                   ->label('Kelas')

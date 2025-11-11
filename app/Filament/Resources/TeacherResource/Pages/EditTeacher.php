@@ -8,12 +8,17 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditTeacher extends EditRecord
 {
-    protected static string $resource = TeacherResource::class;
+  protected static string $resource = TeacherResource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\DeleteAction::make(),
-        ];
-    }
+  protected function getHeaderActions(): array
+  {
+    return [
+      Actions\DeleteAction::make(),
+    ];
+  }
+
+  protected function getRedirectUrl(): string
+  {
+    return TeacherResource::getUrl('index'); // Redirect ke halaman daftar student
+  }
 }

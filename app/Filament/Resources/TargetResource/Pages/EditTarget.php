@@ -22,6 +22,6 @@ class EditTarget extends EditRecord
 
   protected function getRedirectUrl(): string
   {
-    return $this->getResource()::getUrl('index');
+    return TargetResource::getUrl('index'); // Redirect ke halaman daftar student
   }
 }

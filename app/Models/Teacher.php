@@ -27,6 +27,11 @@ class Teacher extends Model
     return $this->hasMany(Memorize::class, 'id_teacher');
   }
 
+  public function students()
+  {
+    return Student::whereIn('class_id', $this->classes()->select('classes.id'));
+  }
+
   protected static function booted()
   {
     static::deleted(function ($teacher) {

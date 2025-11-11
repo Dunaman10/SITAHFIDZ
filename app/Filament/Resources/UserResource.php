@@ -38,17 +38,16 @@ class UserResource extends Resource
   {
     return $form
       ->schema([
-        TextInput::make('name')->required(),
-        TextInput::make('email')->required()->email()->unique(ignoreRecord: true),
+        TextInput::make('name')->required()->placeholder('masukkan nama orang tua'),
+        TextInput::make('email')->required()->email()->unique(ignoreRecord: true)->placeholder('masukkan email'),
         TextInput::make('password')->required()->password()->revealable(),
         Select::make('role_id')
           ->label('Role')
           ->options(
-            \App\Models\Role::whereIn('role_name', ['admin', 'orang_tua'])
+            \App\Models\Role::whereIn('role_name', ['orang_tua'])
               ->get()
               ->pluck(function ($role) {
                 return match ($role->role_name) {
-                  'admin' => 'Admin',
                   'orang_tua' => 'Orang Tua',
                   default => ucfirst($role->role_name),
                 };

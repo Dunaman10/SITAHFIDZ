@@ -35,8 +35,6 @@ class CreateStudent extends CreateRecord
   }
 
 
-
-
   public function getTitle(): string
   {
     return 'Tambah Santri';

@@ -91,7 +91,7 @@ class TeacherPanelProvider extends PanelProvider
           $user = Auth::user();
           // Memeriksa apakah ada pengguna yang login dan memiliki nama
           $userName = $user ? $user->name : 'Guest'; // Ganti dengan nama default jika tidak login/tidak ada nama
-          return Blade::render('<div style=" padding: 5px;">Halo, {{ $userName }}</div>', [
+          return Blade::render('', [
             'userName' => $userName, // Melewatkan nama pengguna ke template Blade
           ]);
         }

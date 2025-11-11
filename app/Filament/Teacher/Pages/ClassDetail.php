@@ -114,12 +114,12 @@ class ClassDetail extends Page
       ->groupBy('id_surah');
 
     // 🧩 DEBUG MODE
-    if ($rawMem->isEmpty()) {
-      dd('❌ Tidak ada data di tabel memorizes untuk kelas ini', [
-        'classId' => $this->classId,
-        'teacherId' => $teacherId,
-      ]);
-    }
+    // if ($rawMem->isEmpty()) {
+    //   dd('❌ Tidak ada data di tabel memorizes untuk kelas ini', [
+    //     'classId' => $this->classId,
+    //     'teacherId' => $teacherId,
+    //   ]);
+    // }
 
     return $allSurahs->map(function ($s) use ($rawMem) {
       $items = $rawMem->get($s->id, collect());
