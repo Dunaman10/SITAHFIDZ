@@ -19,6 +19,8 @@ class RedirectByRole
           return redirect()->route('filament.teacher.pages.dashboard');
         case 3:
           return redirect()->route('filament.parent.pages.dashboard');
+        case 4:
+          return redirect()->route('filament.keamanan.pages.dashboard');
       }
     }
     return $next($request);

@@ -26,6 +26,10 @@ class RoleSeeder extends Seeder
         'id' => 3,
         'role_name' => 'orang_tua'
       ],
+      [
+        'id' => 4,
+        'role_name' => 'keamanan'
+      ],
     ]);
   }
 }
