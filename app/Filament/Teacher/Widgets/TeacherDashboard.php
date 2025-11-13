@@ -2,9 +2,7 @@
 
 namespace App\Filament\Teacher\Widgets;
 
-use App\Models\Student;
-use App\Models\ClassTeacher;
-use Filament\Facades\Filament;
+use App\Models\Activity;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +13,7 @@ class TeacherDashboard extends BaseWidget
   {
     $user = Auth::user();
     $teacher = $user?->teacher; // Pakai optional chaining (?->) biar nggak error kalau null
+    $activity = Activity::latest()->first();
 
     $countClasses = $teacher ? $teacher->classes()->count() : 0;
     $countStudents = $teacher ? $teacher->students()->count() : 0;
@@ -24,6 +23,9 @@ class TeacherDashboard extends BaseWidget
         ->icon('heroicon-o-user-group'),
       Stat::make('Jumlah Kelas Anda', $countClasses)
         ->icon('heroicon-o-building-office'),
+      Stat::make('Kegiatan Pondok Pesantren', '')
+        ->icon('heroicon-o-calendar-days')
+        ->description($activity?->activity_name ?? 'Belum ada kegiatan'),
     ];
   }
 }

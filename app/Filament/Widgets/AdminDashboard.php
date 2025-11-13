@@ -24,7 +24,7 @@ class adminDashboard extends BaseWidget
     return [
 
       Stat::make('Total Pengajar', $CountGuru),
-      Stat::make('Total Siswa', $CountSiswa),
+      Stat::make('Total Santri', $CountSiswa),
       Stat::make('Total Kelas', $CountKelas),
       Stat::make('Total Surat', $countSurah),
       Stat::make('Total Pengguna', $countPengguna),

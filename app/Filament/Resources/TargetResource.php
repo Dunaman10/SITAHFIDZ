@@ -24,6 +24,7 @@ class TargetResource extends Resource
   protected static ?string $navigationIcon = 'heroicon-o-arrow-trending-up';
   protected static ?string $label = "Manejemen Target";
   protected static ?string $pluralModelLabel = 'Manejemen Target';
+  protected static ?int $navigationSort = 4;
 
   public static function form(Form $form): Form
   {

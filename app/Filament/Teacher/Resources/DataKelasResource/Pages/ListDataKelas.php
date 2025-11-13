@@ -8,12 +8,5 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListDataKelas extends ListRecords
 {
-    protected static string $resource = DataKelasResource::class;
-
-    // protected function getHeaderActions(): array
-    // {
-    //     return [
-    //         Actions\CreateAction::make(),
-    //     ];
-    // }
+  protected static string $resource = DataKelasResource::class;
 }
