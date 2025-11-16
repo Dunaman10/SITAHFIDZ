@@ -32,4 +32,18 @@ class Student extends Model
   {
     return $this->hasMany(Memorize::class, 'id_student');
   }
+
+  protected static function booted()
+  {
+    static::created(function ($student) {
+      Attendance::firstOrCreate([
+        'id_student' => $student->id,
+        'date' => now()->format('Y-m-d'),
+      ], [
+        'id_class' => $student->class_id,
+        'id_parent' => $student->parent,
+        'status' => null,
+      ]);
+    });
+  }
 }

@@ -43,6 +43,7 @@ class ClassTeacherResource extends Resource
           ->label('Guru')
           ->searchable()
           ->preload()
+          ->selectablePlaceholder(false)
           ->options(function () {
             return \App\Models\Teacher::with('user')
               ->whereHas('user', function ($query) {
@@ -62,8 +63,12 @@ class ClassTeacherResource extends Resource
   {
     return $table
       ->columns([
-        TextColumn::make('class.class_name')->label('Kelas')->searchable(),
-        TextColumn::make('teacher.user.name')->label('Guru')->searchable(),
+        TextColumn::make('class.class_name')
+          ->label('Kelas')
+          ->searchable(),
+        TextColumn::make('teacher.user.name')
+          ->label('Guru')
+          ->searchable(),
       ])
       ->filters([
         //

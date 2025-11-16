@@ -3,11 +3,9 @@
 namespace App\Filament\Teacher\Resources;
 
 use Carbon\Carbon;
-use Filament\Forms;
 use Filament\Tables;
 use App\Models\Student;
 use Filament\Forms\Form;
-use App\Models\DataKelas;
 use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
 
@@ -19,7 +17,6 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Columns\ImageColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Infolists\Components\Section;
-use Illuminate\Contracts\Support\Htmlable;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ImageEntry;
 use App\Filament\Teacher\Resources\DataKelasResource\Pages;
@@ -70,8 +67,6 @@ class DataKelasResource extends Resource
         TextColumn::make('class.class_name')
           ->label('Kelas')
           ->searchable()
-
-
 
       ])
       ->filters([

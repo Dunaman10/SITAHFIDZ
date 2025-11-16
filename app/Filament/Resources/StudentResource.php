@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\StudentExporter;
+use App\Filament\Imports\StudentImporter;
 use Carbon\Carbon;
 
 use App\Models\User;
@@ -20,6 +22,8 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\StudentResource\Pages;
+use Filament\Tables\Actions\ImportAction;
+use Filament\Tables\Actions\ExportAction;
 
 class StudentResource extends Resource
 {
@@ -121,9 +125,6 @@ class StudentResource extends Resource
           ->modalDescription('Apakah Anda yakin ingin menghapus santri ini?')
           ->modalcancelActionLabel('Batalkan')
           ->modalSubmitActionLabel('ya, Hapus')
-
-
-          //Notifikasi sukses setelah penghapusan
           ->successNotification(
             fn($record) => Notification::make()
               ->title('Santri berhasil dihapus')
@@ -133,13 +134,15 @@ class StudentResource extends Resource
               ->success() // Tipe notifikasi sukses
               ->duration(5000) // Durasi tampil
           )
-
+      ])
+      ->headerActions([
+        ExportAction::make()
+          ->exporter(StudentExporter::class),
       ])
       ->bulkActions([
         Tables\Actions\BulkActionGroup::make([
           Tables\Actions\DeleteBulkAction::make(),
         ]),
-
       ])
 
       ->emptyStateHeading('Belum ada data santri');

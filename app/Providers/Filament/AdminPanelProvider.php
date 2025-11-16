@@ -37,6 +37,7 @@ class AdminPanelProvider extends PanelProvider
       ->id('admin')
       ->path('admin')
       ->login()
+      ->databaseNotifications()
       ->spa()
       ->colors([
         'primary' => Color::hex('#E5077C'),

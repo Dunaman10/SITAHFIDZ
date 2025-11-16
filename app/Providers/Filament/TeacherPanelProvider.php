@@ -35,6 +35,7 @@ class TeacherPanelProvider extends PanelProvider
       ->id('teacher')
       ->path('teacher')
       ->login()
+      ->databaseNotifications()
       ->colors([
         'primary' => Color::hex('#E5077C'),
       ])

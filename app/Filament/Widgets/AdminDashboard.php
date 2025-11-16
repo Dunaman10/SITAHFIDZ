@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Activity;
 use App\Models\Surah;
 use App\Models\Classes;
 use App\Models\Student;
@@ -20,14 +21,18 @@ class adminDashboard extends BaseWidget
     $CountKelas = Classes::count();
     $countSurah = Surah::count();
     $countPengguna = User::count();
+    $activity = Activity::latest()->first();
+
 
     return [
-
       Stat::make('Total Pengajar', $CountGuru),
       Stat::make('Total Santri', $CountSiswa),
       Stat::make('Total Kelas', $CountKelas),
       Stat::make('Total Surat', $countSurah),
       Stat::make('Total Pengguna', $countPengguna),
+      Stat::make('Kegiatan Pondok Pesantren', '')
+        ->icon('heroicon-o-calendar-days')
+        ->description($activity?->activity_name ?? 'Belum ada kegiatan'),
     ];
   }
 }
