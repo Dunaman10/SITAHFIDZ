@@ -19,6 +19,7 @@ use Filament\Forms\Components\ViewField;
 use Filament\Forms\Form;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Pail\File;
 
 class MemorizeResource extends Resource
 {
@@ -93,20 +94,15 @@ class MemorizeResource extends Resource
         ->columns(2)
         ->columnSpan('full'),
 
-      ViewField::make('audio')
-        ->label('Rekam Suara')
-        ->view('components.audio-recorder')
-        ->columnSpan('full'),
-
       FileUpload::make('audio')
-        ->label('Atau masukkan file rekaman suara')
+        ->label('Masukkan file rekaman suara')
         ->acceptedFileTypes(['audio/*'])
         ->maxSize(10240) // 10MB
         ->disk('public')
         ->directory('hafalan-audio')
         ->preserveFilenames()
-        ->placeholder('Masukkan file suara santri / santriwati')
-        ->columnSpan('full'),
+        ->placeholder('Masukkan file suara santri / santriwati?')
+        ->columnSpanFull(),
 
       Radio::make('complete')
         ->label('')

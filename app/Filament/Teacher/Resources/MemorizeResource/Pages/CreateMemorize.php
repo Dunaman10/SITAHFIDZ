@@ -18,6 +18,7 @@ use Filament\Forms\Components\View;
 use Filament\Forms\Form;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Laravel\Pail\File;
 
 class CreateMemorize extends CreateRecord
 {
@@ -101,20 +102,15 @@ class CreateMemorize extends CreateRecord
           ->placeholder('10'),
       ])->columns(2)->columnSpanFull(),
 
-      ViewField::make('audio_recorder')
-        ->label('Rekam Suara')
-        ->view('components.audio-recorder')
-        ->columnSpanFull(),
-
       FileUpload::make('audio')
-        ->label('Atau masukkan file rekaman suara')
+        ->label('Masukkan file rekaman suara')
         ->acceptedFileTypes(['audio/*'])
         ->maxSize(10240) // 10MB
         ->disk('public')
         ->directory('hafalan-audio')
         ->preserveFilenames()
-        ->placeholder('Masukkan file suara santri / santriwati')
-        ->columnSpan('full'),
+        ->placeholder('Masukkan file suara santri / santriwati?')
+        ->columnSpanFull(),
 
       Radio::make('complete')
         ->label('')
@@ -127,32 +123,6 @@ class CreateMemorize extends CreateRecord
         ->columnSpanFull(),
     ]);
   }
-
-  protected function mutateFormDataBeforeCreate(array $data): array
-  {
-    if ($this->audio) {
-      // Decode base64
-      $audioData = base64_decode(preg_replace('#^data:audio/\w+;base64,#i', '', $this->audio));
-
-      // Simpan file ke storage
-      $fileName = 'tahfidz_' . time() . '.mp3';
-      $filePath = storage_path('app/public/hafalan-audio/' . $fileName);
-      if (!file_exists(dirname($filePath))) {
-        mkdir(dirname($filePath), 0755, true);
-      }
-      file_put_contents($filePath, $audioData);
-
-      // Simpan path relatif ke database
-      $data['audio'] = 'hafalan-audio/' . $fileName;
-
-      logger('✅ Audio berhasil disimpan', ['file' => $data['audio']]);
-    } else {
-      logger('⚠️ Tidak ada data audio untuk disimpan');
-    }
-
-    return $data;
-  }
-
 
 
   protected function getRedirectUrl(): string

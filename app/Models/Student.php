@@ -41,7 +41,6 @@ class Student extends Model
         'date' => now()->format('Y-m-d'),
       ], [
         'id_class' => $student->class_id,
-        'id_parent' => $student->parent,
         'status' => null,
       ]);
     });

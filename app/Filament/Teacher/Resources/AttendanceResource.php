@@ -2,12 +2,16 @@
 
 namespace App\Filament\Teacher\Resources;
 
+use App\Filament\Exports\AttendanceExporter;
 use App\Filament\Teacher\Resources\AttendanceResource\Pages;
 use App\Models\Attendance;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
@@ -36,6 +40,7 @@ class AttendanceResource extends Resource
   public static function table(Table $table): Table
   {
     return $table
+      ->defaultSort('date', 'desc')
       ->columns([
         TextColumn::make('student.student_name')
           ->label('Nama Santri')
@@ -59,28 +64,51 @@ class AttendanceResource extends Resource
           ]),
       ])
       ->filters([
-        SelectFilter::make('id_class')
-          ->relationship('classes', 'class_name'),
-        Filter::make('date')
+        Filter::make('Tanggal')
           ->form([
-            Forms\Components\DatePicker::make('tanggal'),
+            DatePicker::make('from')->label('Dari'),
+            DatePicker::make('to')->label('Sampai'),
           ])
-          ->query(
-            fn($query, $data) =>
-            $query->when(
-              $data['tanggal'] ?? null,
-              fn($q) => $q->whereDate('date', $data['tanggal'])
-            )
-          ),
+          ->query(function ($query, array $data) {
+            return $query
+              ->when($data['from'], fn($q) => $q->whereDate('date', '>=', $data['from']))
+              ->when($data['to'], fn($q) => $q->whereDate('date', '<=', $data['to']));
+          }),
 
+        SelectFilter::make('status')
+          ->options([
+            'belum_absen' => 'Belum Absen',
+            'hadir'       => 'Hadir',
+            'sakit'       => 'Sakit',
+            'alfa'        => 'Alfa',
+            'izin'        => 'Izin Pulang',
+          ]),
+
+        Filter::make('kelas')
+          ->form([
+            Forms\Components\Select::make('class_id')
+              ->label('Kelas')
+              ->relationship('classes', 'class_name'),
+          ])
+          ->query(function (Builder $query, array $data) {
+            return $query
+              ->when($data['class_id'], fn($q) => $q->where('id_class', $data['class_id']));
+          }),
       ])
       ->actions([
         //
+      ])
+      ->headerActions([
+        ExportAction::make()
+          ->exporter(AttendanceExporter::class),
+
       ])
       ->bulkActions([
         Tables\Actions\BulkActionGroup::make([
           Tables\Actions\DeleteBulkAction::make(),
         ]),
+        ExportBulkAction::make()
+          ->exporter(AttendanceExporter::class),
       ]);
   }
 

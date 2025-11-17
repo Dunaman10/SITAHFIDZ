@@ -5,7 +5,6 @@ namespace App\Providers\Filament;
 
 use Filament\Pages;
 use Filament\Panel;
-use App\Models\Classes;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\View\PanelsRenderHook;
@@ -50,9 +49,7 @@ class TeacherPanelProvider extends PanelProvider
         // Widgets\AccountWidget::class,
         // Widgets\FilamentInfoWidget::class,
       ])
-
       ->plugins([])
-
       ->middleware([
         EncryptCookies::class,
         AddQueuedCookiesToResponse::class,

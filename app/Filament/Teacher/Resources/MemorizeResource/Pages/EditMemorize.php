@@ -111,16 +111,6 @@ class EditMemorize extends EditRecord
         ->columns(2)
         ->columnSpan('full'),
 
-      View::make('audio_recorder')
-        ->label('Rekam Ulang Suara')
-        ->view('components.audio-edit')
-        ->viewData([
-          'existingAudio' => $this->record->audio
-            ? asset('storage/' . ltrim($this->record->audio, 'storage/'))
-            : null,
-        ])
-        ->columnSpan('full'),
-
       FileUpload::make('audio')
         ->label('Atau masukkan file rekaman suara')
         ->acceptedFileTypes(['audio/*'])
@@ -141,31 +131,6 @@ class EditMemorize extends EditRecord
         ->inline()
         ->columnSpanFull(),
     ]);
-  }
-
-  protected function mutateFormDataBeforeSave(array $data): array
-  {
-    if ($this->audio) {
-      // Decode base64
-      $audioData = base64_decode(preg_replace('#^data:audio/\w+;base64,#i', '', $this->audio));
-
-      // Simpan file ke storage
-      $fileName = 'tahfidz_' . time() . '.mp3';
-      $filePath = storage_path('app/public/hafalan-audio/' . $fileName);
-      if (!file_exists(dirname($filePath))) {
-        mkdir(dirname($filePath), 0755, true);
-      }
-      file_put_contents($filePath, $audioData);
-
-      // Simpan path relatif ke database
-      $data['audio'] = 'hafalan-audio/' . $fileName;
-
-      logger('✅ Audio berhasil disimpan', ['file' => $data['audio']]);
-    } else {
-      logger('⚠️ Tidak ada data audio untuk disimpan');
-    }
-
-    return $data;
   }
 
   protected function getRedirectUrl(): string
