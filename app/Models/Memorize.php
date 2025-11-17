@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Storage;
 
 class Memorize extends Model
 {
@@ -37,5 +38,27 @@ class Memorize extends Model
   public function teacher()
   {
     return $this->belongsTo(Teacher::class, 'id_teacher');
+  }
+
+  public static function boot()
+  {
+    parent::boot();
+
+    // Hapus audio saat record dihapus
+    static::deleting(function ($memorize) {
+      if ($memorize->audio && Storage::disk('public')->exists($memorize->audio)) {
+        Storage::disk('public')->delete($memorize->audio);
+      }
+    });
+
+    // Hapus audio lama saat diganti
+    static::updating(function ($memorize) {
+      if ($memorize->isDirty('audio')) {
+        $old = $memorize->getOriginal('audio');
+        if ($old && Storage::disk('public')->exists($old)) {
+          Storage::disk('public')->delete($old);
+        }
+      }
+    });
   }
 }

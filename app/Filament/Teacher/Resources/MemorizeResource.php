@@ -3,7 +3,6 @@
 namespace App\Filament\Teacher\Resources;
 
 use App\Filament\Teacher\Resources\MemorizeResource\Pages;
-use App\Filament\Teacher\Resources\MemorizeResource\RelationManagers;
 use App\Models\Memorize;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -13,13 +12,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Radio;
-use Filament\Forms\Components\Split;
 use Filament\Forms\Components\View;
-use Filament\Forms\Components\ViewField;
 use Filament\Forms\Form;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Laravel\Pail\File;
 
 class MemorizeResource extends Resource
 {
