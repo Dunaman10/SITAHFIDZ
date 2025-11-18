@@ -30,6 +30,7 @@ class KeamananPanelProvider extends PanelProvider
       ->favicon(asset('img/logo-darutafsir.png'))
       ->brandName('Darutafsir')
       ->login()
+      ->databaseNotifications()
       ->colors([
         'primary' => Color::hex('#E5077C'),
       ])

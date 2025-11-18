@@ -5,13 +5,14 @@ namespace App\Filament\Keamanan\Resources;
 use App\Filament\Exports\PermissionExporter;
 use App\Filament\Keamanan\Resources\KeamananResource\Pages;
 use App\Models\Permission;
-use Filament\Actions\ExportAction;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -100,10 +101,18 @@ class KeamananResource extends Resource
       ->actions([
         Tables\Actions\EditAction::make(),
       ])
+      ->headerActions([
+        ExportAction::make('export')
+          ->label('Export Perizinan')
+          ->exporter(PermissionExporter::class),
+      ])
       ->bulkActions([
         Tables\Actions\BulkActionGroup::make([
           Tables\Actions\DeleteBulkAction::make(),
         ]),
+        ExportBulkAction::make()
+          ->label('Export Perizinan')
+          ->exporter(PermissionExporter::class),
       ]);
   }
 

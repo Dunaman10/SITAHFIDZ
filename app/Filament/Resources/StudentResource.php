@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\StudentResource\Pages;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Actions\ExportBulkAction;
 
 class StudentResource extends Resource
 {
@@ -38,7 +39,6 @@ class StudentResource extends Resource
     return parent::getEloquentQuery()
       ->with(['user', 'class']);
   }
-
   public static function form(Form $form): Form
   {
     return $form
@@ -57,7 +57,6 @@ class StudentResource extends Resource
           ->required()
           ->placeholder('Pilih orang tua')
           ->options(User::where('role_id', '3')->pluck('name', 'id')),
-
 
         Select::make('class_id')
           ->label('Kelas')
@@ -78,7 +77,6 @@ class StudentResource extends Resource
           ->required()
           ->placeholder('Pilih tanggal lahir')
           ->default(now()),
-
       ]);
   }
 
@@ -143,6 +141,7 @@ class StudentResource extends Resource
         Tables\Actions\BulkActionGroup::make([
           Tables\Actions\DeleteBulkAction::make(),
         ]),
+
       ])
 
       ->emptyStateHeading('Belum ada data santri');

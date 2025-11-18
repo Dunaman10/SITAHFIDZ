@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\ActivityExporter;
 use App\Filament\Resources\ActivityResource\Pages;
 use App\Models\Activity;
 use Filament\Forms\Components\DatePicker;
@@ -11,6 +12,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -70,6 +73,10 @@ class ActivityResource extends Resource
       ->filters([
         //
       ])
+      ->headerActions([
+        ExportAction::make()
+          ->exporter(ActivityExporter::class),
+      ])
       ->actions([
         Tables\Actions\ViewAction::make(),
         Tables\Actions\EditAction::make(),
@@ -79,6 +86,8 @@ class ActivityResource extends Resource
         Tables\Actions\BulkActionGroup::make([
           Tables\Actions\DeleteBulkAction::make(),
         ]),
+        ExportBulkAction::make()
+          ->exporter(ActivityExporter::class),
       ]);
   }
 

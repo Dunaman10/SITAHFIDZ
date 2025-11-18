@@ -80,7 +80,7 @@ class AttendanceResource extends Resource
             'belum_absen' => 'Belum Absen',
             'hadir'       => 'Hadir',
             'sakit'       => 'Sakit',
-            'alfa'        => 'Alfa',
+            'tidak_hadir' => 'Tidak Hadir',
             'izin'        => 'Izin Pulang',
           ]),
 

@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
   public function panel(Panel $panel): Panel
   {
     return $panel
-      // ->darkMode()
+      // ->darkMode(false)
       ->default()
       ->brandName('Darutafsir')
       // ->brandLogo(asset('img/logo-darutafsir.png'))

@@ -27,9 +27,7 @@ use Illuminate\Support\Facades\Auth;
 class DataKelasResource extends Resource
 {
   protected static ?string $model = Student::class;
-
   protected static ?string $navigationIcon = 'heroicon-o-user-group';
-
   protected static ?string $navigationLabel = 'Data Kelas Anda';
   protected static ?string $pluralModelLabel = 'Data Kelas Anda';
 

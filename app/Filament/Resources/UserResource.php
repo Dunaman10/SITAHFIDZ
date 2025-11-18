@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\UserExporter;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Filament\Resources\UserResource\Widgets\UserOverview;
@@ -13,7 +14,10 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Builder;
@@ -68,7 +72,21 @@ class UserResource extends Resource
         TextColumn::make('role.role_name')->label('Role')->searchable(),
       ])
       ->filters([
-        //
+        SelectFilter::make('role_id')
+          ->label('Filter by Role')
+          ->options(
+            \App\Models\Role::all()
+              ->pluck(function ($role) {
+                return match ($role->role_name) {
+                  'orang_tua' => 'Orang Tua',
+                  default => ucfirst($role->role_name),
+                };
+              }, 'id')
+          ),
+      ])
+      ->headerActions([
+        ExportAction::make()
+          ->exporter(UserExporter::class),
       ])
       ->actions([
         Tables\Actions\EditAction::make(),
@@ -79,6 +97,8 @@ class UserResource extends Resource
         Tables\Actions\BulkActionGroup::make([
           Tables\Actions\DeleteBulkAction::make(),
         ]),
+        ExportBulkAction::make()
+          ->exporter(UserExporter::class),
       ]);
   }
 
