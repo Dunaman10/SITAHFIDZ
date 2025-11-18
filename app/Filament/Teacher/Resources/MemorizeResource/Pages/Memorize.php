@@ -50,6 +50,8 @@ class Memorize extends Page
         'users.name',
         'memorizes.to',
         'memorizes.audio',
+        'memorizes.nilai',
+        'memorizes.approved_by',
         'memorizes.complete'
       )
       ->join('surah', 'memorizes.id_surah', '=', 'surah.id')
@@ -77,6 +79,8 @@ class Memorize extends Page
             'from' => $item->from,
             'to' => $item->to,
             'audio' => $item->audio,
+            'nilai' => $item->nilai,
+            'approved_by' => $item->approved_by,
             'complete' => $item->complete,
           ];
         })->toArray()
@@ -92,6 +96,8 @@ class Memorize extends Page
       ['header' => 'Mulai', 'key' => 'from'],
       ['header' => 'Selesai', 'key' => 'to'],
       ['header' => 'Audio', 'key' => 'audio'],
+      ['header' => 'Nilai', 'key' => 'nilai'],
+      ['header' => 'Diperiksa Oleh', 'key' => 'approved_by'],
       ['header' => 'Status', 'key' => 'complete'],
     ];
   }

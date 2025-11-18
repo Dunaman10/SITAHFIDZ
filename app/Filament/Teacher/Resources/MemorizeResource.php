@@ -98,6 +98,14 @@ class MemorizeResource extends Resource
         ->placeholder('Masukkan file suara santri / santriwati?')
         ->columnSpanFull(),
 
+      TextInput::make('nilai')
+        ->label('Nilai Hafalan')
+        ->required(),
+
+      TextInput::make('approved_by')
+        ->label('Diperiksa Oleh')
+        ->required(),
+
       Radio::make('complete')
         ->label('')
         ->options([

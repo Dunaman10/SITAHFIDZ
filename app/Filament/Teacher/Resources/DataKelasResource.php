@@ -28,8 +28,8 @@ class DataKelasResource extends Resource
 {
   protected static ?string $model = Student::class;
   protected static ?string $navigationIcon = 'heroicon-o-user-group';
-  protected static ?string $navigationLabel = 'Data Kelas Anda';
-  protected static ?string $pluralModelLabel = 'Data Kelas Anda';
+  protected static ?string $navigationLabel = 'Data Kelas';
+  protected static ?string $pluralModelLabel = 'Data Kelas';
 
   public static function form(Form $form): Form
   {
@@ -101,20 +101,20 @@ class DataKelasResource extends Resource
     ];
   }
 
-  public static function getEloquentQuery(): Builder
-  {
-    $user = Auth::user();
+  // public static function getEloquentQuery(): Builder
+  // {
+  //   $user = Auth::user();
 
-    $teacher = $user->teacher;
+  //   $teacher = $user->teacher;
 
-    if (!$teacher) {
-      return parent::getEloquentQuery()->whereNull('id');
-    }
+  //   if (!$teacher) {
+  //     return parent::getEloquentQuery()->whereNull('id');
+  //   }
 
-    $classIds = ClassTeacher::where('id_teacher', $teacher->id)->pluck('id_class');
+  //   $classIds = ClassTeacher::where('id_teacher', $teacher->id)->pluck('id_class');
 
-    return parent::getEloquentQuery()->whereIn('class_id', $classIds);
-  }
+  //   return parent::getEloquentQuery()->whereIn('class_id', $classIds);
+  // }
 
 
   public static function infolist(Infolist $infolist): Infolist

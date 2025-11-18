@@ -30,7 +30,8 @@ class Student extends Model
 
   public function memorizes()
   {
-    return $this->hasMany(Memorize::class, 'id_student');
+    return $this->hasOne(Memorize::class, 'id_student')
+      ->latest('created_at');
   }
 
   protected static function booted()

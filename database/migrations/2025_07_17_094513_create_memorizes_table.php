@@ -19,6 +19,8 @@ return new class extends Migration
       $table->integer('from');
       $table->integer('to');
       $table->string('audio')->nullable();
+      $table->string('nilai');
+      $table->string('aprroved_by');
       $table->tinyInteger('complete');
       $table->timestamps();
     });

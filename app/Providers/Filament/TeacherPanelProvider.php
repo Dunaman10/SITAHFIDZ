@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Teacher\Pages\ClassDetail;
+use App\Models\Classes;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -70,12 +71,14 @@ class TeacherPanelProvider extends PanelProvider
         PanelsRenderHook::SIDEBAR_NAV_END,
         function () {
 
-          $user = auth()->user();
-          $classes = collect();
+          // $user = auth()->user();
+          // $classes = collect();
 
-          if ($user && $user->teacher) {
-            $classes = $user->teacher->classes;
-          }
+          // if ($user && $user->teacher) {
+          //   $classes = $user->teacher->classes;
+          // }
+          // AMBIL SEMUA KELAS
+          $classes = Classes::orderBy('class_name')->get();
 
           return view('sidebar-dropdown', [
             'classes' => $classes,

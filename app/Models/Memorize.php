@@ -20,6 +20,8 @@ class Memorize extends Model
     'from',
     'to',
     'audio',
+    'nilai',
+    'approved_by',
     'complete',
     'created_at',
     'updated_at',

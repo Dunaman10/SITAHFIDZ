@@ -101,6 +101,8 @@ class ClassDetail extends Page
         'memorizes.from',
         'memorizes.to',
         'memorizes.audio',
+        'memorizes.nilai',
+        'memorizes.approved_by',
         'memorizes.complete'
       )
       ->join('students', 'memorizes.id_student', '=', 'students.id')
@@ -135,6 +137,8 @@ class ClassDetail extends Page
             'from'         => $item->from,
             'to'           => $item->to,
             'audio'        => $item->audio,
+            'nilai'        => $item->nilai,
+            'approved_by'  => $item->approved_by,
             'complete'     => (int) $item->complete,
           ];
         })->values()->toArray(),
@@ -150,6 +154,8 @@ class ClassDetail extends Page
       ['header' => 'Mulai', 'key' => 'from'],
       ['header' => 'Selesai', 'key' => 'to'],
       ['header' => 'Audio', 'key' => 'audio'],
+      ['header' => 'Nilai', 'key' => 'nilai'],
+      ['header' => 'Diperiksa Oleh', 'key' => 'approved_by'],
       ['header' => 'Status', 'key' => 'complete'],
     ];
   }
