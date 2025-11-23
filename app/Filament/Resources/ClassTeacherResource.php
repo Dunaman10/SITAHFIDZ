@@ -30,6 +30,12 @@ class ClassTeacherResource extends Resource
       ->with(['class', 'teacher.user']);
   }
 
+  // Sembunyikan Resource dari sidebar
+  public static function shouldRegisterNavigation(): bool
+  {
+    return false;
+  }
+
   public static function form(Form $form): Form
   {
     return $form

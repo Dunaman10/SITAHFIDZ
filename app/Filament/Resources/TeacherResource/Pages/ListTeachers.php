@@ -11,15 +11,15 @@ class ListTeachers extends ListRecords
 {
   protected static string $resource = TeacherResource::class;
 
-  protected function getHeaderActions(): array
-  {
-    return [
-      Actions\CreateAction::make('create')
-        ->label('Tambah Guru')
-        ->outlined()
-        ->color('gray'),
-    ];
-  }
+  // protected function getHeaderActions(): array
+  // {
+  //   return [
+  //     Actions\CreateAction::make('create')
+  //       ->label('Tambah Guru')
+  //       ->outlined()
+  //       ->color('gray'),
+  //   ];
+  // }
 
   protected function getHeaderWidgets(): array
   {

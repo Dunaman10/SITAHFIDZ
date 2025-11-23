@@ -30,8 +30,8 @@ class StudentResource extends Resource
 {
   protected static ?string $model = Student::class;
   protected static ?string $navigationIcon = 'heroicon-o-user-group';
-  protected static ?string $navigationLabel = 'Data Santri';
-  protected static ?string $pluralModelLabel = 'Data Santri';
+  protected static ?string $navigationLabel = 'Santri';
+  protected static ?string $pluralModelLabel = 'Manajemen Santri';
   protected static ?int $navigationSort = 2;
 
   public static function getEloquentQuery(): Builder
@@ -54,6 +54,8 @@ class StudentResource extends Resource
         Select::make('parent')
           ->label('Orang Tua')
           ->relationship('user', 'name')
+          ->preload()
+          ->searchable()
           ->required()
           ->placeholder('Pilih orang tua')
           ->options(User::where('role_id', '3')->pluck('name', 'id')),
@@ -61,6 +63,8 @@ class StudentResource extends Resource
         Select::make('class_id')
           ->label('Kelas')
           ->placeholder('Pilih kelas')
+          ->preload()
+          ->searchable()
           ->options(Classes::all()->pluck('class_name', 'id'))
           ->required(),
 
@@ -108,9 +112,14 @@ class StudentResource extends Resource
           ->copyable()
           ->sortable('class.class_name'),
 
-        TextColumn::make('tanggal_lahir')
-          ->label('Tanggal Lahir')
-          ->formatStateUsing(fn($state) => Carbon::parse($state)->translatedFormat('d F Y')),
+        TextColumn::make('pembimbing.user.name')
+          ->label('Guru Pembimbing')
+          ->placeholder('Kosong')
+
+
+        // TextColumn::make('tanggal_lahir')
+        //   ->label('Tanggal Lahir')
+        //   ->formatStateUsing(fn($state) => Carbon::parse($state)->translatedFormat('d F Y')),
       ])
       ->filters([
         //

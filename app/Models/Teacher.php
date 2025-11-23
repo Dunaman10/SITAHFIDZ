@@ -32,6 +32,12 @@ class Teacher extends Model
     return Student::whereIn('class_id', $this->classes()->select('classes.id'));
   }
 
+  public function binaan()
+  {
+    return $this->hasMany(MentorStudent::class, 'id_teacher');
+  }
+
+
   protected static function booted()
   {
     static::deleted(function ($teacher) {

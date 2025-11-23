@@ -16,6 +16,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\View;
 use Filament\Forms\Form;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Laravel\Pail\File;
@@ -24,117 +25,134 @@ class CreateMemorize extends CreateRecord
 {
   protected static string $resource = MemorizeResource::class;
 
-  public ?string $kelas = null;
-  public ?string $surah = null;
-  public ?string $audio = null;
-
-  public function getBreadcrumbs(): array
+  public function getTitle(): string
   {
-    return [];
+    return 'Tambah Setoran';
   }
 
-  public function mount($record = null): void
+  protected function mutateFormDataBeforeCreate(array $data): array
   {
-    parent::mount($record);
-    $this->kelas = request()->route('kelas');
-    $this->surah = request()->route('surah');
-    $this->fillForm();
+    $data['id_teacher'] = Auth::user()->teacher->id;
+
+    return $data;
   }
 
-  public function getDataSurah(): object
-  {
-    return DB::table('surah')
-      ->select('id', 'surah_name', 'ayat')
-      ->where('surah_name', $this->surah)
-      ->first();
-  }
+  // public ?string $kelas = null;
+  // public ?string $surah = null;
+  // public ?string $audio = null;
 
-  public function getIdTeacher(): int
-  {
-    return DB::table('teachers')
-      ->where('id_users', auth()->id())
-      ->value('id');
-  }
+  // public function getBreadcrumbs(): array
+  // {
+  //   return [];
+  // }
 
-  public function form(Form $form): Form
-  {
-    return $form->schema([
-      Hidden::make('id_kelas')->default($this->kelas),
-      Hidden::make('id_surah')->default($this->getDataSurah()->id ?? null),
-      Hidden::make('id_teacher')->default($this->getIdTeacher()),
-      Hidden::make('audio')->default(null),
+  // public function mount($record = null): void
+  // {
+  //   parent::mount($record);
+  //   $this->kelas = request()->route('kelas');
+  //   $this->surah = request()->route('surah');
+  //   $this->fillForm();
+  // }
 
-      View::make('surah_name')
-        ->label('Surah')
-        ->view('components.surah-card')
-        ->viewData([
-          'surah' => $this->surah ?? '',
-          'ayat' => $this->getDataSurah()->ayat ?? 0,
-        ])
-        ->columnSpanFull(),
+  // public function getDataSurah(): object
+  // {
+  //   return DB::table('surah')
+  //     ->select('id', 'surah_name', 'ayat')
+  //     ->where('surah_name', $this->surah)
+  //     ->first();
+  // }
 
-      Select::make('id_student')
-        ->label('Nama Santri / Santriwati')
-        ->required()
-        ->searchable()
-        ->placeholder('Masukkan nama santri / santriwati')
-        ->relationship('student', 'student_name')
-        ->options(
-          Student::whereHas(
-            'class',
-            fn($query) =>
-            $query->where('class_id', $this->kelas)
-          )->pluck('student_name', 'id')
-        )
-        ->columnSpanFull(),
+  // public function getIdTeacher(): int
+  // {
+  //   return DB::table('teachers')
+  //     ->where('id_users', auth()->id())
+  //     ->value('id');
+  // }
 
-      Grid::make()->schema([
-        TextInput::make('from')
-          ->label('Halaman Surah (Dari)')
-          ->numeric()
-          ->required()
-          ->placeholder('5'),
+  // public function form(Form $form): Form
+  // {
+  //   return $form->schema([
+  //     Hidden::make('id_kelas')->default($this->kelas),
+  //     Hidden::make('id_surah')->default($this->getDataSurah()->id ?? null),
+  //     Hidden::make('id_teacher')->default($this->getIdTeacher()),
+  //     Hidden::make('audio')->default(null),
 
-        TextInput::make('to')
-          ->label('Halaman Surah (Sampai)')
-          ->numeric()
-          ->required()
-          ->placeholder('10'),
-      ])->columns(2)->columnSpanFull(),
+  //     View::make('surah_name')
+  //       ->label('Surah')
+  //       ->view('components.surah-card')
+  //       ->viewData([
+  //         'surah' => $this->surah ?? '',
+  //         'ayat' => $this->getDataSurah()->ayat ?? 0,
+  //       ])
+  //       ->columnSpanFull(),
 
-      FileUpload::make('audio')
-        ->label('Masukkan file rekaman suara')
-        ->acceptedFileTypes(['audio/*'])
-        ->maxSize(10240) // 10MB
-        ->disk('public')
-        ->directory('hafalan-audio')
-        ->preserveFilenames()
-        ->placeholder('Masukkan file suara santri / santriwati?')
-        ->columnSpanFull(),
+  //     Select::make('id_student')
+  //       ->label('Nama Santri / Santriwati')
+  //       ->required()
+  //       ->searchable()
+  //       ->placeholder('Masukkan nama santri / santriwati')
+  //       ->relationship('student', 'student_name')
+  //       ->options(
+  //         Student::whereHas(
+  //           'class',
+  //           fn($query) =>
+  //           $query->where('class_id', $this->kelas)
+  //         )->pluck('student_name', 'id')
+  //       )
+  //       ->columnSpanFull(),
 
-      TextInput::make('nilai')
-        ->label('Nilai Hafalan')
-        ->required(),
+  //     Grid::make()->schema([
+  //       TextInput::make('from')
+  //         ->label('Halaman Surah (Dari)')
+  //         ->numeric()
+  //         ->required()
+  //         ->placeholder('5'),
 
-      TextInput::make('approved_by')
-        ->label('Diperiksa Oleh')
-        ->required(),
+  //       TextInput::make('to')
+  //         ->label('Halaman Surah (Sampai)')
+  //         ->numeric()
+  //         ->required()
+  //         ->placeholder('10'),
+  //     ])->columns(2)->columnSpanFull(),
 
-      Radio::make('complete')
-        ->label('')
-        ->options([
-          '1' => 'Selesai',
-          '0' => 'Belum Selesai',
-        ])
-        ->default('0')
-        ->inline()
-        ->columnSpanFull(),
-    ]);
-  }
+  //     FileUpload::make('audio')
+  //       ->label('Masukkan file rekaman suara')
+  //       ->acceptedFileTypes(['audio/*'])
+  //       ->maxSize(10240) // 10MB
+  //       ->disk('public')
+  //       ->directory('hafalan-audio')
+  //       ->preserveFilenames()
+  //       ->placeholder('Masukkan file suara santri / santriwati?')
+  //       ->columnSpanFull(),
 
+  //     TextInput::make('nilai')
+  //       ->label('Nilai Hafalan')
+  //       ->required(),
+
+  //     TextInput::make('approved_by')
+  //       ->label('Diperiksa Oleh')
+  //       ->required(),
+
+  //     Radio::make('complete')
+  //       ->label('')
+  //       ->options([
+  //         '1' => 'Selesai',
+  //         '0' => 'Belum Selesai',
+  //       ])
+  //       ->default('0')
+  //       ->inline()
+  //       ->columnSpanFull(),
+  //   ]);
+  // }
+
+
+  // protected function getRedirectUrl(): string
+  // {
+  //   return ClassDetail::getUrl(['classId' => $this->kelas]);
+  // }
 
   protected function getRedirectUrl(): string
   {
-    return ClassDetail::getUrl(['classId' => $this->kelas]);
+    return MemorizeResource::getUrl('index'); // Redirect ke halaman daftar student
   }
 }

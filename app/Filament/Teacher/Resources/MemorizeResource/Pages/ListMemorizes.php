@@ -8,12 +8,13 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListMemorizes extends ListRecords
 {
-    protected static string $resource = MemorizeResource::class;
+  protected static string $resource = MemorizeResource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
+  protected function getHeaderActions(): array
+  {
+    return [
+      Actions\CreateAction::make()
+        ->label('Tambah Setoran Santri'),
+    ];
+  }
 }

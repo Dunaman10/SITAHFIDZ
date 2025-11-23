@@ -7,6 +7,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Filament\Resources\UserResource\Widgets\UserOverview;
 use App\Filament\Resources\UserResource\Widgets\UsersOverview;
+use App\Models\Role;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -27,9 +28,9 @@ use PhpParser\Node\Stmt\Static_;
 class UserResource extends Resource
 {
   protected static ?string $model = User::class;
-  protected static ?string $navigationIcon = 'heroicon-o-users';
-  protected static ?string $navigationLabel = 'Data Pengguna';
-  protected static ?string $pluralModelLabel = 'Data Pengguna';
+  protected static ?string $navigationIcon = 'heroicon-o-user-group';
+  protected static ?string $navigationLabel = 'Pengguna';
+  protected static ?string $pluralModelLabel = 'Manajemen Data Pengguna';
   protected static ?int $navigationSort = 4;
 
   public static function getEloquentQuery(): Builder
@@ -48,11 +49,14 @@ class UserResource extends Resource
         Select::make('role_id')
           ->label('Role')
           ->options(
-            \App\Models\Role::whereIn('role_name', ['orang_tua'])
+            Role::whereIn('role_name', ['orang_tua', 'guru', 'keamanan', 'admin'])
               ->get()
               ->pluck(function ($role) {
                 return match ($role->role_name) {
                   'orang_tua' => 'Orang Tua',
+                  'guru' => 'Guru',
+                  'keamanan' => 'Keamanan',
+                  'admin' => 'Admin',
                   default => ucfirst($role->role_name),
                 };
               }, 'id')
@@ -75,7 +79,7 @@ class UserResource extends Resource
         SelectFilter::make('role_id')
           ->label('Filter by Role')
           ->options(
-            \App\Models\Role::all()
+            Role::all()
               ->pluck(function ($role) {
                 return match ($role->role_name) {
                   'orang_tua' => 'Orang Tua',

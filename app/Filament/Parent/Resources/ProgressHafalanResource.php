@@ -66,6 +66,13 @@ class ProgressHafalanResource extends Resource
         TextColumn::make('to')
           ->label('Sampai Ayat')
           ->alignCenter(),
+
+        TextColumn::make('nilai')
+          ->label('Nilai')
+          ->alignCenter(),
+
+        TextColumn::make('approved_by')
+          ->label('Dinilai Oleh'),
       ])
 
       ->filters([
@@ -94,6 +101,14 @@ class ProgressHafalanResource extends Resource
 
             TextInput::make('to')
               ->label('Sampai Ayat')
+              ->disabled(),
+
+            TextInput::make('nilai')
+              ->label('Nilai')
+              ->disabled(),
+
+            TextInput::make('approved_by')
+              ->label('Dinilai Oleh')
               ->disabled(),
 
             DatePicker::make('created_at')

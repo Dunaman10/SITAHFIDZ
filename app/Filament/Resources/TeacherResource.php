@@ -6,28 +6,25 @@ use App\Filament\Resources\TeacherResource\Pages;
 use App\Filament\Resources\TeacherResource\RelationManagers;
 use App\Filament\Resources\TeacherResource\Widgets\TeacherOverview;
 use App\Models\Teacher;
-use App\Models\User;
-use Dom\Text;
-use Filament\Forms;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\Section;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TeacherResource extends Resource
 {
   protected static ?string $model = Teacher::class;
 
-  protected static ?string $navigationIcon = 'heroicon-o-user';
-  protected static ?string $navigationLabel = 'Data Guru';
-  protected static ?string $pluralModelLabel = 'Data Guru';
+  protected static ?string $navigationIcon = 'heroicon-o-user-group';
+  protected static ?string $navigationLabel = 'Guru';
+  protected static ?string $pluralModelLabel = 'Manajemen Guru';
   protected static ?int $navigationSort = 1;
 
   public static function getEloquentQuery(): Builder
@@ -45,20 +42,9 @@ class TeacherResource extends Resource
   {
     return $form
       ->schema([
-        TextInput::make('name')
-          ->required()
-          ->placeholder('masukkan nama guru'),
-
-        TextInput::make('email')
-          ->required()
-          ->placeholder('masukkan email guru')
-          ->email(),
-
-        TextInput::make('password')
-          ->required()
-          ->placeholder('masukkan password guru')
-          ->password()
-          ->revealable(),
+        // Select::make('id_users')
+        //   ->label('Nama Guru')
+        //   ->relationship('user', 'name'),
       ]);
   }
 
@@ -66,14 +52,24 @@ class TeacherResource extends Resource
   {
     return $table
       ->columns([
-        TextColumn::make('user.name')->label('Nama Guru')->searchable()->sortable(),
+        TextColumn::make('user.name')
+          ->label('Nama Guru')
+          ->searchable()
+          ->sortable(),
+        TextColumn::make('binaan.student.student_name')
+          ->label('Santri Bimbingan')
+          ->limit(20)
+          ->placeholder('Kosong'),
+        TextColumn::make('user.email')
+          ->label('Email Guru')
+          ->searchable()
       ])
       ->filters([
         //
       ])
       ->actions([
         // Tables\Actions\EditAction::make(),
-        // Tables\Actions\ViewAction::make(),
+        Tables\Actions\ViewAction::make(),
         Tables\Actions\DeleteAction::make(),
       ])
       ->bulkActions([
@@ -94,8 +90,8 @@ class TeacherResource extends Resource
   {
     return [
       'index' => Pages\ListTeachers::route('/'),
-      'create' => Pages\CreateTeacher::route('/create'),
-      'edit' => Pages\EditTeacher::route('/{record}/edit'),
+      // 'create' => Pages\CreateTeacher::route('/create'),
+      // 'edit' => Pages\EditTeacher::route('/{record}/edit'),
     ];
   }
 
@@ -104,5 +100,31 @@ class TeacherResource extends Resource
     return [
       TeacherOverview::class
     ];
+  }
+
+  public static function infolist(Infolist $infolist): Infolist
+  {
+    return $infolist
+      ->schema([
+        Section::make('Detail Guru')
+          ->schema([
+            TextEntry::make('user.name')
+              ->label('Nama Guru'),
+
+            TextEntry::make('user.email')
+              ->label('Email Guru'),
+
+            TextEntry::make('binaan')
+              ->label('Santri Binaan')
+              ->formatStateUsing(
+                fn($record) =>
+                $record->binaan
+                  ->map(fn($m) => $m->student->student_name)
+                  ->join(', ')
+              )
+              ->placeholder('Tidak ada santri binaan')
+              ->columnSpanFull(),
+          ]),
+      ]);
   }
 }

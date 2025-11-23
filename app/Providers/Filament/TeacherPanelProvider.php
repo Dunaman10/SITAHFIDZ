@@ -65,37 +65,6 @@ class TeacherPanelProvider extends PanelProvider
       ])
       ->authMiddleware([
         Authenticate::class,
-      ])
-
-      ->renderHook(
-        PanelsRenderHook::SIDEBAR_NAV_END,
-        function () {
-
-          // $user = auth()->user();
-          // $classes = collect();
-
-          // if ($user && $user->teacher) {
-          //   $classes = $user->teacher->classes;
-          // }
-          // AMBIL SEMUA KELAS
-          $classes = Classes::orderBy('class_name')->get();
-
-          return view('sidebar-dropdown', [
-            'classes' => $classes,
-          ]);
-        }
-      )
-      ->renderHook(
-        PanelsRenderHook::TOPBAR_END,
-        function () {
-          // Mendapatkan objek pengguna yang sedang login
-          $user = Auth::user();
-          // Memeriksa apakah ada pengguna yang login dan memiliki nama
-          $userName = $user ? $user->name : 'Guest'; // Ganti dengan nama default jika tidak login/tidak ada nama
-          return Blade::render('', [
-            'userName' => $userName, // Melewatkan nama pengguna ke template Blade
-          ]);
-        }
-      );
+      ]);
   }
 }

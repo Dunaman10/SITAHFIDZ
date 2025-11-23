@@ -40,8 +40,6 @@ class User extends Authenticatable
     return $this->hasMany(Student::class, 'parent');
   }
 
-
-
   /**
    * The attributes that should be hidden for serialization.
    *

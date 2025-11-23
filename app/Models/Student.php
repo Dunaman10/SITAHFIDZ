@@ -34,6 +34,17 @@ class Student extends Model
       ->latest('created_at');
   }
 
+  public function pembimbing()
+  {
+    return $this->belongsToMany(
+      Teacher::class,
+      'mentor_students',
+      'id_student',
+      'id_teacher'
+    );
+  }
+
+
   protected static function booted()
   {
     static::created(function ($student) {

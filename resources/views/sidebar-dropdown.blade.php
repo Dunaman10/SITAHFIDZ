@@ -16,7 +16,6 @@
   </select>
 </div>
 
-
 <script>
   document.getElementById('sidebar-class-selector').addEventListener('change', function() {
     const url = this.value;

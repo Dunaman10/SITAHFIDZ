@@ -26,6 +26,12 @@ class TargetResource extends Resource
   protected static ?string $pluralModelLabel = 'Manejemen Target';
   protected static ?int $navigationSort = 4;
 
+  // Sembunyikan Resource dari sidebar
+  public static function shouldRegisterNavigation(): bool
+  {
+    return false;
+  }
+
   public static function form(Form $form): Form
   {
     return $form

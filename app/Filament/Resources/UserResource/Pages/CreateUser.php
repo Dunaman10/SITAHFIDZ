@@ -3,10 +3,13 @@
 namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
+use App\Models\Teacher;
+use App\Models\User;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\Hash;
 
 class CreateUser extends CreateRecord
 {
@@ -20,6 +23,20 @@ class CreateUser extends CreateRecord
   protected function getRedirectUrl(): string
   {
     return UserResource::getUrl('index'); // Redirect ke halaman daftar student
+  }
+
+  protected function handleRecordCreation(array $data): Teacher
+  {
+    $user = User::create([
+      'name' => $data['name'],
+      'email' => $data['email'],
+      'password' => Hash::make($data['password']),
+      'role_id' => 2
+    ]);
+
+    return Teacher::create([
+      'id_users' => $user->id
+    ]);
   }
 
   protected function afterCreate(): void

@@ -22,6 +22,12 @@ class RoleResource extends Resource
   protected static ?string $navigationLabel = 'Data Role';
   protected static ?string $pluralModelLabel = 'Data Role';
 
+  // Sembunyikan Resource dari sidebar
+  public static function shouldRegisterNavigation(): bool
+  {
+    return false;
+  }
+
   public static function form(Form $form): Form
   {
     return $form
