@@ -12,6 +12,7 @@ return new class extends Migration
       $table->id();
       $table->text('activity_name');
       $table->text('description');
+      $table->text('keterangan');
       $table->date('activity_date');
       $table->timestamps();
     });

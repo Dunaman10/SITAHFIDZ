@@ -30,6 +30,7 @@ class CreateUser extends CreateRecord
     $user = User::create([
       'name' => $data['name'],
       'email' => $data['email'],
+      'phone' => $data['phone'],
       'password' => Hash::make($data['password']),
       'role_id' => 2
     ]);

@@ -9,7 +9,7 @@ class Activity extends Model
 {
   use HasFactory;
   protected $table = 'activities';
-  protected $fillable = ['activity_name', 'description', 'activity_date'];
+  protected $fillable = ['activity_name', 'description', 'keterangan', 'activity_date'];
   public $timestamps = false;
 
   public function users()

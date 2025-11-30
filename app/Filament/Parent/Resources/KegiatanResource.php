@@ -34,16 +34,19 @@ class KegiatanResource extends Resource
         Section::make('Informasi Kegiatan')
           ->schema([
             TextInput::make('activity_name')
-              ->label('Nama Kegiatan')
-              ->required()
-              ->placeholder('Masukkan nama kegiatan'),
+              ->label('Nama Kegiatan'),
+
             Textarea::make('description')
               ->label('Deskripsi')
-              ->placeholder('Masukkan deskripsi kegiatan'),
+              ->placeholder('Tidak ada deskripsi kegiatan'),
+
+            TextInput::make('keterangan')
+              ->label('Keterangan')
+              ->placeholder('Tidak ada keterangan'),
+
             DatePicker::make('activity_date')
               ->label('Tanggal Kegiatan')
-              ->required()
-              ->placeholder('Masukkan tanggal kegiatan'),
+              ->placeholder('Tidak ada tanggal'),
           ])
       ]);
   }
@@ -57,12 +60,18 @@ class KegiatanResource extends Resource
           ->searchable()
           ->copyable()
           ->sortable('activity_name'),
+
         TextColumn::make('description')
           ->label('Deskripsi')
           ->searchable()
           ->copyable()
           ->limit(50)
           ->sortable('description'),
+
+        TextColumn::make('keterangan')
+          ->label('Keterangan')
+          ->searchable(),
+
         TextColumn::make('activity_date')
           ->label('Tanggal Kegiatan')
           ->date()

@@ -7,6 +7,7 @@ use App\Filament\Resources\ActivityResource\Pages;
 use App\Models\Activity;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -41,6 +42,12 @@ class ActivityResource extends Resource
             Textarea::make('description')
               ->label('Deskripsi')
               ->placeholder('Masukkan deskripsi kegiatan'),
+            Select::make('keterangan')
+              ->label('Keterangan')
+              ->options([
+                'Wajib Hadir' => 'Wajib Hadir',
+                'Tidak Wajib Hadir' => 'Tidak Wajib Hadir',
+              ]),
             DatePicker::make('activity_date')
               ->label('Tanggal Kegiatan')
               ->required()
@@ -52,18 +59,25 @@ class ActivityResource extends Resource
   public static function table(Table $table): Table
   {
     return $table
+      ->defaultSort('id', 'desc')
       ->columns([
         TextColumn::make('activity_name')
           ->label('Nama Kegiatan')
           ->searchable()
           ->copyable()
           ->sortable('activity_name'),
+
         TextColumn::make('description')
           ->label('Deskripsi')
           ->searchable()
           ->copyable()
           ->limit(50)
           ->sortable('description'),
+
+        TextColumn::make('keterangan')
+          ->label('Keterangan')
+          ->searchable(),
+
         TextColumn::make('activity_date')
           ->label('Tanggal Kegiatan')
           ->searchable()

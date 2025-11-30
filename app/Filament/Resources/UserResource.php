@@ -43,9 +43,28 @@ class UserResource extends Resource
   {
     return $form
       ->schema([
-        TextInput::make('name')->required()->placeholder('masukkan nama orang tua'),
-        TextInput::make('email')->required()->email()->unique(ignoreRecord: true)->placeholder('masukkan email'),
-        TextInput::make('password')->required()->password()->revealable(),
+        TextInput::make('name')
+          ->required()
+          ->placeholder('masukkan nama orang tua'),
+
+        TextInput::make('email')
+          ->required()
+          ->email()
+          ->unique(ignoreRecord: true)
+          ->placeholder('masukkan email'),
+
+        TextInput::make('phone')
+          ->label('Nomor Telepon')
+          ->required()
+          ->numeric()
+          ->placeholder('masukkan nomor whatsapp')
+          ->hint('mulai dari angka 62, contoh: 628123456789'),
+
+        TextInput::make('password')
+          ->required()
+          ->password()
+          ->revealable(),
+
         Select::make('role_id')
           ->label('Role')
           ->options(
@@ -72,9 +91,23 @@ class UserResource extends Resource
       ->query(User::with('role'))
       ->defaultSort('created_at', 'desc')
       ->columns([
-        TextColumn::make('name')->searchable()->sortable(),
-        TextColumn::make('email')->searchable(),
-        TextColumn::make('role.role_name')->label('Role')->searchable(),
+        TextColumn::make('name')
+          ->searchable()
+          ->sortable(),
+        TextColumn::make('email')
+          ->searchable(),
+        TextColumn::make('phone')
+          ->label('Nomor Telepon')
+          ->formatStateUsing(function ($state) {
+            if (!$state) return '-';
+            $state = preg_replace('/\D/', '', $state);
+            return preg_replace('/(\d{2})(\d{4})(\d{4})(\d+)/', '$1 $2 $3 $4', $state);
+          })
+          ->searchable(),
+
+        TextColumn::make('role.role_name')
+          ->label('Role')
+          ->searchable(),
       ])
       ->filters([
         SelectFilter::make('role_id')
