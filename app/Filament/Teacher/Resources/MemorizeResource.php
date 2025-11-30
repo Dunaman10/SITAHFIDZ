@@ -7,7 +7,9 @@ use App\Models\ClassTeacher;
 use App\Models\Memorize;
 use App\Models\MentorStudent;
 use App\Models\Surah;
+use DateTime;
 use Dom\Text;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -16,12 +18,14 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\View;
 use Filament\Forms\Form;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use PhpParser\Node\Stmt\Label;
 
 class MemorizeResource extends Resource
@@ -74,16 +78,12 @@ class MemorizeResource extends Resource
         TextColumn::make('surah.surah_name')
           ->label('Nama Surat'),
 
-        TextColumn::make('nilai')
-          ->label('Nilai')
+        TextColumn::make('surah.juz')
+          ->label('Juz')
           ->alignCenter(),
 
-        TextColumn::make('from')
-          ->label('Dari Ayat')
-          ->alignCenter(),
-
-        TextColumn::make('to')
-          ->label('Sampai Ayat')
+        TextColumn::make('nilai_avg')
+          ->label('Nilai Rata-Rata')
           ->alignCenter(),
 
         TextColumn::make('created_at')
@@ -115,7 +115,6 @@ class MemorizeResource extends Resource
         ->relationship('student', 'student_name')
         ->label('Nama Santri / Santriwati')
         ->required()
-        // ->searchable()
         ->placeholder('Masukkan nama santri / santriwati')
         ->columnSpan('full')
         ->options(function () {
@@ -123,7 +122,7 @@ class MemorizeResource extends Resource
 
           if (!$teacher) return [];
 
-          return \App\Models\MentorStudent::where('id_teacher', $teacher->id)
+          return MentorStudent::where('id_teacher', $teacher->id)
             ->with('student')
             ->get()
             ->mapWithKeys(fn($item) => [
@@ -131,35 +130,85 @@ class MemorizeResource extends Resource
             ]);
         }),
 
+      Select::make('juz')
+        ->label('Juz')
+        ->options([
+          1 => 'Juz 1',
+          2 => 'Juz 2',
+          3 => 'Juz 3',
+          4 => 'Juz 4',
+          5 => 'Juz 5',
+          6 => 'Juz 6',
+          7 => 'Juz 7',
+          8 => 'Juz 8',
+          9 => 'Juz 9',
+          10 => 'Juz 10',
+          11 => 'Juz 11',
+          12 => 'Juz 12',
+          13 => 'Juz 13',
+          14 => 'Juz 14',
+          15 => 'Juz 15',
+          16 => 'Juz 16',
+          17 => 'Juz 17',
+          18 => 'Juz 18',
+          19 => 'Juz 19',
+          20 => 'Juz 20',
+          21 => 'Juz 21',
+          22 => 'Juz 22',
+          23 => 'Juz 23',
+          24 => 'Juz 24',
+          25 => 'Juz 25',
+          26 => 'Juz 26',
+          27 => 'Juz 27',
+          28 => 'Juz 28',
+          29 => 'Juz 29',
+          30 => 'Juz 30',
+        ])
+        ->reactive()
+        ->afterStateUpdated(fn($state, callable $set) => $set('id_surah', null))
+        ->placeholder('Pilih Juz …')
+        ->required(),
+
       Select::make('id_surah')
-        ->relationship('surah', 'surah_name')
-        ->label('Nama Surat')
-        ->preload()
+        ->label('Nama Surah')
+        ->options(function (callable $get) {
+          $juz = $get('juz');
+
+          if (!$juz) return [];
+
+          return Surah::where('juz', $juz)
+            ->orderBy('id')
+            ->pluck('surah_name', 'id');
+        })
         ->required()
         ->searchable()
-        ->placeholder('Cari nama surat')
-        ->columnSpan('full'),
+        ->preload()
+        ->placeholder('Pilih Surah berdasarkan Juz …'),
 
-      TextInput::make('from')
-        ->label('Dari Ayat')
-        ->numeric(),
-
-      TextInput::make('to')
-        ->label('Sampai Ayat')
-        ->numeric(),
+      FileUpload::make('foto')
+        ->label('Upload Foto Santri')
+        ->image()
+        ->directory('foto-santri')
+        ->disk('public')
+        ->placeholder('Upload Foto Santri'),
 
       FileUpload::make('audio')
-        ->label('Masukkan file rekaman suara')
+        ->label('Upload Rekaman Suara Santri')
         ->acceptedFileTypes(['audio/*'])
         ->maxSize(10240) // 10MB
         ->disk('public')
         ->directory('hafalan-audio')
         ->preserveFilenames()
-        ->placeholder('Masukkan file suara santri / santriwati?')
-        ->columnSpanFull(),
+        ->placeholder('Upload suara santri'),
 
-      TextInput::make('nilai')
-        ->label('Nilai Hafalan')
+      TextInput::make('from')
+        ->label('Dari Ayat')
+        ->numeric()
+        ->required(),
+
+      TextInput::make('to')
+        ->label('Sampai Ayat')
+        ->numeric()
         ->required(),
 
       TextInput::make('approved_by')
@@ -167,14 +216,75 @@ class MemorizeResource extends Resource
         ->required(),
 
       Radio::make('complete')
-        ->label('')
+        ->label('Status')
         ->options([
           '1' => 'Selesai',
           '0' => 'Belum Selesai',
         ])
-        ->default('0')
-        ->inline()
-        ->columnSpanFull(),
+        ->default('0'),
+
+      Section::make('Penilaian Hafalan')
+        ->description('Bagian ini berisi nilai dan kualitas bacaan santri')
+        ->schema([
+
+          Select::make('makharijul_huruf')
+            ->label('Makharijul Huruf')
+            ->options([
+              'A' => 'A',
+              'B' => 'B',
+              'C' => 'C',
+              'D' => 'D',
+            ]),
+
+          Select::make('shifatul_huruf')
+            ->label('Shifatul Huruf')
+            ->options([
+              'A' => 'A',
+              'B' => 'B',
+              'C' => 'C',
+              'D' => 'D',
+            ]),
+
+          Select::make('ahkamul_qiroat')
+            ->label('Akhkamul Qiroat')
+            ->options([
+              'A' => 'A',
+              'B' => 'B',
+              'C' => 'C',
+              'D' => 'D',
+            ]),
+
+          Select::make('ahkamul_waqfi')
+            ->label('Akhkamul Waqfi')
+            ->options([
+              'A' => 'A',
+              'B' => 'B',
+              'C' => 'C',
+              'D' => 'D',
+            ]),
+
+          Select::make('qowaid_tafsir')
+            ->label('Qowaid Tafsir')
+            ->options([
+              'A' => 'A',
+              'B' => 'B',
+              'C' => 'C',
+              'D' => 'D',
+            ]),
+
+          Select::make('tarjamatul_ayat')
+            ->label('Tarjamatul Ayat')
+            ->options([
+              'A' => 'A',
+              'B' => 'B',
+              'C' => 'C',
+              'D' => 'D',
+            ]),
+
+        ])
+        ->columns(2), // biar lebih enak dilihat
+
+
 
       // View::make('surah_name')
       //   ->label('Surah')

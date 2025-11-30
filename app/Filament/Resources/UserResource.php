@@ -70,6 +70,7 @@ class UserResource extends Resource
   {
     return $table
       ->query(User::with('role'))
+      ->defaultSort('created_at', 'desc')
       ->columns([
         TextColumn::make('name')->searchable()->sortable(),
         TextColumn::make('email')->searchable(),

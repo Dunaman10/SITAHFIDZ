@@ -29,6 +29,12 @@ class AttendanceResource extends Resource
   protected static ?string $label = "Kehadiran";
   protected static ?string $navigationIcon = 'heroicon-o-clipboard';
 
+  // Sembunyikan Resource dari sidebar
+  public static function shouldRegisterNavigation(): bool
+  {
+    return false;
+  }
+
   public static function form(Form $form): Form
   {
     return $form

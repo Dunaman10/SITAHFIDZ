@@ -12,6 +12,6 @@ class CreateMentorStudent extends CreateRecord
 
   protected function getRedirectUrl(): string
   {
-    return MentorStudentResource::getUrl('index'); // Redirect ke halaman daftar student
+    return MentorStudentResource::getUrl('index');
   }
 }

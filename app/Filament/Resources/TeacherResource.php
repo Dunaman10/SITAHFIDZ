@@ -23,8 +23,8 @@ class TeacherResource extends Resource
   protected static ?string $model = Teacher::class;
 
   protected static ?string $navigationIcon = 'heroicon-o-user-group';
-  protected static ?string $navigationLabel = 'Guru';
-  protected static ?string $pluralModelLabel = 'Manajemen Guru';
+  protected static ?string $navigationLabel = 'Asatidz';
+  protected static ?string $pluralModelLabel = 'Manajemen Asatidz';
   protected static ?int $navigationSort = 1;
 
   public static function getEloquentQuery(): Builder
@@ -51,9 +51,10 @@ class TeacherResource extends Resource
   public static function table(Table $table): Table
   {
     return $table
+      ->defaultSort('id', 'desc')
       ->columns([
         TextColumn::make('user.name')
-          ->label('Nama Guru')
+          ->label('Nama Ustadz/Ustadzah')
           ->searchable()
           ->sortable(),
         TextColumn::make('binaan.student.student_name')
@@ -61,7 +62,7 @@ class TeacherResource extends Resource
           ->limit(20)
           ->placeholder('Kosong'),
         TextColumn::make('user.email')
-          ->label('Email Guru')
+          ->label('Email Ustadz/Ustadzah')
           ->searchable()
       ])
       ->filters([
@@ -109,10 +110,10 @@ class TeacherResource extends Resource
         Section::make('Detail Guru')
           ->schema([
             TextEntry::make('user.name')
-              ->label('Nama Guru'),
+              ->label('Nama Ustadz/Ustadzah'),
 
             TextEntry::make('user.email')
-              ->label('Email Guru'),
+              ->label('Email Ustadz/Ustadzah'),
 
             TextEntry::make('binaan')
               ->label('Santri Binaan')

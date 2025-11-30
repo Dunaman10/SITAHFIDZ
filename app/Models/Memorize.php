@@ -17,10 +17,18 @@ class Memorize extends Model
     'id_surah',
     'id_student',
     'id_teacher',
+    'foto',
     'from',
     'to',
     'audio',
-    'nilai',
+    'nilai_avg',
+    'makharijul_huruf',
+    'shifatul_huruf',
+    'ahkamul_qiroat',
+    'ahkamul_waqfi',
+    'qowaid_tafsir',
+    'tarjamatul_ayat',
+    'juz',
     'approved_by',
     'complete',
     'created_at',
@@ -59,6 +67,48 @@ class Memorize extends Model
         $old = $memorize->getOriginal('audio');
         if ($old && Storage::disk('public')->exists($old)) {
           Storage::disk('public')->delete($old);
+        }
+      }
+    });
+  }
+
+  public static function booted()
+  {
+    static::saving(function ($model) {
+
+      // Konversi huruf ke angka (nilai tengah)
+      $map = [
+        'A' => 90,
+        'B' => 65,
+        'C' => 40,
+        'D' => 15,
+      ];
+
+      $fields = [
+        $model->makharijul_huruf,
+        $model->shifatul_huruf,
+        $model->ahkamul_qiroat,
+        $model->ahkamul_waqfi,
+        $model->qowaid_tafsir,
+        $model->tarjamatul_ayat,
+      ];
+
+      // Ambil nilai angka
+      $numericValues = array_map(fn($x) => $map[$x] ?? null, $fields);
+      $numericValues = array_filter($numericValues);
+
+      if (!empty($numericValues)) {
+        $avg = array_sum($numericValues) / count($numericValues);
+
+        // Tentukan huruf berdasarkan range
+        if ($avg >= 75) {
+          $model->nilai_avg = 'A';
+        } elseif ($avg >= 50) {
+          $model->nilai_avg = 'B';
+        } elseif ($avg >= 25) {
+          $model->nilai_avg = 'C';
+        } else {
+          $model->nilai_avg = 'D';
         }
       }
     });

@@ -100,6 +100,7 @@ class KeamananResource extends Resource
       ])
       ->actions([
         Tables\Actions\EditAction::make(),
+        Tables\Actions\DeleteAction::make(),
       ])
       ->headerActions([
         ExportAction::make('export')

@@ -71,6 +71,7 @@ class StudentResource extends Resource
         FileUpload::make('profile')
           ->label('Profil')
           ->image()
+          ->required()
           ->disk('public')
           ->directory('profile')
           ->visibility('public')
@@ -87,8 +88,8 @@ class StudentResource extends Resource
   public static function table(Table $table): Table
   {
     return $table
+      ->defaultSort('created_at', 'asc')
       ->columns([
-
         ImageColumn::make('profile')
           ->label('Foto Profil')
           ->disk('public') // Sesuaikan dengan disk tempat file disimpan
@@ -125,22 +126,9 @@ class StudentResource extends Resource
         //
       ])
       ->actions([
-        Tables\Actions\EditAction::make(),
         Tables\Actions\ViewAction::make(),
+        Tables\Actions\EditAction::make(),
         Tables\Actions\DeleteAction::make()
-          ->modalHeading(fn($record) => 'Hapus Santri ' . $record->student_name) // <-- Closure di sini, menerima $record
-          ->modalDescription('Apakah Anda yakin ingin menghapus santri ini?')
-          ->modalcancelActionLabel('Batalkan')
-          ->modalSubmitActionLabel('ya, Hapus')
-          ->successNotification(
-            fn($record) => Notification::make()
-              ->title('Santri berhasil dihapus')
-              ->body('Santri ' . $record->student_name . ' telah berhasil dihapus.')
-              ->icon('heroicon-o-trash') // Ikon sampah
-              ->iconColor('danger') // Warna ikon
-              ->success() // Tipe notifikasi sukses
-              ->duration(5000) // Durasi tampil
-          )
       ])
       ->headerActions([
         ExportAction::make()

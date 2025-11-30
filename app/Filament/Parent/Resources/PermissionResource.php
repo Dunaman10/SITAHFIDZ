@@ -52,7 +52,7 @@ class PermissionResource extends Resource
           ->required()
           ->placeholder('Masukkan alasan perizinan'),
         TextInput::make('date_out')
-          ->label('Tanggal Keluar')
+          ->label('Tanggal Izin')
           ->required()
           ->type('date'),
         TextInput::make('date_in')
@@ -66,10 +66,18 @@ class PermissionResource extends Resource
   {
     return $table
       ->columns([
-        TextColumn::make('student.student_name')->label('Nama Santri')->searchable(),
-        TextColumn::make('reason')->label('Alasan')->searchable(),
-        TextColumn::make('date_out')->label('Tanggal Keluar')->date(),
-        TextColumn::make('date_in')->label('Tanggal Kembali')->date(),
+        TextColumn::make('student.student_name')
+          ->label('Nama Santri')
+          ->searchable(),
+        TextColumn::make('reason')
+          ->label('Alasan')
+          ->searchable(),
+        TextColumn::make('date_out')
+          ->label('Tanggal Keluar')
+          ->date(),
+        TextColumn::make('date_in')
+          ->label('Tanggal Kembali')
+          ->date(),
         TextColumn::make('status')
           ->label('Status')
           ->badge()
@@ -82,7 +90,10 @@ class PermissionResource extends Resource
               default => null,
             }
           ),
-        TextColumn::make('approved_by')->label('Diterima/Ditolak Oleh')->searchable(),
+        TextColumn::make('approved_by')
+          ->label('Diterima/Ditolak Oleh')
+          ->placeholder('Keamanan')
+          ->searchable(),
       ])
       ->filters([
         //

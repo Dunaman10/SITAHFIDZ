@@ -21,7 +21,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ImageEntry;
 use App\Filament\Teacher\Resources\DataKelasResource\Pages;
 use App\Models\Classes;
-use App\Models\ClassTeacher;
+use App\Models\MentorStudent;
 use Illuminate\Support\Facades\Auth;
 
 class DataKelasResource extends Resource
@@ -58,7 +58,7 @@ class DataKelasResource extends Resource
           ->label('Tanggal Lahir')
           ->formatStateUsing(fn($state) => Carbon::parse($state)->translatedFormat('d F Y')),
 
-        TextColumn::make('memorizes.surah.surah_name')
+        TextColumn::make('latestMemorize.surah.surah_name')
           ->label('Progress Terakhir')
           ->searchable(),
 
@@ -104,17 +104,20 @@ class DataKelasResource extends Resource
   public static function getEloquentQuery(): Builder
   {
     $user = Auth::user();
-
     $teacher = $user->teacher;
 
     if (!$teacher) {
-      return parent::getEloquentQuery()->whereNull('id');
+      return parent::getEloquentQuery()->whereRaw('1=0');
     }
 
-    $classIds = ClassTeacher::where('id_teacher', $teacher->id)->pluck('id_class');
+    // Ambil santri binaan dari tabel mentor_students
+    $studentIds = MentorStudent::where('id_teacher', $teacher->id)
+      ->limit(3) // jaga-jaga kalau lebih dari 3
+      ->pluck('id_student');
 
-    return parent::getEloquentQuery()->whereIn('class_id', $classIds);
+    return parent::getEloquentQuery()->whereIn('id', $studentIds);
   }
+
 
 
   public static function infolist(Infolist $infolist): Infolist
@@ -134,20 +137,28 @@ class DataKelasResource extends Resource
               ->schema([
                 TextEntry::make('student_name')
                   ->label('Nama Santri')
-
+                  ->inlineLabel()
                   ->weight(FontWeight::Bold),
 
                 TextEntry::make('tanggal_lahir')
                   ->label('Tanggal Lahir')
+                  ->inlineLabel()
                   ->weight(FontWeight::Bold)
                   ->formatStateUsing(fn($state) => Carbon::parse($state)->translatedFormat('d F Y')),
 
-                TextEntry::make('memorizes.surah.surah_name')
+                TextEntry::make('latestMemorize.surah.surah_name')
                   ->label('Progress Terakhir')
+                  ->inlineLabel()
+                  ->weight(FontWeight::Bold),
+
+                TextEntry::make('latestMemorize.juz')
+                  ->label('Juz')
+                  ->inlineLabel()
                   ->weight(FontWeight::Bold),
 
                 TextEntry::make('class.class_name')
                   ->label('Kelas')
+                  ->inlineLabel()
                   ->weight(FontWeight::Bold),
               ]),
           ]),

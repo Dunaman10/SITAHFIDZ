@@ -25,6 +25,12 @@ class ClassesResource extends Resource
   protected static ?string $pluralModelLabel = 'Manajemen Kelas';
   protected static ?int $navigationSort = 3;
 
+  // Sembunyikan Resource dari sidebar
+  public static function shouldRegisterNavigation(): bool
+  {
+    return false;
+  }
+
   public static function form(Form $form): Form
   {
     return $form

@@ -13,24 +13,27 @@ class TeacherDashboard extends BaseWidget
 {
   protected function getStats(): array
   {
-    // $user = Auth::user();
-    // $teacher = $user?->teacher; // Pakai optional chaining (?->) biar nggak error kalau null
+    $user = Auth::user();
+    $teacher = $user?->teacher;
+
     $activity = Activity::latest()->first();
 
     // $countClasses = $teacher ? $teacher->classes()->count() : 0;
-    // $countStudents = $teacher ? $teacher->students()->count() : 0;
+    $countStudents = $teacher ? $teacher->binaan()->count() : 0;
     $countClasses = Classes::all()->count();
-    $countStudents = Student::all()->count();
+    // $countStudents = Student::all()->count();
 
 
     return [
       Stat::make('Jumlah Santri', $countStudents)
-        ->icon('heroicon-o-user-group'),
+        ->icon('heroicon-o-user-group')
+        ->description('Jumlah Santri yang Anda Bimbing'),
       Stat::make('Jumlah Kelas', $countClasses)
-        ->icon('heroicon-o-building-office'),
+        ->icon('heroicon-o-building-office')
+        ->description('Total Seluruh Kelas'),
       Stat::make('Kegiatan Pondok Pesantren', '')
         ->icon('heroicon-o-calendar-days')
-        ->description($activity?->activity_name ?? 'Belum ada kegiatan'),
+        ->description($activity?->activity_name ?? 'Belum ada kegiatan')
     ];
   }
 }

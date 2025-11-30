@@ -111,15 +111,15 @@ class EditMemorize extends EditRecord
         ->columns(2)
         ->columnSpan('full'),
 
-      FileUpload::make('audio')
-        ->label('Atau masukkan file rekaman suara')
-        ->acceptedFileTypes(['audio/*'])
-        ->maxSize(10240) // 10MB
-        ->disk('public')
-        ->directory('hafalan-audio')
-        ->preserveFilenames()
-        ->placeholder('Masukkan file suara santri / santriwati')
-        ->columnSpan('full'),
+      // FileUpload::make('audio')
+      //   ->label('Atau masukkan file rekaman suara')
+      //   ->acceptedFileTypes(['audio/*'])
+      //   ->maxSize(10240) // 10MB
+      //   ->disk('public')
+      //   ->directory('hafalan-audio')
+      //   ->preserveFilenames()
+      //   ->placeholder('Masukkan file suara santri / santriwati')
+      //   ->columnSpan('full'),
 
       TextInput::make('nilai')
         ->label('Nilai Hafalan')

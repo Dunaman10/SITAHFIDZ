@@ -13,7 +13,7 @@ class TeacherOverview extends BaseWidget
   protected function getStats(): array
   {
     return [
-      Stat::make('Total Guru', User::where('role_id', 2)->count()),
+      Stat::make('Total Asatidz', User::where('role_id', 2)->count()),
     ];
   }
 }

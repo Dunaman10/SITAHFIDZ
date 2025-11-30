@@ -6,6 +6,7 @@ use App\Filament\Parent\Resources\ProgressHafalanResource\Pages;
 use App\Models\Memorize;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\BulkActionGroup;
@@ -33,10 +34,10 @@ class ProgressHafalanResource extends Resource
       });
   }
 
-
   public static function table(Table $table): Table
   {
     return $table
+      ->defaultSort('created_at', 'desc')
       ->columns([
         TextColumn::make('student.student_name')
           ->label('Nama Santri')
@@ -59,20 +60,21 @@ class ProgressHafalanResource extends Resource
             );
           }),
 
-        TextColumn::make('from')
-          ->label('Dari Ayat')
+        TextColumn::make('surah.juz')
+          ->label('Juz')
           ->alignCenter(),
 
-        TextColumn::make('to')
-          ->label('Sampai Ayat')
-          ->alignCenter(),
-
-        TextColumn::make('nilai')
-          ->label('Nilai')
+        TextColumn::make('nilai_avg')
+          ->label('Nilai Rata-Rata')
           ->alignCenter(),
 
         TextColumn::make('approved_by')
           ->label('Dinilai Oleh'),
+
+        TextColumn::make('created_at')
+          ->label('Tanggal')
+          ->date('d M Y'),
+
       ])
 
       ->filters([
@@ -103,8 +105,8 @@ class ProgressHafalanResource extends Resource
               ->label('Sampai Ayat')
               ->disabled(),
 
-            TextInput::make('nilai')
-              ->label('Nilai')
+            TextInput::make('nilai_avg')
+              ->label('Nilai Rata-Rata')
               ->disabled(),
 
             TextInput::make('approved_by')
@@ -120,6 +122,34 @@ class ProgressHafalanResource extends Resource
               ->disabled()
               ->previewable(true)
               ->downloadable(),
+
+            FileUpload::make('foto')
+              ->label('Foto Santri')
+              ->disabled()
+              ->previewable(true)
+              ->downloadable(),
+
+            Section::make('Penilain Hafalan')
+              ->description('Bagian ini berisi nilai dan kualitas bacaan santri')
+              ->schema([
+                TextInput::make('makharijul_huruf')
+                  ->label('Makharijul Huruf'),
+
+                TextInput::make('shifatul_huruf')
+                  ->label('Shifatul Huruf'),
+
+                TextInput::make('ahkamul_qiroat')
+                  ->label('Akhkamul Qiroat'),
+
+                TextInput::make('ahkamul_waqfi')
+                  ->label('Akhkamul Waqfi'),
+
+                TextInput::make('qowaid_tafsir')
+                  ->label('Qowaid Tafsir'),
+
+                TextInput::make('tarjamatul_ayat')
+                  ->label('Tarjamatul Ayat'),
+              ])
           ]),
       ])
 
