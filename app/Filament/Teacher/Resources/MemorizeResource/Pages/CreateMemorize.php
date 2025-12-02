@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Laravel\Pail\File;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class CreateMemorize extends CreateRecord
 {
@@ -34,8 +35,19 @@ class CreateMemorize extends CreateRecord
   {
     $data['id_teacher'] = Auth::user()->teacher->id;
 
+    if (isset($data['audio']) && $data['audio'] instanceof TemporaryUploadedFile) {
+      $data['audio'] = $data['audio']->store('hafalan-audio', 'public');
+    }
+
+    if (isset($data['foto']) && $data['foto'] instanceof TemporaryUploadedFile) {
+      $data['foto'] = $data['foto']->store('foto-santri', 'public');
+    }
+
     return $data;
   }
+
+
+
 
   // public ?string $kelas = null;
   // public ?string $surah = null;

@@ -3,6 +3,7 @@
 namespace App\Filament\Teacher\Resources;
 
 use App\Filament\Teacher\Resources\MemorizeResource\Pages;
+use App\Forms\Components\AudioRecorder;
 use App\Models\ClassTeacher;
 use App\Models\Memorize;
 use App\Models\MentorStudent;
@@ -21,11 +22,16 @@ use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\View;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
+use Filament\Infolists\Infolist;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use PhpParser\Node\Stmt\Label;
 
 class MemorizeResource extends Resource
@@ -66,7 +72,6 @@ class MemorizeResource extends Resource
       ->orderBy('created_at', 'desc'); // BONUS: langsung order newest first
   }
 
-
   public static function table(Table $table): Table
   {
     return $table
@@ -96,7 +101,86 @@ class MemorizeResource extends Resource
         //
       ])
       ->actions([
-        Tables\Actions\ViewAction::make(),
+        Tables\Actions\ViewAction::make()
+          ->infolist(function (Infolist $infolist): Infolist {
+            return $infolist
+              ->schema([
+
+                TextEntry::make('student.student_name')
+                  ->label('Nama Santri')
+                  ->inlineLabel(),
+
+                TextEntry::make('juz')
+                  ->label('Juz')
+                  ->inlineLabel(),
+
+                TextEntry::make('surah.surah_name')
+                  ->label('Nama Surat')
+                  ->inlineLabel(),
+
+                ViewEntry::make('audio')
+                  ->view('components.audio-player')
+                  ->viewData(fn($record) => [
+                    'record' => $record,
+                  ]),
+
+                ImageEntry::make('foto')
+                  ->label('Foto Santri')
+                  ->disk('public')
+                  ->width(200)
+                  ->height(200),
+
+                TextEntry::make('from')
+                  ->label('Dari Ayat')
+                  ->inlineLabel(),
+
+                TextEntry::make('to')
+                  ->label('Sampai Ayat')
+                  ->inlineLabel(),
+
+                TextEntry::make('approved_by')
+                  ->label('Diperiksa Oleh')
+                  ->inlineLabel(),
+
+                TextEntry::make('complete')
+                  ->label('Status')
+                  ->inlineLabel(),
+
+                \Filament\Infolists\Components\Section::make('Penilaian Hafalan')
+                  ->description('Bagian ini berisi nilai dan kualitas bacaan santri')
+                  ->schema([
+
+                    TextEntry::make('makharijul_huruf')
+                      ->label('Makharijul Huruf')
+                      ->inlineLabel(),
+
+                    TextEntry::make('shifatul_huruf')
+                      ->label('Shifatul Huruf')
+                      ->inlineLabel(),
+
+                    TextEntry::make('ahkamul_qiroat')
+                      ->label('Ahkamul Qiroat')
+                      ->inlineLabel(),
+
+                    TextEntry::make('ahkamul_waqfi')
+                      ->label('Ahkamul Waqfi')
+                      ->inlineLabel(),
+
+                    TextEntry::make('qowaid_tafsir')
+                      ->label('Qowaid Tafsir')
+                      ->inlineLabel(),
+
+                    TextEntry::make('tarjamatul_ayat')
+                      ->label('Tarjamatul Ayat')
+                      ->inlineLabel(),
+
+                  ])
+                  ->columns(2)
+                  ->collapsible(),
+
+              ]);
+          }),
+
         Tables\Actions\EditAction::make(),
         Tables\Actions\DeleteAction::make(),
       ])
@@ -183,23 +267,34 @@ class MemorizeResource extends Resource
         ->required()
         ->searchable()
         ->preload()
-        ->placeholder('Pilih Surah berdasarkan Juz …'),
+        ->placeholder('Pilih Surah berdasarkan Juz'),
+
+      AudioRecorder::make('audio')
+        ->label('Rekaman Audio Santri')
+        ->columnSpanFull()
+        ->default(fn($record) => $record?->audio),
+
+      View::make('components.audio-player')
+        ->viewData(fn($get) => [
+          'record' => (object)['audio' => $get('audio')],
+        ]),
 
       FileUpload::make('foto')
         ->label('Upload Foto Santri')
         ->image()
         ->directory('foto-santri')
         ->disk('public')
-        ->placeholder('Upload Foto Santri'),
+        ->placeholder('Upload Foto Santri')
+        ->default(fn($record) => $record?->foto),
 
-      FileUpload::make('audio')
-        ->label('Upload Rekaman Suara Santri')
-        ->acceptedFileTypes(['audio/*'])
-        ->maxSize(10240) // 10MB
-        ->disk('public')
-        ->directory('hafalan-audio')
-        ->preserveFilenames()
-        ->placeholder('Upload suara santri'),
+      // FileUpload::make('audio_upload')
+      //   ->label('Upload Rekaman Suara Santri')
+      //   ->hint('Opsional')
+      //   ->maxSize(10240) // 10MB
+      //   ->disk('public')
+      //   ->directory('hafalan-audio')
+      //   ->preserveFilenames()
+      //   ->placeholder('Upload suara santri'),
 
       TextInput::make('from')
         ->label('Dari Ayat')
@@ -284,70 +379,6 @@ class MemorizeResource extends Resource
         ])
         ->columns(2), // biar lebih enak dilihat
 
-
-
-      // View::make('surah_name')
-      //   ->label('Surah')
-      //   ->view('components.surah-card')
-      //   ->viewData(fn($get) => [
-      //     'surah' => $get('surah') ?? '',
-      //     'ayat' => "0",
-      //   ])
-      //   ->columnSpanFull(),
-      // Select::make('id_student')
-      //   ->label('Nama Santri / Santriwati')
-      //   ->required()
-      //   ->searchable()
-      //   ->placeholder('Masukkan nama santri / santriwati')
-      //   ->relationship('student', 'student_name')
-      //   ->columnSpan('full'),
-
-      // // Jika ingin "from" dan "to" tetap satu baris, gunakan Grid
-      // Grid::make()
-      //   ->schema([
-      //     TextInput::make('from')
-      //       ->label('Halaman Surah (Dari)')
-      //       ->numeric()
-      //       ->required()
-      //       ->placeholder('5'),
-
-      //     TextInput::make('to')
-      //       ->label('Halaman Surah (Sampai)')
-      //       ->numeric()
-      //       ->required()
-      //       ->placeholder('10'),
-      //   ])
-      //   ->columns(2)
-      //   ->columnSpan('full'),
-
-      // FileUpload::make('audio')
-      //   ->label('Masukkan file rekaman suara')
-      //   ->acceptedFileTypes(['audio/*'])
-      //   ->maxSize(10240) // 10MB
-      //   ->disk('public')
-      //   ->directory('hafalan-audio')
-      //   ->preserveFilenames()
-      //   ->placeholder('Masukkan file suara santri / santriwati?')
-      //   ->columnSpanFull(),
-
-      // TextInput::make('nilai')
-      //   ->label('Nilai Hafalan')
-      //   ->required(),
-
-      // TextInput::make('approved_by')
-      //   ->label('Diperiksa Oleh')
-      //   ->required(),
-
-      // Radio::make('complete')
-      //   ->label('')
-      //   ->options([
-      //     '1' => 'Selesai',
-      //     '0' => 'Belum Selesai',
-      //   ])
-      //   ->default('0')
-      //   ->inline()
-      //   ->columnSpanFull(),
-
     ]);
   }
 
@@ -363,6 +394,7 @@ class MemorizeResource extends Resource
     return [
       'index' => Pages\ListMemorizes::route('/'),
       'create' => Pages\CreateMemorize::route('/create'),
+      'edit' => Pages\EditMemorize::route('/{record}/edit'),
       // 'data' => Pages\Memorize::route('/data/{kelas}'),
       // 'create' => Pages\CreateMemorize::route('/data/{kelas}/create/{surah}'),
       // 'edit' => Pages\EditMemorize::route('/{record}/edit/{kelas}/{surah}'),
