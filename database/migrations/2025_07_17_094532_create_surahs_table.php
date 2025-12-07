@@ -10,6 +10,7 @@ return new class extends Migration
   {
     Schema::create('surah', function (Blueprint $table) {
       $table->id();
+      $table->integer('juz');
       $table->text('surah_name');
       $table->integer('ayat');
       $table->timestamps();

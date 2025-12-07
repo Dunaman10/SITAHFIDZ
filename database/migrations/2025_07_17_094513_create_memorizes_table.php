@@ -16,10 +16,17 @@ return new class extends Migration
       $table->foreignId('id_surah');
       $table->foreignId('id_student');
       $table->foreignId('id_teacher');
+      $table->string('foto');
       $table->integer('from');
       $table->integer('to');
       $table->string('audio')->nullable();
-      $table->string('nilai');
+      $table->string('nilai_avg');
+      $table->string('makharijul_huruf');
+      $table->string('shifatul_huruf');
+      $table->string('ahkamul_qiroat');
+      $table->string('ahkamul_waqfi');
+      $table->string('qowaid_tafsir');
+      $table->string('tarjamatul_ayat');
       $table->string('aprroved_by');
       $table->tinyInteger('complete');
       $table->timestamps();
