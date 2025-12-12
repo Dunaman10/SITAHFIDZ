@@ -5,180 +5,452 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-  <title>Pondok Pesantren Modern dan Tahfidz Al-Qur'an Darut Tafsir Darut Tafsir</title>
+  <title>Pondok Pesantren Modern Darut Tafsir</title>
 
   {{-- Tailwind CSS --}}
   @vite('resources/css/app.css')
+  <script src="https://cdn.tailwindcss.com"></script>
 
   {{-- FontAwesome --}}
   <script src="https://kit.fontawesome.com/b9470f7400.js" crossorigin="anonymous"></script>
 
+  {{-- AOS Animation Library --}}
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  {{-- Google Fonts --}}
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <link rel="icon" href="/assets/logo-darutafsir.png">
+
+  <style>
+      body {
+          font-family: 'Outfit', sans-serif;
+      }
+      .glass-nav {
+          background: rgba(255, 255, 255, 0.8);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      .text-gradient {
+          background: linear-gradient(to right, #db2777, #be185d);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+      }
+  </style>
 </head>
-<body class="bg-slate-100">
+<body class="bg-slate-50 text-slate-800 overflow-x-hidden">
 
   {{-- Navbar --}}
-  <nav id="navbar" class="text-white fixed w-full z-10 top-0 left-0 flex justify-between items-center px-6 md:px-16 py-4 transition-all duration-300">
+  <nav id="navbar" class="fixed w-full z-50 top-0 left-0 transition-all duration-300 border-b border-transparent">
+      <div class="max-w-7xl mx-auto px-6 md:px-12 py-4 flex justify-between items-center">
+        {{-- Logo --}}
+        <div class="flex items-center gap-3">
+            <a href="{{ route('index') }}">
+                <img src="/assets/logo-darutafsir.png" alt="Darut Tafsir Logo" class="h-10 md:h-12 drop-shadow-md">
+            </a>
+            <h1 id="nav-title" class="text-xl md:text-2xl font-bold tracking-tight text-white transition-colors duration-300">Darut Tafsir</h1>
+        </div>
 
-      {{-- Logo --}}
-      <div class="flex items-center gap-2">
-          <a href="{{ route('index') }}">
-              <img src="/assets/logo-darutafsir.png" alt="Darut Tafsir Logo" class="h-12">
-          </a>
-          <h1 class="text-2xl font-bold">Darut Tafsir</h1>
+        {{-- Desktop Menu --}}
+        <div class="hidden md:flex items-center gap-8 font-medium">
+            <a href="#" class="nav-link text-white hover:text-pink-400 transition-colors duration-300">Home</a>
+            <a href="#about" class="nav-link text-white hover:text-pink-400 transition-colors duration-300">Tentang</a>
+            <a href="#fasilitas" class="nav-link text-white hover:text-pink-400 transition-colors duration-300">Fasilitas</a>
+            <a href="#contact" class="nav-link text-white hover:text-pink-400 transition-colors duration-300">Kontak</a>
+        </div>
+
+        {{-- CTA Button --}}
+        <div class="hidden md:block">
+            <a href="/auth/login" class="bg-pink-600 px-6 py-2.5 rounded-full text-white font-semibold shadow-lg shadow-pink-600/30 hover:bg-pink-500 hover:shadow-pink-600/50 transition-all duration-300 transform hover:-translate-y-0.5">
+                Login Portal
+            </a>
+        </div>
+
+        {{-- Mobile Menu Button --}}
+        <div class="md:hidden text-white cursor-pointer relative z-50 transition-colors duration-300" id="mobile-menu-btn">
+            <i class="fa-solid fa-bars text-2xl"></i>
+        </div>
       </div>
 
-      <div class="flex items-center gap-24">
-          <div class="hidden md:flex gap-6 font-semibold text-lg">
-              <a href="#" class="home text-pink-600 font-bold">Home</a>
-              <a href="#about" class="about">Tentang Pondok</a>
-              <a href="#contact" class="contact">Kontak</a>
-          </div>
-          <div>
-              <a href="/auth/login" class="bg-pink-600 px-4 py-2 rounded-lg text-lg font-semibold hover:bg-pink-500">Login</a>
-          </div>
+      {{-- Mobile Menu Overlay --}}
+      <div id="mobile-menu" class="fixed inset-0 bg-slate-900/95 backdrop-blur-xl z-40 transform translate-x-full transition-transform duration-500 flex flex-col items-center justify-center space-y-8 md:hidden">
+          <a href="#" class="mobile-link text-3xl font-bold text-slate-300 hover:text-white hover:scale-110 transition-all duration-300 transform translate-y-8 opacity-0">Home</a>
+          <a href="#about" class="mobile-link text-3xl font-bold text-slate-300 hover:text-white hover:scale-110 transition-all duration-300 transform translate-y-8 opacity-0" style="transition-delay: 100ms;">Tentang</a>
+          <a href="#fasilitas" class="mobile-link text-3xl font-bold text-slate-300 hover:text-white hover:scale-110 transition-all duration-300 transform translate-y-8 opacity-0" style="transition-delay: 200ms;">Fasilitas</a>
+          <a href="#contact" class="mobile-link text-3xl font-bold text-slate-300 hover:text-white hover:scale-110 transition-all duration-300 transform translate-y-8 opacity-0" style="transition-delay: 300ms;">Kontak</a>
+          <a href="/auth/login" class="mobile-link text-xl font-bold text-white bg-pink-600 px-10 py-4 rounded-full shadow-lg shadow-pink-600/30 hover:bg-pink-500 hover:shadow-pink-600/50 transition-all duration-300 transform translate-y-8 opacity-0" style="transition-delay: 400ms;">Login Portal</a>
       </div>
-
   </nav>
-  {{-- ./Navbar --}}
 
-  {{-- Main Content --}}
-  <div>
-    {{-- Hero Section --}}
-    <section class="relative h-screen bg-cover bg-center" style="background-image: url('/assets/masjid.jpg');">
-       <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/30"></div>
-      <div class="relative text-white w-full h-full flex justify-content-between items-center">
-        <div class="mb-32 mx-6 md:mx-16 max-w-4xl mt-24">
-          <h2 class="font-bold text-3xl sm:text-6xl mb-2">Masuk ke Lingkungan Belajar yang Lebih Bermakna</h2>
-          <p class="text-sm sm:text-lg mb-5 text-justify">Kami percaya setiap santri berhak mendapatkan pendidikan yang terarah, penuh nilai, dan dibimbing oleh para pengajar yang berdedikasi. Bergabunglah bersama kami untuk merasakan proses belajar yang bukan hanya menambah ilmu, tapi juga membentuk karakter dan akhlak.</p>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSdWsuLWlCtjpn0UfI1gCFHQsllw0NqIxxpFWgsPJ24gAQMkJw/viewform" class="bg-pink-600  px-4 py-2 rounded-lg text-sm sm:text-lg font-semibold hover:bg-pink-400" target="blank">Daftar Sekarang</a>
-        </div>
-      </div>
-    </section>
-    {{-- ./Hero Section --}}
+  {{-- Hero Section --}}
+  <section id="home" class="relative h-screen bg-cover bg-center" style="background-image: url('/assets/masjid.jpg');">
+     {{-- Overlay --}}
+     <div class="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-900/60 to-slate-50"></div>
 
-    {{-- Tentang Pondok Section --}}
-    <section id="about" class="py-16 px-8 sm:text-center">
-      <h3 class="text-3xl font-bold mb-6">Tentang Pondok Pesantren Darut Tafsir</h3>
-      <p class="text-lg max-w-3xl text-justify sm:text-center sm:mx-auto">Pondok Pesantren Modern dan Tahfidz Al-Qur'an Darut Tafsir didirikan dengan tujuan mencetak generasi muda yang tidak hanya menguasai ilmu agama, tetapi juga memiliki karakter yang kuat dan akhlak yang mulia. Kami menyediakan lingkungan belajar yang kondusif dengan fasilitas lengkap untuk mendukung proses pembelajaran santri.</p>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mx-auto mt-5 sm:w-[70%]">
-
-        <div class="bg-white shadow w-full rounded-lg p-12 text-slate-800">
-          <div class="flex items-center gap-3 mb-3">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-            </svg>
-            <h2 class="text-3xl font-bold">Visi</h2>
-          </div>
-            <p class="text-justify">Mewujudkan generasi tahfidz muda yang cinta Al-Qur’an, berakhlakul karimah, berwawasan modern, dan mampu mengamalkan nilai-nilai Al-Qur’an dalam kehidupan bermasyarakat.</p>
-        </div>
-
-        <div class="bg-white shadow w-full rounded-lg p-12 text-slate-800">
-          <div class="flex items-center gap-3 mb-3">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
-            </svg>
-
-            <h2 class="text-3xl font-bold">Misi</h2>
-          </div>
-            <p class="text-justify">Menyelenggarakan pendidikan tahfidz Al-Qur’an yang terarah dan mutqin dengan bimbingan pengajar yang berdedikasi, menanamkan pemahaman dasar tafsir serta nilai-nilai Al-Qur’an, membentuk santri yang berakhlakul karimah, disiplin, dan bertanggung jawab, serta mengintegrasikan pendidikan pesantren dengan wawasan modern agar santri mampu mengamalkan Al-Qur’an dalam kehidupan dan siap menghadapi tantangan zaman.</p>
-        </div>
-
-      </div>
-    </section>
-    {{-- ./Tentang Pondok Section --}}
-
-    {{-- Kontak Section --}}
-    <section id="contact" class="pb-16 px-8 sm:px-16">
-      <h3 class="text-3xl font-bold mb-6 text-center">Kontak Kami</h3>
-      <div class="flex flex-col md:flex-row gap-4 mb-4 sm:mx-auto sm:w-full">
-          <div class="bg-white shadow w-full h-24 rounded-lg p-4 flex items-center gap-4 text-slate-800 mb-2">
-            <i class="fa-brands fa-whatsapp fa-2xl text-pink-600"></i>
-            <div class="flex flex-col">
-              <h3 class="text-lg font-semibold">Nomor WhatsApp</h3>
-              <p class="">+62 812 1234 4568</p>
-            </div>
-          </div>
-          <div class="bg-white shadow w-full h-24 rounded-lg p-4 flex items-center gap-4 text-slate-800 mb-2">
-            <i class="fa-regular fa-envelope fa-2xl text-pink-600"></i>
-            <div class="flex flex-col">
-              <h3 class="text-lg font-semibold">Email</h3>
-              <p class="">daruttafsir@gmail.com</p>
-            </div>
-          </div>
-          <div class="bg-white shadow w-full h-24 rounded-lg p-4 flex items-center gap-4 text-slate-800 mb-2">
-            <i class="fa-regular fa-map fa-2xl text-pink-600"></i>
-            <div class="flex flex-col">
-              <h3 class="text-lg font-semibold">Alamat Pondok Pesantren</h3>
-              <p class="text-xs sm:text-sm">Jl. Kp. Cemp., Cilangkap, Kec. Kalanganyar, Kabupaten Lebak, Banten 42312</p>
+     <div class="relative z-10 h-full flex items-center justify-center text-center px-4">
+        <div class="max-w-4xl mx-auto mt-16">
+            <span class="inline-block py-1 px-3 rounded-full bg-pink-600/20 text-pink-300 border border-pink-500/30 text-sm font-medium mb-6 backdrop-blur-sm" data-aos="fade-down" data-aos-delay="100">
+                Pondok Pesantren Modern & Tahfidz
+            </span>
+            <h2 class="font-bold text-4xl md:text-6xl lg:text-7xl mb-6 text-white leading-tight" data-aos="fade-up" data-aos-delay="200">
+                Membangun Generasi <br> <span class="text-pink-500">Qur'ani</span> & Berakhlak
+            </h2>
+            <p class="text-gray-200 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light leading-relaxed" data-aos="fade-up" data-aos-delay="300">
+                Lingkungan pendidikan yang menyatukan ilmu agama dan wawasan modern, membekali santri untuk masa depan yang gemilang.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="400">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdWsuLWlCtjpn0UfI1gCFHQsllw0NqIxxpFWgsPJ24gAQMkJw/viewform" target="_blank" class="bg-pink-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-xl shadow-pink-600/30 hover:bg-pink-500 hover:scale-105 transition-all duration-300">
+                    Daftar Sekarang <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
+                </a>
+                <a href="#about" class="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/20 transition-all duration-300">
+                    Pelajari Lebih Lanjut
+                </a>
             </div>
         </div>
+     </div>
+
+      {{-- Scroll Down Indicator --}}
+      <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white/50">
+          <i class="fa-solid fa-chevron-down text-2xl"></i>
       </div>
+  </section>
 
-      <div>
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.2864245057604!2d106.231561!3d-6.3569588999999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e42171eff7fba47%3A0x8fb5428daf4af134!2sDarut%20Tafsir%20Homeschooling%20And%20Tahfidz%20Al-Quran!5e0!3m2!1sid!2sid!4v1764941386114!5m2!1sid!2sid" height="380" class="w-full shadow-lg mx-auto sm:mx-0 rounded-lg" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-    </section>
-    {{-- ./Kontak Section --}}
-  </div>
-  {{-- ./Main Content --}}
+  {{-- Tentang Pondok Section --}}
+  <section id="about" class="py-24 px-6 md:px-12 bg-slate-50 relative overflow-hidden">
+    {{-- Background pattern --}}
+    <div class="absolute top-0 right-0 w-96 h-96 bg-pink-200/20 rounded-full blur-3xl -z-10 translate-x-1/2 -translate-y-1/2"></div>
+    <div class="absolute bottom-0 left-0 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl -z-10 -translate-x-1/2 translate-y-1/2"></div>
 
-  {{-- Footer --}}
-  <section>
-    <div>
-      <footer class="bg-slate-900 text-white py-4 sm:py-16 mt-12 flex flex-col sm:flex-row gap-4 justify-between px-8 sm:px-16">
-        <div class="flex gap-8">
-          <div class="flex flex-col gap-1">
-            <h3 class="font-bold">Quick Link</h3>
-            <a href="#" class="hover:text-pink-600">Home</a>
-            <a href="#about" class="hover:text-pink-600">Tentang Pondok</a>
-            <a href="#contact" class="hover:text-pink-600">Kontak</a>
-          </div>
-          <div class="flex flex-col gap-1">
-            <h3 class="font-bold">Social</h3>
-            <a href="https://instagram.com/darut_tafsir?igshid=xeuv6jzjof35" class="hover:text-pink-600" target="_blank">Instagram</a>
-            <a href="https://www.facebook.com/profile.php?id=100055205284844" class="hover:text-pink-600" target="_blank">Facebook</a>
-            <a href="https://www.youtube.com/channel/UCdRExEmX8Nb2HggOnU6wvvw/featured" class="hover:text-pink-600" target="_blank">Youtube</a>
-            <a href="https://www.tiktok.com/@daruttafsir_official?lang=id-id" class="hover:text-pink-600" target="_blank">TikTok</a>
-          </div>
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h3 class="text-pink-600 font-bold uppercase tracking-wider text-sm mb-2">Tentang Kami</h3>
+            <h2 class="text-3xl md:text-5xl font-bold text-slate-900 mb-6">Mengenal Darut Tafsir</h2>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+                Pondok Pesantren Modern dan Tahfidz Al-Qur'an Darut Tafsir hadir sebagai jawaban atas kebutuhan pendidikan Islam yang komprehensif, mencetak kader umat yang intelek dan spiritual.
+            </p>
         </div>
-        <div class="font-light text-xs sm:text-sm sm:self-end">
-          &copy; 2025 | All Right Reserved by Darut Tafsir.
+
+        <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+            <!-- Vision Card -->
+            <div class="bg-white p-8 md:p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(219,39,119,0.1)] transition-all duration-300 group border border-slate-100" data-aos="fade-right">
+                <div class="w-14 h-14 bg-pink-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-pink-600 transition-colors duration-300">
+                     <i class="fa-solid fa-eye text-2xl text-pink-600 group-hover:text-white transition-colors duration-300"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-slate-800">Visi Kami</h3>
+                <p class="text-slate-600 leading-relaxed">
+                    Mewujudkan generasi tahfidz muda yang cinta Al-Qur’an, berakhlakul karimah, berwawasan modern, dan mampu mengamalkan nilai-nilai Al-Qur’an dalam kehidupan bermasyarakat.
+                </p>
+            </div>
+
+            <!-- Mission Card -->
+            <div class="bg-white p-8 md:p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(219,39,119,0.1)] transition-all duration-300 group border border-slate-100" data-aos="fade-left">
+                <div class="w-14 h-14 bg-pink-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-pink-600 transition-colors duration-300">
+                    <i class="fa-solid fa-bullseye text-2xl text-pink-600 group-hover:text-white transition-colors duration-300"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-slate-800">Misi Kami</h3>
+                <p class="text-slate-600 leading-relaxed">
+                    Menyelenggarakan pendidikan tahfidz yang mutqin, menanamkan nilai Al-Qur’an, membentuk karakter disiplin, serta mengintegrasikan wawasan modern agar santri siap menghadapi tantangan zaman.
+                </p>
+            </div>
         </div>
-      </footer>
     </div>
   </section>
-  {{-- ./Footer --}}
 
-<script>
-  const navbar = document.getElementById('navbar');
-  const links = document.querySelectorAll('.home, .about, .contact');
+  {{-- Fasilitas Section (New) --}}
+  <section id="fasilitas" class="py-24 px-6 md:px-12 bg-white relative">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h3 class="text-pink-600 font-bold uppercase tracking-wider text-sm mb-2">Fasilitas Pondok</h3>
+            <h2 class="text-3xl md:text-5xl font-bold text-slate-900 mb-6">Sarana Penunjang Belajar</h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                Kami menyediakan fasilitas lengkap dan nyaman untuk mendukung kegiatan belajar mengajar serta aktivitas harian santri.
+            </p>
+        </div>
 
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 10) {
-      navbar.classList.add('bg-slate-900', 'shadow-lg', 'transition', 'duration-300');
-    } else {
-      navbar.classList.remove('bg-slate-900', 'shadow-lg', 'transition', 'duration-300');
-    }
-  });
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {{-- Facility Item 1 --}}
+            <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-pink-200 transition-all duration-300 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 text-pink-600">
+                    <i class="fa-solid fa-mosque text-xl"></i>
+                </div>
+                <h4 class="text-xl font-bold text-slate-800 mb-2">Masjid Jami'</h4>
+                <p class="text-slate-500 text-sm">Masjid luas dan nyaman sebagai pusat kegiatan ibadah dan kajian santri.</p>
+            </div>
 
-  links.forEach(link => {
-    link.addEventListener('click', (e) => {
-      const href = link.getAttribute('href');
+            {{-- Facility Item 2 --}}
+            <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-pink-200 transition-all duration-300 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="150">
+                <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 text-pink-600">
+                    <i class="fa-solid fa-bed text-xl"></i>
+                </div>
+                <h4 class="text-xl font-bold text-slate-800 mb-2">Asrama Nyaman</h4>
+                <p class="text-slate-500 text-sm">Asrama yang bersih dan representatif untuk istirahat dan kemandirian.</p>
+            </div>
 
-      if (href === "#") {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+             {{-- Facility Item 3 --}}
+             <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-pink-200 transition-all duration-300 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 text-pink-600">
+                    <i class="fa-solid fa-chalkboard-user text-xl"></i>
+                </div>
+                <h4 class="text-xl font-bold text-slate-800 mb-2">Ruang Kelas Modern</h4>
+                <p class="text-slate-500 text-sm">Kelas kondusif dilengkapi pendingin (AC) dan media pembelajaran modern.</p>
+            </div>
 
-      links.forEach(l => l.classList.remove('text-pink-600', 'font-bold'));
-      link.classList.add('text-pink-600', 'font-bold');
+             {{-- Facility Item 4 --}}
+             <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-pink-200 transition-all duration-300 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="250">
+                <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 text-pink-600">
+                    <i class="fa-solid fa-book-open text-xl"></i>
+                </div>
+                <h4 class="text-xl font-bold text-slate-800 mb-2">Perpustakaan Lengkap</h4>
+                <p class="text-slate-500 text-sm">Koleksi kitab dan buku umum untuk menunjang literasi santri.</p>
+            </div>
+
+             {{-- Facility Item 5 --}}
+             <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-pink-200 transition-all duration-300 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 text-pink-600">
+                    <i class="fa-solid fa-computer text-xl"></i>
+                </div>
+                <h4 class="text-xl font-bold text-slate-800 mb-2">Lab Komputer</h4>
+                <p class="text-slate-500 text-sm">Fasilitas IT untuk mengembangkan skill digital dan teknologi santri.</p>
+            </div>
+
+             {{-- Facility Item 6 --}}
+             <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-pink-200 transition-all duration-300 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="350">
+                <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 text-pink-600">
+                    <i class="fa-solid fa-futbol text-xl"></i>
+                </div>
+                <h4 class="text-xl font-bold text-slate-800 mb-2">Lapangan Olahraga</h4>
+                <p class="text-slate-500 text-sm">Area olahraga futsal, basket, dan badminton untuk kebugaran fisik.</p>
+            </div>
+        </div>
+      </div>
+  </section>
+
+  {{-- Kontak Section --}}
+  <section id="contact" class="py-24 px-6 md:px-12 bg-slate-50">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl md:text-5xl font-bold text-slate-900 mb-12 text-center" data-aos="fade-up">Hubungi Kami</h2>
+
+        <div class="grid md:grid-cols-3 gap-6 mb-12">
+            {{-- Contact Card 1 --}}
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-lg transition-all duration-300" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mb-4 text-green-600">
+                    <i class="fa-brands fa-whatsapp text-3xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-1">WhatsApp</h3>
+                <p class="text-slate-500 text-sm mb-4">+62 812 1234 4568</p>
+                <a href="https://wa.me/6281212344568" target="_blank" class="text-pink-600 font-semibold hover:text-pink-700 text-sm">Chat Sekarang &rarr;</a>
+            </div>
+
+             {{-- Contact Card 2 --}}
+             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-lg transition-all duration-300" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-4 text-blue-600">
+                    <i class="fa-regular fa-envelope text-3xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-1">Email</h3>
+                <p class="text-slate-500 text-sm mb-4">daruttafsir@gmail.com</p>
+                <a href="mailto:daruttafsir@gmail.com" class="text-pink-600 font-semibold hover:text-pink-700 text-sm">Kirim Email &rarr;</a>
+            </div>
+
+             {{-- Contact Card 3 --}}
+             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col items-center text-center hover:shadow-lg transition-all duration-300" data-aos="fade-up" data-aos-delay="300">
+                <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mb-4 text-red-600">
+                    <i class="fa-solid fa-location-dot text-3xl"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-1">Lokasi</h3>
+                <p class="text-slate-500 text-sm mb-4">Kabupaten Lebak, Banten</p>
+                <a href="https://goo.gl/maps/xyz" target="_blank" class="text-pink-600 font-semibold hover:text-pink-700 text-sm">Lihat Peta &rarr;</a>
+            </div>
+        </div>
+
+        <div class="rounded-3xl overflow-hidden shadow-2xl" data-aos="zoom-in">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.2864245057604!2d106.231561!3d-6.3569588999999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e42171eff7fba47%3A0x8fb5428daf4af134!2sDarut%20Tafsir%20Homeschooling%20And%20Tahfidz%20Al-Quran!5e0!3m2!1sid!2sid!4v1764941386114!5m2!1sid!2sid"
+                height="450" class="w-full" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+      </div>
+  </section>
+
+  {{-- Footer --}}
+  <footer class="bg-slate-900 text-white pt-16 pb-8 px-6 md:px-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12 mb-12">
+        <div class="md:w-1/3">
+            <div class="flex items-center gap-2 mb-6">
+                <img src="/assets/logo-darutafsir.png" alt="Logo" class="h-10 grayscale brightness-200">
+                <span class="text-xl font-bold">Darut Tafsir</span>
+            </div>
+            <p class="text-slate-400 leading-relaxed text-sm">
+                Membangun peradaban dengan Al-Qur'an. Pondok pesantren modern yang mengedepankan adab dan ilmu.
+            </p>
+        </div>
+
+        <div class="flex gap-12 md:gap-24">
+            <div>
+                <h4 class="font-bold text-lg mb-6 text-pink-500">Quick Links</h4>
+                <ul class="flex flex-col gap-3 text-slate-400 text-sm">
+                    <li><a href="#" class="hover:text-white transition-colors">Home</a></li>
+                    <li><a href="#about" class="hover:text-white transition-colors">Tentang</a></li>
+                    <li><a href="#fasilitas" class="hover:text-white transition-colors">Fasilitas</a></li>
+                    <li><a href="#contact" class="hover:text-white transition-colors">Kontak</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-lg mb-6 text-pink-500">Social Media</h4>
+                <div class="flex gap-4">
+                    <a href="https://instagram.com/darut_tafsir?igshid=xeuv6jzjof35" target="_blank" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-pink-600 transition-all duration-300">
+                        <i class="fa-brands fa-instagram text-white"></i>
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=100055205284844" target="_blank" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 transition-all duration-300">
+                        <i class="fa-brands fa-facebook-f text-white"></i>
+                    </a>
+                    <a href="https://www.youtube.com/channel/UCdRExEmX8Nb2HggOnU6wvvw/featured" target="_blank" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-red-600 transition-all duration-300">
+                        <i class="fa-brands fa-youtube text-white"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
+        &copy; 2025 Darut Tafsir. All rights reserved.
+    </div>
+  </footer>
+
+  {{-- AOS Script --}}
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+    // Initialize AOS
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100,
     });
-  });
-</script>
 
+    // Navbar Scroll Effect
+    const navbar = document.getElementById('navbar');
+    const navTitle = document.getElementById('nav-title');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    let isMenuOpen = false;
 
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 20) {
+            navbar.classList.add('glass-nav', 'shadow-sm', 'py-3');
+            navbar.classList.remove('py-4', 'border-transparent');
+
+            navTitle.classList.remove('text-white');
+            navTitle.classList.add('text-slate-800');
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-white');
+                link.classList.add('text-slate-600');
+            });
+
+            // Only change color if menu is CLOSED
+            if (!isMenuOpen) {
+                mobileMenuBtn.classList.remove('text-white');
+                mobileMenuBtn.classList.add('text-slate-800');
+            }
+
+        } else {
+            navbar.classList.remove('glass-nav', 'shadow-sm', 'py-3');
+            navbar.classList.add('py-4', 'border-transparent');
+
+            navTitle.classList.add('text-white');
+            navTitle.classList.remove('text-slate-800');
+
+            navLinks.forEach(link => {
+                link.classList.add('text-white');
+                link.classList.remove('text-slate-600');
+            });
+
+             // Only change color if menu is CLOSED
+             if (!isMenuOpen) {
+                mobileMenuBtn.classList.add('text-white');
+                mobileMenuBtn.classList.remove('text-slate-800');
+            }
+        }
+    });
+
+    // Mobile Menu Toggle
+    mobileMenuBtn.addEventListener('click', () => {
+        isMenuOpen = !isMenuOpen;
+
+        // Toggle Icon
+        const icon = mobileMenuBtn.querySelector('i');
+        if (isMenuOpen) {
+            // Disable scrolling
+            document.body.style.overflow = 'hidden';
+
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-xmark');
+            icon.style.transform = "rotate(90deg)";
+            icon.style.transition = "transform 0.3s ease";
+
+            // Show Menu
+            mobileMenu.classList.remove('translate-x-full');
+
+            // Remove glass effect so navbar becomes transparent and reveals dark menu bg
+            navbar.classList.remove('glass-nav', 'shadow-sm', 'py-3');
+            navbar.classList.add('py-4'); // Maintain vertical spacing
+
+            // Animate Links
+            setTimeout(() => {
+                mobileLinks.forEach(link => {
+                    link.classList.remove('translate-y-8', 'opacity-0');
+                });
+            }, 100);
+
+            // Force Navbar styling to dark mode compatible (text-white)
+            navTitle.classList.remove('text-slate-800');
+            navTitle.classList.add('text-white');
+
+            mobileMenuBtn.classList.remove('text-slate-800');
+            mobileMenuBtn.classList.add('text-white');
+
+        } else {
+            // Enable scrolling
+            document.body.style.overflow = '';
+
+            icon.classList.remove('fa-xmark');
+            icon.classList.add('fa-bars');
+            icon.style.transform = "rotate(0deg)";
+
+            // Hide Menu
+            mobileMenu.classList.add('translate-x-full');
+
+            // Reset Links
+            mobileLinks.forEach(link => {
+                link.classList.add('translate-y-8', 'opacity-0');
+            });
+
+            // Revert Navbar styling based on scroll
+            if (window.scrollY > 20) {
+                 navbar.classList.add('glass-nav', 'shadow-sm', 'py-3');
+                 navbar.classList.remove('py-4');
+
+                 navTitle.classList.add('text-slate-800');
+                 navTitle.classList.remove('text-white');
+
+                 mobileMenuBtn.classList.add('text-slate-800');
+                 mobileMenuBtn.classList.remove('text-white');
+            } else {
+                 navbar.classList.add('py-4');
+            }
+        }
+    });
+
+    // Close menu when link clicked
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if(isMenuOpen) mobileMenuBtn.click();
+        });
+    });
+
+  </script>
 
 </body>
 </html>

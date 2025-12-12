@@ -63,7 +63,7 @@
             type="button"
             class="px-4 py-2 bg-primary-600 text-white rounded-lg"
         >
-            🎙 Rekam Ulang
+            🎙 Rekam Suara
         </button>
 
         {{-- Tombol Stop --}}
