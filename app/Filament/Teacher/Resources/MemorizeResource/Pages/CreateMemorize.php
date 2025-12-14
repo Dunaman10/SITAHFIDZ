@@ -37,6 +37,7 @@ class CreateMemorize extends CreateRecord
 
     if (isset($data['audio']) && $data['audio'] instanceof TemporaryUploadedFile) {
       $data['audio'] = $data['audio']->store('hafalan-audio', 'public');
+      // dd($data['audio']);
     }
 
     if (isset($data['foto']) && $data['foto'] instanceof TemporaryUploadedFile) {

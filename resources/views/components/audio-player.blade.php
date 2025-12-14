@@ -2,7 +2,7 @@
 
 @if (!empty($record->audio))
     <audio controls class="w-full mt-2">
-        <source src="{{ asset('storage/' . $record->audio) }}" type="audio/webm">
+        <source src="{{ asset('storage/' . $record->audio) }}" type="audio/wav">
         Browser tidak mendukung audio.
     </audio>
 @else

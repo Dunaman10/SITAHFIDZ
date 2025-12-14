@@ -29,6 +29,7 @@ class AuthPanelProvider extends PanelProvider
       ->brandName('Daruttafsir')
       ->favicon(asset('img/logo-darutafsir.png'))
       ->login()
+
       ->colors([
         'primary' => Color::hex('#E5077C'),
       ])

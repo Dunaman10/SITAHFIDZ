@@ -2,6 +2,7 @@
     :component="$getFieldWrapperView()"
     :field="$field"
 >
+
     <div
         x-data="{
             recorder: null,
@@ -29,16 +30,15 @@
                         this.recorder.onstop = () => {
                             clearInterval(this.interval);
 
-                            const blob = new Blob(this.chunks, { type: 'audio/webm' });
+                            const blob = new Blob(this.chunks, { type: 'audio/wav' });
 
                             const file = new File(
                                 [blob],
-                                'rekaman-' + Date.now() + '.webm',
-                                { type: 'audio/webm' }
+                                'rekaman-' + Date.now() + '.wav',
+                                { type: 'audio/wav' }
                             );
 
                             $wire.upload('data.audio', file, () => {
-                                // ketika upload sukses
                                 this.hasNewRecord = true;
                                 this.$refs.player.src = URL.createObjectURL(blob);
                             });
