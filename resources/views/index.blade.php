@@ -84,7 +84,7 @@
   </nav>
 
   {{-- Hero Section --}}
-  <section id="home" class="relative h-screen bg-cover bg-center" style="background-image: url('/assets/masjid.jpg');">
+  <section id="home" class="relative h-screen bg-cover bg-center" style="background-image: url('/assets/banner.jpg');">
      {{-- Overlay --}}
      <div class="absolute inset-0 bg-gradient-to-b from-slate-900/80 via-slate-900/60 to-slate-50"></div>
 
