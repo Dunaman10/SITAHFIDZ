@@ -91,13 +91,13 @@
      <div class="relative z-10 h-full flex items-center justify-center text-center px-4">
         <div class="max-w-4xl mx-auto mt-16">
             <span class="inline-block py-1 px-3 rounded-full bg-pink-600/20 text-pink-300 border border-pink-500/30 text-sm font-medium mb-6 backdrop-blur-sm" data-aos="fade-down" data-aos-delay="100">
-                Pondok Pesantren Modern & Tahfidz Al-quran Darut Tafsir
+                Pondok Pesantren Modern & Tahfidz
             </span>
             <h2 class="font-bold text-4xl md:text-6xl lg:text-7xl mb-6 text-white leading-tight" data-aos="fade-up" data-aos-delay="200">
-                Pesantren Rumah Ramah Anak <span class="text-pink-500">Mondok </span>Serasa Dirumah Sendiri
+                Membangun Generasi <br> <span class="text-pink-500">Qur'ani</span> & Berakhlak
             </h2>
             <p class="text-gray-200 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light leading-relaxed" data-aos="fade-up" data-aos-delay="300">
-                Darut Tafsir menghadirkan pendidikan berbasis tahfidz dan tafsir Al-Qur'an dengan pola pengasuhan ramah anak, sistem kelas kecil, serta lingkungan asrama yang nyaman untuk mendukung tumbuh kembang santri secara optimal.
+                Lingkungan pendidikan yang menyatukan ilmu agama dan wawasan modern, membekali santri untuk masa depan yang gemilang.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="400">
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSdWsuLWlCtjpn0UfI1gCFHQsllw0NqIxxpFWgsPJ24gAQMkJw/viewform" target="_blank" class="bg-pink-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-xl shadow-pink-600/30 hover:bg-pink-500 hover:scale-105 transition-all duration-300">
@@ -127,8 +127,7 @@
             <h3 class="text-pink-600 font-bold uppercase tracking-wider text-sm mb-2">Tentang Kami</h3>
             <h2 class="text-3xl md:text-5xl font-bold text-slate-900 mb-6">Mengenal Darut Tafsir</h2>
             <p class="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
-                Darut tafsir adalah Pondok Pesantren Modern berbasis Tahfidz dan tafsir Alquran dengan konsep Pesantren ramah anak yang mengembangkan pola pengasuhan dengan metode usrah (kekeluargaan), Hal ini dilakukan sebagai upaya memberikan rasa nyaman untuk menumbuh kembangkan minat dan bakat Santri melalui pendidikan dan pengajaran small class (kelas kecil) dengan penerapan tiga bahasa bahasa (Bahasa Inggris, bahasa Arab, dan bahasa Jepang) yang dibimbing oleh tenaga pendidikan dan pengajaran yang berkualitas serta didukung dengan asrama dalam bentuk rumah sehingga para santri merasa nyaman tinggal di pondok pesantren seperti di rumah sendiri.
-
+                Pondok Pesantren Modern dan Tahfidz Al-Qur'an Darut Tafsir hadir sebagai jawaban atas kebutuhan pendidikan Islam yang komprehensif, mencetak kader umat yang intelek dan spiritual.
             </p>
         </div>
 
@@ -140,7 +139,7 @@
                 </div>
                 <h3 class="text-2xl font-bold mb-4 text-slate-800">Visi Kami</h3>
                 <p class="text-slate-600 leading-relaxed">
-                    Menciptakan Generasi Qur'ani yang Integral berkualitas sebagai Hafidz, Saintis dan Mufassir yang Menjunjung tinggi nilai - nilai akhlaqul karimah
+                    Mewujudkan generasi tahfidz muda yang cinta Al-Qur’an, berakhlakul karimah, berwawasan modern, dan mampu mengamalkan nilai-nilai Al-Qur’an dalam kehidupan bermasyarakat.
                 </p>
             </div>
 
@@ -151,9 +150,7 @@
                 </div>
                 <h3 class="text-2xl font-bold mb-4 text-slate-800">Misi Kami</h3>
                 <p class="text-slate-600 leading-relaxed">
-                    1. Menciptakan Kualitas Pendidikan Keagamaan berbasis sains dan teknologi. <br>
-                    2. Menciptakan Generasi Qur'ani yang berkualitas Integral sebagai Hafizh, Mufassir dan Saintis. <br>
-                    3. Menjadikan Pendidikan Pondok Pesantren sebagai salah satu lembaga pendidikan islam yang berorientasi pada pengembangan mutu pendidikan berbasis kompetensi dan realitas sosial.
+                    Menyelenggarakan pendidikan tahfidz yang mutqin, menanamkan nilai Al-Qur’an, membentuk karakter disiplin, serta mengintegrasikan wawasan modern agar santri siap menghadapi tantangan zaman.
                 </p>
             </div>
         </div>
@@ -184,10 +181,10 @@
             {{-- Facility Item 2 --}}
             <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-pink-200 transition-all duration-300 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="150">
                 <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 text-pink-600">
-                    <i class="fa-solid fa-bed text-xl"></i>
+                    <i class="fa-solid fa-house text-xl"></i>
                 </div>
-                <h4 class="text-xl font-bold text-slate-800 mb-2">Asrama Nyaman</h4>
-                <p class="text-slate-500 text-sm">Asrama yang bersih dan representatif untuk istirahat dan kemandirian.</p>
+                <h4 class="text-xl font-bold text-slate-800 mb-2">Asrama Berbasis Rumah</h4>
+                <p class="text-slate-500 text-sm">Mengusung konsep Pesantren ramah anak dengan pola pengasuhan Usrah (kekeluargaan).</p>
             </div>
 
              {{-- Facility Item 3 --}}
@@ -195,26 +192,26 @@
                 <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 text-pink-600">
                     <i class="fa-solid fa-chalkboard-user text-xl"></i>
                 </div>
-                <h4 class="text-xl font-bold text-slate-800 mb-2">Ruang Kelas Modern</h4>
-                <p class="text-slate-500 text-sm">Kelas kondusif dilengkapi pendingin (AC) dan media pembelajaran modern.</p>
+                <h4 class="text-xl font-bold text-slate-800 mb-2">Private Class</h4>
+                <p class="text-slate-500 text-sm">Proses pembelajaran dirancang lebih efektif untuk menumbuhkan potensi, minat, dan bakat santri secara optimal.</p>
             </div>
 
              {{-- Facility Item 4 --}}
              <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-pink-200 transition-all duration-300 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="250">
                 <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 text-pink-600">
-                    <i class="fa-solid fa-book-open text-xl"></i>
+                    <i class="fa-solid fa-book-quran text-xl"></i>
                 </div>
-                <h4 class="text-xl font-bold text-slate-800 mb-2">Perpustakaan Lengkap</h4>
-                <p class="text-slate-500 text-sm">Koleksi kitab dan buku umum untuk menunjang literasi santri.</p>
+                <h4 class="text-xl font-bold text-slate-800 mb-2">Qur'an Generation</h4>
+                <p class="text-slate-500 text-sm">Qur’an Generation didukung fasilitas nyaman dan ramah anak untuk menciptakan lingkungan ideal dalam menghafal dan memahami Al-Qur’an.</p>
             </div>
 
              {{-- Facility Item 5 --}}
              <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-pink-200 transition-all duration-300 hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
                 <div class="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 text-pink-600">
-                    <i class="fa-solid fa-computer text-xl"></i>
+                    <i class="fa-solid fa-user-shield text-xl"></i>
                 </div>
-                <h4 class="text-xl font-bold text-slate-800 mb-2">Lab Komputer</h4>
-                <p class="text-slate-500 text-sm">Fasilitas IT untuk mengembangkan skill digital dan teknologi santri.</p>
+                <h4 class="text-xl font-bold text-slate-800 mb-2">Character Building</h4>
+                <p class="text-slate-500 text-sm">Membentuk santri berakhlak Qurani, Mandiri, dan bertanggung jawab.</p>
             </div>
 
              {{-- Facility Item 6 --}}
@@ -241,8 +238,8 @@
                     <i class="fa-brands fa-whatsapp text-3xl"></i>
                 </div>
                 <h3 class="font-bold text-lg mb-1">WhatsApp</h3>
-                <p class="text-slate-500 text-sm mb-4">+62 851 2981 0014</p>
-                <a href="https://wa.me/6285129810014" target="_blank" class="text-pink-600 font-semibold hover:text-pink-700 text-sm">Chat Sekarang &rarr;</a>
+                <p class="text-slate-500 text-sm mb-4">+62 812 1234 4568</p>
+                <a href="https://wa.me/6281212344568" target="_blank" class="text-pink-600 font-semibold hover:text-pink-700 text-sm">Chat Sekarang &rarr;</a>
             </div>
 
              {{-- Contact Card 2 --}}
@@ -251,8 +248,8 @@
                     <i class="fa-regular fa-envelope text-3xl"></i>
                 </div>
                 <h3 class="font-bold text-lg mb-1">Email</h3>
-                <p class="text-slate-500 text-sm mb-4">daruttafsir01gmail.com</p>
-                <a href="mailto:daruttafsir01gmail.com" class="text-pink-600 font-semibold hover:text-pink-700 text-sm">Kirim Email &rarr;</a>
+                <p class="text-slate-500 text-sm mb-4">daruttafsir@gmail.com</p>
+                <a href="mailto:daruttafsir@gmail.com" class="text-pink-600 font-semibold hover:text-pink-700 text-sm">Kirim Email &rarr;</a>
             </div>
 
              {{-- Contact Card 3 --}}
@@ -261,8 +258,8 @@
                     <i class="fa-solid fa-location-dot text-3xl"></i>
                 </div>
                 <h3 class="font-bold text-lg mb-1">Lokasi</h3>
-                <p class="text-slate-500 text-sm mb-4">Jl. Kp. Cemp., Cilangkap, Kec. Kalanganyar, Kabupaten Lebak, Banten 42312</p>
-                <a href="https://maps.app.goo.gl/snqPe2i9MukDswsB6" target="_blank" class="text-pink-600 font-semibold hover:text-pink-700 text-sm">Lihat Peta &rarr;</a>
+                <p class="text-slate-500 text-sm mb-4">Kabupaten Lebak, Banten</p>
+                <a href="https://goo.gl/maps/xyz" target="_blank" class="text-pink-600 font-semibold hover:text-pink-700 text-sm">Lihat Peta &rarr;</a>
             </div>
         </div>
 
@@ -279,7 +276,7 @@
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12 mb-12">
         <div class="md:w-1/3">
             <div class="flex items-center gap-2 mb-6">
-                <img src="/assets/logo-darutafsir.png" alt="Logo" class="h-10">
+                <img src="/assets/logo-darutafsir.png" alt="Logo" class="h-10 grayscale brightness-200">
                 <span class="text-xl font-bold">Darut Tafsir</span>
             </div>
             <p class="text-slate-400 leading-relaxed text-sm">

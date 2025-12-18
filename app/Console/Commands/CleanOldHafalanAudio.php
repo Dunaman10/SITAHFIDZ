@@ -15,7 +15,7 @@ class CleanOldHafalanAudio extends Command
 
   public function handle()
   {
-    $limit = Carbon::now()->subDays(7);
+    $limit = Carbon::now()->subMonths(6);
 
     $records = Memorize::where('created_at', '<', $limit)
       ->whereNotNull('audio')
