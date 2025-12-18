@@ -11,7 +11,7 @@ class CleanOldHafalanAudio extends Command
 {
 
   protected $signature = 'app:clean-old-hafalan-audio';
-  protected $description = 'Delete memorize audio older than 7 days';
+  protected $description = 'Delete memorize audio older than 6 months from storage';
 
   public function handle()
   {
